@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solitario Klondike - Menú Principal</title>
+    <meta name="description" content="Juego de Solitario Klondike desarrollado en Python con Flask">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎴 Solitario Klondike</h1>
+            <p class="subtitle">Proyecto Python - POO y CRUD</p>
+        </header>
+
+        <!-- Sección: Nueva Partida -->
+        <section class="card">
+            <h2>🆕 Nueva Partida</h2>
+            <div class="form-group">
+                <input 
+                    type="text" 
+                    id="nombrePartida" 
+                    placeholder="Nombre de la partida (3-30 caracteres)"
+                    maxlength="30"
+                    class="input-field"
+                >
+                <button onclick="crearPartida()" class="btn btn-primary">
+                    Crear y Jugar
+                </button>
+            </div>
+        </section>
+
+        <!-- Sección: Partidas Guardadas -->
+        <section class="card">
+            <h2>📁 Partidas Guardadas</h2>
+            <button onclick="cargarListaPartidas()" class="btn btn-secondary">
+                🔄 Actualizar Lista
+            </button>
+            
+            <div id="listaPartidas" class="partidas-lista">
+                <p class="text-muted">Cargando partidas...</p>
+            </div>
+        </section>
+
+        <!-- Sección: Estadísticas -->
+        <section class="card">
+            <h2>📊 Estadísticas Globales</h2>
+            <div id="estadisticas" class="estadisticas">
+                <p class="text-muted">Cargando estadísticas...</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                Proyecto Académico - Python + Flask + HTML/CSS<br>
+                Implementa: Clases Abstractas, Herencia, CRUD, Módulos (json, deque, datetime, random, re)
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Cargar lista de partidas al inicio
+        window.addEventListener('DOMContentLoaded', () => {
+            cargarListaPartidas();
+            cargarEstadisticas();
+        });
+
+        /**
+         * Crea una nueva partida.
+         */
+        async function crearPartida() {
+            const nombre = document.getElementById('nombrePartida').value.trim();
+            
+            if (!nombre) {
+                alert('❌ Por favor ingresa un nombre para la partida');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/partidas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nombre })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`✅ ${data.mensaje}`);
+                    window.location.href = '/juego';
+                } else {
+                    alert(`❌ Error: ${data.error}`);
+                }
+            } catch (error) {
+                alert(`❌ Error de conexión: ${error.message}`);
+            }
+        }
+
+        /**
+         * Carga la lista de partidas guardadas.
+         */
+        async function cargarListaPartidas() {
+            const contenedor = document.getElementById('listaPartidas');
+            contenedor.innerHTML = '<p class="text-muted">Cargando...</p>';
+
+            try {
+                const response = await fetch('/api/partidas');
+                const data = await response.json();
+
+                if (data.success && data.partidas.length > 0) {
+                    let html = '<div class="partidas-grid">';
+                    
+                    data.partidas.forEach(partida => {
+                        html += `
+                            <div class="partida-item">
+                                <div class="partida-info">
+                                    <h3>${partida.nombre}</h3>
+                                    <p>📅 ${new Date(partida.fecha_creacion).toLocaleString('es-ES')}</p>
+                                    <p>🎯 Progreso: ${partida.progreso}</p>
+                                    <p>🔢 Movimientos: ${partida.movimientos}</p>
+                                </div>
+                                <div class="partida-acciones">
+                                    <button onclick="cargarPartida('${partida.nombre}')" class="btn btn-small btn-primary">
+                                        ▶️ Jugar
+                                    </button>
+                                    <button onclick="eliminarPartida('${partida.nombre}')" class="btn btn-small btn-danger">
+                                        🗑️ Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    contenedor.innerHTML = html;
+                } else {
+                    contenedor.innerHTML = '<p class="text-muted">No hay partidas guardadas</p>';
+                }
+            } catch (error) {
+                contenedor.innerHTML = `<p class="text-error">Error cargando partidas: ${error.message}</p>`;
+            }
+        }
+
+        /**
+         * Carga una partida existente.
+         */
+        async function cargarPartida(nombre) {
+            try {
+                const response = await fetch(`/api/partidas/${nombre}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = '/juego';
+                } else {
+                    alert(`❌ Error: ${data.error}`);
+                }
+            } catch (error) {
+                alert(`❌ Error de conexión: ${error.message}`);
+            }
+        }
+
+        /**
+         * Elimina una partida.
+         */
+        async function eliminarPartida(nombre) {
+            if (!confirm(`¿Estás seguro de eliminar la partida "${nombre}"?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/partidas/${nombre}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`✅ ${data.mensaje}`);
+                    cargarListaPartidas();
+                    cargarEstadisticas();
+                } else {
+                    alert(`❌ Error: ${data.error}`);
+                }
+            } catch (error) {
+                alert(`❌ Error de conexión: ${error.message}`);
+            }
+        }
+
+        /**
+         * Carga las estadísticas globales.
+         */
+        async function cargarEstadisticas() {
+            const contenedor = document.getElementById('estadisticas');
+            
+            try {
+                const response = await fetch('/api/estadisticas');
+                const data = await response.json();
+
+                if (data.success) {
+                    const stats = data.estadisticas;
+                    contenedor.innerHTML = `
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Partidas:</span>
+                                <span class="stat-value">${stats.total_partidas}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Partidas Ganadas:</span>
+                                <span class="stat-value">${stats.partidas_ganadas}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Movimientos:</span>
+                                <span class="stat-value">${stats.total_movimientos}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Promedio Movimientos:</span>
+                                <span class="stat-value">${stats.promedio_movimientos ? stats.promedio_movimientos.toFixed(1) : 0}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                contenedor.innerHTML = `<p class="text-error">Error cargando estadísticas</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
