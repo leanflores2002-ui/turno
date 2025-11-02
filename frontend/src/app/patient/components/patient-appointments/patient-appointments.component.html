@@ -1,0 +1,53 @@
+<section class="patient-appointments">
+  <header class="patient-appointments__header">
+    <div>
+      <h3>Próximos turnos</h3>
+      <p>Seguimiento de tus citas médicas.</p>
+    </div>
+  </header>
+
+  @if (loading && !appointments.length) {
+    <p class="patient-appointments__placeholder">Cargando turnos…</p>
+  } @else if (!appointments.length) {
+    <p class="patient-appointments__placeholder">
+      Todavía no tenés turnos agendados. Usá la agenda para reservar tu próxima cita.
+    </p>
+  } @else {
+    <ul class="patient-appointments__list">
+      @for (item of appointments; track item.id) {
+        <li class="patient-appointments__item">
+          <div class="patient-appointments__summary">
+            <h4>Turno con profesional #{{ item.doctor_id }}</h4>
+            <p>
+              {{ item.startAt | date: 'EEEE d MMMM, HH:mm' : 'UTC' }} -
+              {{ item.endAt | date: 'HH:mm' : 'UTC' }}
+            </p>
+          </div>
+
+          <span class="patient-appointments__status" [ngClass]="item.status">
+            {{ statusLabels[item.status] }}
+          </span>
+
+          <div class="patient-appointments__actions">
+            <button
+              type="button"
+              class="btn"
+              (click)="onConfirm(item.id)"
+              [disabled]="isActionDisabled(item.id, item.status)"
+            >
+              {{ actionId === item.id ? 'Actualizando…' : 'Confirmar' }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="onCancel(item.id)"
+              [disabled]="isActionDisabled(item.id, item.status)"
+            >
+              Cancelar
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

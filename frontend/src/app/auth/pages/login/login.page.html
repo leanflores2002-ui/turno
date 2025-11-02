@@ -1,0 +1,46 @@
+<section class="auth-card card">
+  <header class="auth-card__header">
+    <h2>Ingresar a TurnoPlus</h2>
+    <p>Elegí tu rol y accedé a tu panel personalizado.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="auth-card__form">
+    <label class="field">
+      <span>Correo electrónico</span>
+      <input type="email" formControlName="email" class="input" placeholder="tu@correo.com" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field__error">Ingresá un email válido.</small>
+      }
+    </label>
+
+    <label class="field">
+      <span>Contraseña</span>
+      <input type="password" formControlName="password" class="input" placeholder="••••••••" />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <small class="field__error">Usá al menos 6 caracteres.</small>
+      }
+    </label>
+
+    <label class="field">
+      <span>Ingresar como</span>
+      <select formControlName="role" class="input">
+        <option value="user">Paciente</option>
+        <option value="doctor">Profesional</option>
+        <option value="admin">Administrador</option>
+      </select>
+    </label>
+
+    @if (errorMessage) {
+      <p class="auth-card__error">{{ errorMessage }}</p>
+    }
+
+    <button class="btn btn-primary auth-card__submit" type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+
+  <footer class="auth-card__footer">
+    <span>¿Todavía no tenés cuenta?</span>
+    <a routerLink="/auth/register">Crear cuenta como paciente</a>
+  </footer>
+</section>

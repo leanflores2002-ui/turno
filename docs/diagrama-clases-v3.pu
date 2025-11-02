@@ -1,0 +1,162 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #444
+skinparam ClassFontSize 12
+skinparam ClassFontName "Inter"
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #1d3557
+skinparam linetype ortho
+
+' ============== RESUMEN DE BOLSAS ==============
+rectangle "Core Domain" as CoreDomain {
+  abstract class User {
+    +id: UUID
+    +email: string
+    +password: string
+    +firstName: string
+    +lastName: string
+    +role(): string
+  }
+
+  class Patient {
+    +address: string
+    +phone: string
+    +socialSecurityId: string
+    +medicalRecordId: UUID
+  }
+
+  class Doctor {
+    +phone: string
+    +license: string
+  }
+
+  class Admin {
+    +officeId: UUID
+  }
+
+  class MedicalRecord {
+    +id: UUID
+    +description: string
+    +doctorId: UUID
+    +patientId: UUID
+  }
+
+  class Appointment {
+    +id: UUID
+    +doctorId: UUID
+    +patientId: UUID
+    +officeId: UUID
+    +slotId: UUID
+    +status: AppointmentStatus
+  }
+
+  class Availability {
+    +id: UUID
+    +doctorId: UUID
+    +day: string
+    +month: string
+  }
+
+  class Office {
+    +id: UUID
+    +address: string
+  }
+}
+
+rectangle "Services" as Services {
+  class AuthService {
+    +login(email, secret): User
+  }
+
+  class AppointmentService {
+    +bookAppointment(...): Appointment
+    +cancelAppointment(id: UUID)
+    +confirmAppointment(id: UUID)
+  }
+}
+
+rectangle "Persistence" as Persistence {
+  interface UserRepository {
+    +byEmail(email): User?
+    +save(user: User)
+  }
+  interface DoctorRepository {
+    +byId(id): Doctor?
+  }
+  interface PatientRepository {
+    +byId(id): Patient?
+  }
+  interface AppointmentRepository {
+    +save(app: Appointment)
+    +byId(id): Appointment?
+    +findByDoctorAndSlot(...): Appointment?
+  }
+  interface AvailabilityRepository {
+    +findByDoctorAndDay(...): Availability?
+  }
+  interface OfficeRepository {
+    +byId(id): Office?
+  }
+  interface MedicalRecordRepository {
+    +save(record: MedicalRecord)
+    +byPatient(id): MedicalRecord?
+  }
+
+  interface UnitOfWork {
+    +commit()
+    +rollback()
+  }
+}
+
+rectangle "Infrastructure" as Infrastructure {
+  class SqlUnitOfWork
+  class SqlUserRepository
+  class SqlDoctorRepository
+  class SqlPatientRepository
+  class SqlAppointmentRepository
+  class SqlAvailabilityRepository
+  class SqlOfficeRepository
+  class SqlMedicalRecordRepository
+}
+
+' ============== HERENCIAS ==============
+User <|-- Patient
+User <|-- Doctor
+User <|-- Admin
+
+AuthService --> UserRepository
+AuthService --> UnitOfWork
+
+AppointmentService --> AppointmentRepository
+AppointmentService --> DoctorRepository
+AppointmentService --> PatientRepository
+AppointmentService --> OfficeRepository
+AppointmentService --> UnitOfWork
+AppointmentService --> AvailabilityRepository
+
+MedicalRecord --> Patient
+MedicalRecord --> Doctor
+
+Doctor "1" -- "0..*" Appointment
+Patient "1" -- "0..*" Appointment
+Doctor "1" -- "0..*" Availability
+Admin "1" -- "0..*" Office
+
+Appointment "1" -- "0..1" Office
+Appointment "1" -- "1" Availability : ocupa
+
+UserRepository <|.. SqlUserRepository
+DoctorRepository <|.. SqlDoctorRepository
+PatientRepository <|.. SqlPatientRepository
+AppointmentRepository <|.. SqlAppointmentRepository
+AvailabilityRepository <|.. SqlAvailabilityRepository
+OfficeRepository <|.. SqlOfficeRepository
+MedicalRecordRepository <|.. SqlMedicalRecordRepository
+UnitOfWork <|.. SqlUnitOfWork
+
+note right of Services
+  Cada servicio depende de abstracciones.
+  Implementaciones concretas viven en Infrastructure.
+end note
+
+@enduml

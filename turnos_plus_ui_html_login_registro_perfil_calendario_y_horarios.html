@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TurnosPlus · UI (offline)</title>
+  <!-- *** Versión offline sin CDNs ni Google Fonts para evitar bloqueos en iframes *** -->
+  <style>
+    /* —— Paleta / base —— */
+    :root{ --brand-950:#08262c; --brand-900:#0b3d4a; --brand-800:#0d5563; --brand-700:#0e7490; --brand-600:#0891b2; --brand-200:#dff7fb; --brand-100:#eefcff; --gray-900:#111827; --gray-700:#374151; --gray-600:#4b5563; --gray-500:#6b7280; --gray-300:#d1d5db; --gray-200:#e5e7eb; --gray-100:#f3f4f6; }
+    html,body{margin:0;padding:0}
+    body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; color:var(--gray-900); background: radial-gradient(60% 50% at 20% 0%, var(--brand-100) 0%, transparent 70%), radial-gradient(50% 40% at 100% 0%, var(--brand-200) 0%, transparent 60%), linear-gradient(180deg,#fff 0%,#f7fdff 40%,#f1fbfe 100%); min-height:100vh; }
+
+    /* —— Mini utilidades (subset Tailwind-like) —— */
+    .hidden{display:none!important}
+    .flex{display:flex}.grid{display:grid}
+    .items-center{align-items:center}.items-start{align-items:flex-start}
+    .justify-between{justify-content:space-between}.justify-center{justify-content:center}
+    .text-center{text-align:center}
+    .gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}
+    .p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-8{padding:2rem}
+    .px-4{padding-left:1rem;padding-right:1rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-8{padding-top:2rem;padding-bottom:2rem}
+    .mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}
+    .mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}
+    .mx-auto{margin-left:auto;margin-right:auto}
+    .w-full{width:100%}.h-9{height:2.25rem}.w-auto{width:auto}
+    .text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.text-2xl{font-size:1.5rem}
+    .font-medium{font-weight:500}.font-semibold{font-weight:600}
+    .rounded-xl{border-radius:.75rem}.rounded-2xl{border-radius:1rem}
+    .max-w-7xl{max-width:80rem}.max-w-md{max-width:28rem}.max-w-2xl{max-width:42rem}
+    .min-h-screen{min-height:100vh}
+    .sticky{position:sticky}.top-0{top:0}.z-40{z-index:40}
+    .text-gray-500{color:var(--gray-500)}
+    .brand-header{background:var(--brand-700);color:#fff}
+
+    /* Responsivo simple */
+    @media (min-width:768px){ .md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))} .md\:col-span-2{grid-column:span 2 / span 2} }
+    @media (min-width:1024px){ .lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))} .lg\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))} }
+
+    /* —— Componentes —— */
+    .link{ color:var(--brand-700); text-underline-offset:3px; cursor:pointer }
+    .link:hover{ text-decoration:underline }
+    .card{ background:#fff; border:1px solid var(--gray-200); border-radius:16px; box-shadow:0 2px 8px rgba(2,6,23,.06) }
+    .input{ display:block; width:100%; box-sizing:border-box; background:#fff; color:var(--gray-900); border:2px solid #cbd5e1; border-radius:16px; padding:1rem 1.1rem; outline:none; transition: box-shadow .15s ease, border-color .15s ease }
+    .input::placeholder{ color:#9ca3af }
+    .input:focus{ border-color:var(--brand-600); box-shadow:0 0 0 4px rgba(8,145,178,.15) }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; padding:.65rem 1.05rem; border-radius:9999px; font-weight:600; line-height:1; min-height:42px; border:1px solid transparent; background:#fff; color:var(--brand-700); border-color:var(--brand-700); cursor:pointer; white-space:nowrap }
+    .btn:hover{ background:#ecfeff }
+    .btn-primary{ background:var(--brand-700); color:#fff; border-color:var(--brand-700) }
+    .btn-primary:hover{ background:var(--brand-800) }
+    .badge{ font-size:10px; padding:.15rem .45rem; border-radius:9999px; border:1px solid var(--brand-600); color:var(--brand-800); background:#f0fdff }
+    .table th{ background:#f8fafc; font-weight:600 }
+    .day-cell{ border-radius:14px; border:1px solid var(--gray-200); padding:.75rem; display:flex; flex-direction:column; align-items:center; gap:.25rem }
+    .day-cell.is-selected{ outline:3px solid rgba(8,145,178,.25); background:#ecfeff }
+    .grid-cols-7{ grid-template-columns:repeat(7,minmax(0,1fr)) }
+
+    /* —— Contenedor / header —— */
+    .header-wrap{display:flex;align-items:center;gap:1rem}
+    /* —— Formularios 2 columnas (centrados) —— */
+    .form-2cols{display:grid;grid-template-columns:1fr;gap:1.75rem;max-width:100%;margin:0 auto}
+    .span-2{grid-column:1 / -1}
+    /* mayor separación vertical en labels */
+    label.grid{gap:.6rem}
+    @media (min-width:768px){ .form-2cols{grid-template-columns:repeat(2,minmax(0,1fr))} } 
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Top Bar -->
+  <header class="sticky top-0 z-40 brand-header">
+    <div class="max-w-7xl mx-auto px-4 py-3 header-wrap">
+      <div class="header-wrap">
+        <svg id="logoSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" class="h-9 w-auto" aria-label="TurnosPlus logo">
+          <g><rect x="4" y="10" rx="8" ry="8" width="64" height="52" fill="#0e7490" opacity=".12" /><rect x="8" y="14" rx="6" ry="6" width="56" height="44" fill="none" stroke="#0e7490" stroke-width="4" /><line x1="8" y1="26" x2="64" y2="26" stroke="#0e7490" stroke-width="4" /><path d="M36 34v16m-8-8h16" stroke="#0e7490" stroke-width="4" stroke-linecap="round" /></g>
+          <text x="84" y="44" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#ffffff">TurnosPlus</text>
+        </svg>
+      </div>
+      <nav class="ml-auto" style="margin-left:auto; display:flex; align-items:center; gap:.5rem">
+        <button id="navLogin" data-route="#login" class="btn">Ingresar</button>
+        <button id="navRegister" data-route="#register" class="btn btn-primary">Crear cuenta</button>
+        <button data-route="#calendar" class="btn hidden" id="navCalendar">Calendario</button>
+        <button data-route="#profile" class="btn hidden" id="navProfile">Mi perfil</button>
+        <button data-route="#records" class="btn hidden" id="navRecords">Ficha clínica</button>
+        <button data-route="#doctor" class="btn hidden" id="navDoctor">Panel Doctor</button>
+        <button data-route="#admin" class="btn hidden" id="navAdmin">Panel Admin</button>
+        <button id="btnLogout" class="btn hidden">Cerrar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="max-w-7xl mx-auto px-4 py-8 grid gap-8">
+    <div aria-live="polite" id="toast" class="hidden"></div>
+
+    <!-- LOGIN (centrado) -->
+    <section id="view-login" class="center-wrap" style="min-height:calc(100vh - 64px); display:flex; align-items:center; justify-content:center">
+      <div class="card p-12 max-w-3xl w-full">
+        <h2 class="text-2xl font-semibold mb-1" style="color:var(--brand-900)">Ingresar</h2>
+        <form id="formLogin" class="form-2cols">
+          <label class="grid gap-1">
+            <span class="text-sm font-medium">Email</span>
+            <input required type="email" name="email" class="input" placeholder="tucorreo@ejemplo.com" />
+          </label>
+          <label class="grid gap-1"><span class="text-sm font-medium">Contraseña</span>
+            <input required type="password" name="password" class="input" placeholder="••••••••" />
+          </label>
+          <!-- Selector de rol para demo -->
+          <label class="grid gap-1 span-2"><span class="text-sm font-medium">Rol (demo)</span>
+            <select name="role" class="input">
+              <option value="user">Usuario</option>
+              <option value="doctor">Doctor</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </label>
+          <div class="span-2" style="display:flex;justify-content:center;gap:.75rem;align-items:center">
+            <button class="btn btn-primary">Entrar</button>
+            <p class="text-sm" style="margin:0">¿No tenés cuenta? <a data-route="#register" class="link">Registrate</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- REGISTER (centrado) -->
+    <section id="view-register" class="center-wrap hidden" style="min-height:calc(100vh - 64px); display:flex; align-items:center; justify-content:center">
+      <div class="card p-12 max-w-3xl w-full">
+        <h2 class="text-2xl font-semibold mb-1" style="color:var(--brand-900)">Crear cuenta</h2>
+        <p class="text-sm text-gray-500 mb-6">Completá tus datos para empezar a reservar turnos.</p>
+        <form id="formRegister" class="form-2cols">
+          <label class="grid gap-1"><span class="text-sm font-medium">Nombre</span><input required name="firstName" class="input" /></label>
+          <label class="grid gap-1"><span class="text-sm font-medium">Apellido</span><input required name="lastName" class="input" /></label>
+          <label class="grid gap-1 span-2"><span class="text-sm font-medium">Email</span><input required type="email" name="email" class="input" /></label>
+          <label class="grid gap-1"><span class="text-sm font-medium">Teléfono</span><input required name="phone" class="input" placeholder="11-5555-5555" /></label>
+          <label class="grid gap-1"><span class="text-sm font-medium">DNI</span><input required name="dni" class="input" inputmode="numeric" pattern="[0-9]{7,8}" placeholder="Ej: 12345678" /></label>
+          <label class="grid gap-1"><span class="text-sm font-medium">Obra social</span><input name="insurance" class="input" placeholder="Opcional" /></label>
+          <label class="grid gap-1"><span class="text-sm font-medium">Contraseña</span><input required type="password" name="password" class="input" /></label>
+          <label class="grid gap-1"><span class="text-sm font-medium">Repetir contraseña</span><input required type="password" name="password2" class="input" /></label>
+          <div class="span-2" style="display:flex; justify-content:center; align-items:center; gap:.5rem"><button class="btn btn-primary">Crear cuenta</button><button type="button" data-route="#login" class="btn">Ya tengo cuenta</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- PROFILE (Usuario) -->
+    <section id="view-profile" class="card p-6 hidden">
+      <h2 class="text-2xl font-semibold mb-1" style="color:var(--brand-900)">Mi perfil</h2>
+      <p class="text-sm text-gray-500 mb-6">Actualizá tus datos personales.</p>
+      <form id="formProfile" class="form-2cols" style="max-width:42rem">
+        <label class="grid gap-1"><span class="text-sm font-medium">Nombre</span><input name="firstName" class="input" /></label>
+        <label class="grid gap-1"><span class="text-sm font-medium">Apellido</span><input name="lastName" class="input" /></label>
+        <label class="grid gap-1 span-2"><span class="text-sm font-medium">Email</span><input type="email" name="email" class="input" /></label>
+        <label class="grid gap-1"><span class="text-sm font-medium">Teléfono</span><input name="phone" class="input" /></label>
+        <label class="grid gap-1"><span class="text-sm font-medium">DNI</span><input name="dni" class="input" inputmode="numeric" pattern="[0-9]{7,8}" /></label>
+        <label class="grid gap-1"><span class="text-sm font-medium">Obra social</span><input name="insurance" class="input" /></label>
+        <div class="span-2" style="display:flex; align-items:center; gap:.5rem"><button class="btn btn-primary">Guardar cambios</button><span id="profileStatus" class="text-sm text-gray-500"></span></div>
+      </form>
+      <div class="mt-8">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold" style="color:var(--brand-800)">Mis turnos</h3>
+          <div class="flex items-center gap-2"><label class="text-sm">Doctor:</label><select id="filterDoctor" class="input" style="width:14rem"><option value="">Todos</option></select></div>
+        </div>
+        <div class="overflow-hidden" style="border:1px solid var(--gray-200); border-radius:16px">
+          <table class="w-full text-sm table" style="width:100%">
+            <thead><tr class="text-left"><th class="p-3">Fecha</th><th class="p-3">Hora</th><th class="p-3">Doctor</th><th class="p-3">Consultorio</th><th class="p-3">Estado</th><th class="p-3">Acciones</th></tr></thead>
+            <tbody id="apptsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- FICHA CLÍNICA (Usuario lectura) -->
+    <section id="view-records" class="card p-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <div><h2 class="text-2xl font-semibold" style="color:var(--brand-900)">Mi ficha clínica</h2><p class="text-sm text-gray-500">Consultá antecedentes, alergias y atenciones previas.</p></div>
+        <button data-route="#profile" class="btn">Volver a perfil</button>
+      </div>
+      <div id="recordSummary" class="grid gap-4 md:grid-cols-2" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <div class="card p-4"><h3 class="font-semibold mb-2">Datos básicos</h3><ul class="text-sm" id="recBasics"></ul></div>
+        <div class="card p-4"><h3 class="font-semibold mb-2">Alergias</h3><ul class="text-sm" id="recAllergies"></ul></div>
+        <div class="card p-4"><h3 class="font-semibold mb-2">Medicaciones</h3><ul class="text-sm" id="recMeds"></ul></div>
+      </div>
+      <div class="card p-4 mt-4">
+        <h3 class="font-semibold mb-2">Historial de atenciones</h3>
+        <table class="w-full text-sm table"><thead><tr><th class="p-2">Fecha</th><th class="p-2">Profesional</th><th class="p-2">Motivo</th><th class="p-2">Notas</th></tr></thead><tbody id="recVisits"></tbody></table>
+      </div>
+    </section>
+
+    <!-- CALENDARIO (Usuario solicita turno) -->
+    <section id="view-calendar" class="card p-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <div><h2 class="text-2xl font-semibold" style="color:var(--brand-900)">Calendario</h2><p class="text-sm text-gray-500">Seleccioná un día para ver horarios disponibles.</p></div>
+        <div class="flex items-center gap-2">
+          <select id="calendarDoctor" class="input" style="width:14rem"><option value="">Todos los doctores</option></select>
+          <input id="dateInput" type="date" class="input" />
+          <button id="btnToday" class="btn">Hoy</button>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 mb-3"><button id="prevMonth" class="btn" aria-label="Mes anterior">←</button><div id="monthLabel" class="text-lg font-medium"></div><button id="nextMonth" class="btn" aria-label="Mes siguiente">→</button></div>
+      <div class="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
+      <div id="calendarGrid" class="grid grid-cols-7 gap-1"></div>
+    </section>
+
+    <!-- SLOTS / HORARIOS (Usuario confirma turno) -->
+    <section id="view-slots" class="card p-6 hidden">
+      <div class="flex items-start justify-between mb-4">
+        <div><h2 class="text-2xl font-semibold" style="color:var(--brand-900)">Seleccionar horario</h2><p class="text-sm text-gray-500">Día: <span id="slotsDayLabel" class="font-medium"></span></p></div>
+        <button data-route="#calendar" class="btn">Volver al calendario</button>
+      </div>
+      <div id="slotsContainer" class="grid gap-2" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
+      <div id="slotConfirm" class="mt-4 hidden"><div class="p-4 rounded-2xl" style="background:#ecfdf5; border:1px solid #a7f3d0;"><p class="text-sm">Confirmar turno el <span id="confirmDate"></span> a las <span id="confirmTime" class="font-semibold"></span></p><div class="mt-3" style="display:flex; gap:.5rem"><button id="btnConfirm" class="btn btn-primary">Confirmar</button><button data-route="#calendar" class="btn">Cancelar</button></div></div></div>
+    </section>
+
+    <!-- PANEL DOCTOR -->
+    <section id="view-doctor" class="card p-6 hidden">
+      <div class="flex items-center justify-between mb-4"><div><h2 class="text-2xl font-semibold" style="color:var(--brand-900)">Panel del Doctor</h2><p class="text-sm text-gray-500">Gestioná tu disponibilidad (días completos) y fichas clínicas.</p></div></div>
+      <div class="grid gap-6 lg:grid-cols-2">
+        <div class="card p-4">
+          <h3 class="font-semibold mb-2">Disponibilidad (días completos)</h3>
+          <form id="formAvail" class="form-2cols">
+            <label class="grid gap-1 span-2"><span class="text-sm">Consultorio</span><select id="availOffice" class="input"></select></label>
+          </form>
+          <div class="mt-4">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-sm text-gray-500">Click para <b>alternar</b> disponibilidad del día</div>
+              <div class="flex items-center gap-2"><button id="availPrev" class="btn" type="button">←</button><div id="availMonth" class="font-medium"></div><button id="availNext" class="btn" type="button">→</button></div>
+            </div>
+            <div class="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
+            <div id="availCalendar" class="grid grid-cols-7 gap-1"></div>
+          </div>
+        </div>
+        <div class="card p-4">
+          <h3 class="font-semibold mb-2">Ficha clínica (editar)</h3>
+          <form id="formRecordEdit" class="form-2cols">
+            <label class="grid gap-1"><span class="text-sm">Paciente (DNI)</span><div class="flex gap-2"><input id="recDni" class="input" placeholder="12345678" inputmode="numeric" pattern="[0-9]{7,8}"><button id="btnRecLoad" type="button" class="btn">Cargar</button></div></label>
+            <label class="grid gap-1"><span class="text-sm">Motivo de consulta</span><input id="recMotivo" class="input"></label>
+            <label class="grid gap-1"><span class="text-sm">Diagnóstico</span><textarea id="recDx" class="input" rows="3"></textarea></label>
+            <label class="grid gap-1"><span class="text-sm">Indicaciones</span><textarea id="recPlan" class="input" rows="3"></textarea></label>
+            <div class="span-2" style="display:flex;justify-content:center;align-items:center;gap:.5rem"><button id="btnRecSave" type="button" class="btn btn-primary">Guardar en ficha</button><span id="recSaveMsg" class="text-sm text-gray-500"></span></div>
+          </form>
+          <div class="mt-4"><h4 class="font-semibold mb-1">Historial del paciente</h4><table class="w-full text-sm table"><thead><tr><th class="p-2">Fecha</th><th class="p-2">Profesional</th><th class="p-2">Resumen</th></tr></thead><tbody id="recHistory"></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL ADMINISTRADOR -->
+    <section id="view-admin" class="card p-6 hidden">
+      <div class="flex items-center justify-between mb-4"><div><h2 class="text-2xl font-semibold" style="color:var(--brand-900)">Panel del Administrador</h2><p class="text-sm text-gray-500">Calendario general, gestión de usuarios, doctores y consultorios.</p></div></div>
+      <div class="grid gap-6">
+        <div class="card p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold">Calendario (vista general)</h3>
+            <div class="flex items-center gap-2"><button id="admPrev" class="btn">←</button><div id="admMonth" class="font-medium"></div><button id="admNext" class="btn">→</button></div>
+          </div>
+          <div class="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
+          <div id="admCalendar" class="grid grid-cols-7 gap-1"></div>
+        </div>
+        <div class="card p-4">
+          <div class="flex items-center justify-between mb-3"><h3 class="font-semibold">Usuarios registrados</h3></div>
+          <table class="w-full text-sm table"><thead><tr><th class="p-2">Nombre</th><th class="p-2">Email</th><th class="p-2">DNI</th><th class="p-2">Rol</th></tr></thead><tbody id="usersBody"></tbody></table>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-2">
+          <div class="card p-4">
+            <h3 class="font-semibold mb-2">Doctores</h3>
+            <form id="formDoctor" class="form-2cols">
+              <label class="grid gap-1"><span class="text-sm">Nombre</span><input id="docName" class="input"></label>
+              <label class="grid gap-1"><span class="text-sm">Especialidad</span><input id="docSpec" class="input"></label>
+              <div class="span-2" style="display:flex; justify-content:center; gap:.5rem"><button id="btnDocAdd" type="button" class="btn btn-primary">Dar de alta</button></div>
+            </form>
+            <table class="w-full text-sm table mt-3"><thead><tr><th class="p-2">Nombre</th><th class="p-2">Especialidad</th><th class="p-2">Acciones</th></tr></thead><tbody id="docsBody"></tbody></table>
+          </div>
+          <div class="card p-4">
+            <h3 class="font-semibold mb-2">Consultorios</h3>
+            <form id="formOffice" class="form-2cols">
+              <label class="grid gap-1 span-2"><span class="text-sm">Nombre del consultorio</span><input id="officeName" class="input" placeholder="Consultorio 1"></label>
+              <div class="span-2" style="display:flex; justify-content:center; gap:.5rem"><button id="btnOfficeAdd" type="button" class="btn btn-primary">Crear consultorio</button></div>
+            </form>
+            <table class="w-full text-sm table mt-3"><thead><tr><th class="p-2">Consultorio</th><th class="p-2">Acciones</th></tr></thead><tbody id="officesBody"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="max-w-7xl mx-auto px-4 py-8 text-center text-sm text-gray-500">Prototipo UI · Versión offline (sin CDNs).</footer>
+
+  <script>
+    // Utilidades JS
+    const views = { '#login':'view-login', '#register':'view-register', '#profile':'view-profile', '#records':'view-records', '#calendar':'view-calendar', '#slots':'view-slots', '#doctor':'view-doctor', '#admin':'view-admin' };
+    function toggleNavByAuth(){ const authed = Boolean(localStorage.getItem('authToken')); const role = (JSON.parse(localStorage.getItem('user')||'{}').role)||'user'; const showUser = authed && role==='user'; const showDoctor = authed && role==='doctor'; const showAdmin = authed && role==='admin'; ['navLogin','navRegister'].forEach(id=>document.getElementById(id).classList.toggle('hidden', authed)); document.getElementById('navCalendar').classList.toggle('hidden', !showUser); document.getElementById('navProfile').classList.toggle('hidden', !showUser); document.getElementById('navRecords').classList.toggle('hidden', !showUser); document.getElementById('navDoctor').classList.toggle('hidden', !showDoctor); document.getElementById('navAdmin').classList.toggle('hidden', !showAdmin); document.getElementById('btnLogout').classList.toggle('hidden', !authed); }
+    function showView(hash){ Object.values(views).forEach(id=>document.getElementById(id).classList.add('hidden')); const id = views[hash] || (localStorage.getItem('authToken') ? (JSON.parse(localStorage.getItem('user')||'{}').role==='doctor'?'view-doctor':(JSON.parse(localStorage.getItem('user')||'{}').role==='admin'?'view-admin':'view-calendar')) : 'view-login'); document.getElementById(id)?.classList.remove('hidden'); toggleNavByAuth(); if(id==='view-doctor'){ loadDoctorPanel(); } if(id==='view-admin'){ loadAdminPanel(); } if(id==='view-profile'){ loadProfile(); } if(id==='view-calendar'){ renderCalendar(new Date()); } }
+    window.addEventListener('hashchange', ()=>showView(location.hash));
+    document.querySelectorAll('[data-route]').forEach(el=> el.addEventListener('click',()=>{ location.hash = el.dataset.route; }));
+    const toast = (msg,type='info')=>{ const el=document.getElementById('toast'); el.className='fixed bottom-6 right-6 px-4 py-3 rounded-2xl'; el.style.position='fixed'; el.style.bottom='24px'; el.style.right='24px'; el.style.background= type==='error' ? '#e11d48' : '#111827'; el.style.color='#fff'; el.textContent=msg; el.style.display='block'; setTimeout(()=>{ el.style.display='none'; },2200) };
+
+    // Mock API/data
+    let DOCTORS=[], OFFICES=[], DEMO_USERS=[];
+    async function fetchDoctors(){ DOCTORS=[{id:1,name:'Dra. Gómez',spec:'Clínica'},{id:2,name:'Dr. Pérez',spec:'Cardiología'},{id:3,name:'Dra. Ruiz',spec:'Dermatología'}]; }
+    async function fetchOffices(){ OFFICES=[{id:1,name:'Consultorio 1'},{id:2,name:'Consultorio 2'}]; }
+    async function fetchUsers(){ DEMO_USERS=[{name:'Alex García',email:'alex@ej.com',dni:'12345678',role:'user'},{name:'Dra. Gómez',email:'gomez@ej.com',dni:'20000001',role:'doctor'},{name:'Admin',email:'admin@ej.com',dni:'11111111',role:'admin'}]; }
+
+    // Login
+    document.getElementById('formLogin').addEventListener('submit', (e)=>{ e.preventDefault(); const data=Object.fromEntries(new FormData(e.target)); const json={ token:'demo-token', user:{ firstName:'Alex', lastName:'García', email:data.email, dni:'12345678', phone:'11-5555-5555', role:data.role } }; localStorage.setItem('authToken',json.token); localStorage.setItem('user',JSON.stringify(json.user)); toast('Sesión iniciada'); location.hash = (data.role==='doctor')?'#doctor':(data.role==='admin')?'#admin':'#calendar'; });
+    document.getElementById('btnLogout').addEventListener('click', ()=>{ localStorage.removeItem('authToken'); localStorage.removeItem('user'); toast('Sesión cerrada'); location.hash='#login'; });
+
+    // Registro
+    document.getElementById('formRegister').addEventListener('submit',(e)=>{ e.preventDefault(); const d=Object.fromEntries(new FormData(e.target)); if(d.password!==d.password2){ toast('Las contraseñas no coinciden','error'); return; } toast('Cuenta creada. Iniciá sesión.'); location.hash='#login'; });
+
+    // Perfil
+    async function loadProfile(){ const user=JSON.parse(localStorage.getItem('user')||'{}'); const form=document.getElementById('formProfile'); ['firstName','lastName','email','phone','insurance','dni'].forEach(k=>{ if(form[k]) form[k].value=user[k]||''; }); await loadDoctorsSelect(); await loadAppointments(); }
+    document.getElementById('formProfile').addEventListener('submit',(e)=>{ e.preventDefault(); const d=Object.fromEntries(new FormData(e.target)); localStorage.setItem('user', JSON.stringify({...JSON.parse(localStorage.getItem('user')||'{}'), ...d})); document.getElementById('profileStatus').textContent='Datos guardados'; toast('Perfil actualizado'); });
+    async function cancelAppointment(id){ toast('Turno cancelado'); await loadAppointments(document.getElementById('filterDoctor').value||''); }
+
+    async function loadDoctorsSelect(){ await fetchDoctors(); const sel=document.getElementById('filterDoctor'); if(sel){ sel.innerHTML='<option value="">Todos</option>'; DOCTORS.forEach(d=>{ const o=document.createElement('option'); o.value=d.id; o.textContent=`${d.name} (${d.spec})`; sel.appendChild(o); }); sel.onchange=()=> loadAppointments(sel.value); } const calSel=document.getElementById('calendarDoctor'); if(calSel){ calSel.innerHTML='<option value="">Todos los doctores</option>'; DOCTORS.forEach(d=>{ const o=document.createElement('option'); o.value=d.id; o.textContent=`${d.name} (${d.spec})`; calSel.appendChild(o); }); calSel.onchange=()=> renderCalendar(current); } }
+
+    async function loadAppointments(doctorId=''){ const data=[{id:101,date:'2025-10-10',time:'09:00',doctor:'Dra. Gómez',office:'Consultorio 1',status:'Confirmado'},{id:102,date:'2025-10-12',time:'11:30',doctor:'Dr. Pérez',office:'Consultorio 2',status:'Pendiente'},{id:103,date:'2025-10-14',time:'15:00',doctor:'Dra. Ruiz',office:'Consultorio 1',status:'Confirmado'}].filter(x=>{ if(!doctorId) return true; const sel=DOCTORS.find(d=>String(d.id)===String(doctorId)); return sel && x.doctor.includes(sel.name); }); const tbody=document.getElementById('apptsBody'); if(tbody){ tbody.innerHTML=data.map(x=>`<tr class="border-t"><td class="p-3">${x.date}</td><td class="p-3">${x.time}</td><td class="p-3">${x.doctor}</td><td class="p-3">${x.office}</td><td class="p-3">${x.status}</td><td class="p-3"><button class="btn" onclick="cancelAppointment(${x.id})">Cancelar</button></td></tr>`).join(''); } }
+
+    // Calendario usuario
+    const monthLabel=document.getElementById('monthLabel'); const calendarGrid=document.getElementById('calendarGrid'); const dateInput=document.getElementById('dateInput'); let current=new Date(); const fmtDateISO=d=> d.toISOString().slice(0,10); const startOfMonth=d=> new Date(d.getFullYear(), d.getMonth(), 1); const endOfMonth=d=> new Date(d.getFullYear(), d.getMonth()+1, 0); let assigned={};
+    async function buildAssignedMap(baseDate){ assigned={}; await fetchOffices(); await fetchDoctors(); for(let d=1; d<=endOfMonth(baseDate).getDate(); d++){ const doc=DOCTORS[(d % (DOCTORS.length||1))] || {id:null,name:''}; const office=OFFICES[(d % (OFFICES.length||1))] || {id:null,name:''}; assigned[d]={ doctorId:doc.id, doctorName:doc.name, officeId:office.id, officeName:office.name }; } }
+    async function renderCalendar(baseDate=new Date()){ await buildAssignedMap(baseDate); const first=startOfMonth(baseDate); const last=endOfMonth(baseDate); const month=baseDate.toLocaleString('es-AR',{month:'long',year:'numeric'}); monthLabel.textContent=month.charAt(0).toUpperCase()+month.slice(1); calendarGrid.innerHTML=''; const selectedDoctorId=(document.getElementById('calendarDoctor').value||''); let offset=(first.getDay()+6)%7; for(let i=0;i<offset;i++){ const cell=document.createElement('div'); cell.className='p-3'; calendarGrid.appendChild(cell); } const today=new Date(); today.setHours(0,0,0,0); for(let day=1; day<=last.getDate(); day++){ const d=new Date(baseDate.getFullYear(), baseDate.getMonth(), day); const {doctorId,doctorName,officeName}=assigned[day]||{}; const matches=!selectedDoctorId || String(doctorId)===String(selectedDoctorId); const btn=document.createElement('button'); btn.className='day-cell text-sm'; btn.innerHTML=`<span class="font-semibold">${day}</span>${doctorName?`<span class="badge mt-1">${doctorName}</span>`:''}${officeName?`<span class='text-sm' style='font-size:10px;color:#6b7280'>${officeName}</span>`:''}`; if(!matches){ btn.classList.add('hidden'); } if(d<today){ btn.disabled=true; btn.style.opacity='.4'; } btn.addEventListener('click',()=>openSlotsFor(d, doctorId, assigned[day].officeId)); calendarGrid.appendChild(btn);} dateInput.value=fmtDateISO(baseDate); }
+    document.getElementById('prevMonth').addEventListener('click',()=>{ current=new Date(current.getFullYear(), current.getMonth()-1, 1); renderCalendar(current); });
+    document.getElementById('nextMonth').addEventListener('click',()=>{ current=new Date(current.getFullYear(), current.getMonth()+1, 1); renderCalendar(current); });
+    document.getElementById('btnToday').addEventListener('click',()=>{ current=new Date(); renderCalendar(current); });
+    document.getElementById('calendarDoctor').addEventListener('change',()=> renderCalendar(current));
+    if(dateInput){ dateInput.addEventListener('change',(e)=>{ const d=new Date(e.target.value); current=d; renderCalendar(d); }); }
+
+    // Slots
+    const slotsDayLabel=document.getElementById('slotsDayLabel'); const slotsContainer=document.getElementById('slotsContainer'); const slotConfirm=document.getElementById('slotConfirm'); const confirmDate=document.getElementById('confirmDate'); const confirmTime=document.getElementById('confirmTime');
+    async function openSlotsFor(date,doctorId,officeId){ const iso=fmtDateISO(date); slotsDayLabel.textContent=date.toLocaleDateString('es-AR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}); confirmDate.textContent=date.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}); location.hash='#slots'; slotsContainer.innerHTML=''; slotConfirm.classList.add('hidden'); const slots=Array.from({length:16},(_,i)=>{ const hh=9+Math.floor(i/2); const mm=i%2?30:0; return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`; }).filter(t=>!['12:30','13:00','15:30'].includes(t)); slots.forEach(time=>{ const b=document.createElement('button'); b.className='btn'; b.textContent=time; b.addEventListener('click',()=>selectSlot(iso,time,doctorId,officeId)); slotsContainer.appendChild(b); }); }
+    function selectSlot(dateISO,time,doctorId,officeId){ slotConfirm.classList.remove('hidden'); confirmTime.textContent=time; document.getElementById('btnConfirm').onclick=()=>{ toast('Turno confirmado'); location.hash='#calendar'; } }
+
+    // Doctor: Disponibilidad día completo
+    let DOCTOR_AVAIL=new Set(); let availCurrent=new Date();
+    function setAvailMonthLabel(){ const s=availCurrent.toLocaleString('es-AR',{month:'long',year:'numeric'}); document.getElementById('availMonth').textContent=s.charAt(0).toUpperCase()+s.slice(1); }
+    function renderAvailCalendar(){ setAvailMonthLabel(); const wrap=document.getElementById('availCalendar'); wrap.innerHTML=''; const first=new Date(availCurrent.getFullYear(), availCurrent.getMonth(), 1); const last=new Date(availCurrent.getFullYear(), availCurrent.getMonth()+1, 0); let offset=(first.getDay()+6)%7; for(let i=0;i<offset;i++){ const e=document.createElement('div'); e.className='p-3'; wrap.appendChild(e);} for(let d=1; d<=last.getDate(); d++){ const date=new Date(availCurrent.getFullYear(), availCurrent.getMonth(), d); const iso=date.toISOString().slice(0,10); const cell=document.createElement('button'); cell.className='day-cell text-sm'; const selected=DOCTOR_AVAIL.has(iso); if(selected) cell.classList.add('is-selected'); cell.innerHTML=`<span class='font-semibold'>${d}</span>${selected?`<span class='badge'>Disponible</span>`:''}`; cell.addEventListener('click',()=>{ if(DOCTOR_AVAIL.has(iso)) DOCTOR_AVAIL.delete(iso); else DOCTOR_AVAIL.add(iso); renderAvailCalendar(); }); wrap.appendChild(cell);} }
+    let selectedOfficeId=null; async function loadDoctorPanel(){ await fetchOffices(); const officeSel=document.getElementById('availOffice'); officeSel.innerHTML=OFFICES.map(o=>`<option value="${o.id}">${o.name}</option>`).join(''); selectedOfficeId=OFFICES[0]?.id||null; officeSel.onchange=e=>{ selectedOfficeId=Number(e.target.value) }; DOCTOR_AVAIL=new Set([ new Date().toISOString().slice(0,10) ]); renderAvailCalendar(); }
+    document.getElementById('availPrev').addEventListener('click',()=>{ availCurrent=new Date(availCurrent.getFullYear(), availCurrent.getMonth()-1, 1); renderAvailCalendar(); });
+    document.getElementById('availNext').addEventListener('click',()=>{ availCurrent=new Date(availCurrent.getFullYear(), availCurrent.getMonth()+1, 1); renderAvailCalendar(); });
+
+    // Doctor: Ficha clínica
+    document.getElementById('btnRecLoad').onclick=()=>{ const dni=document.getElementById('recDni').value; const data={ basics:{Nombre:'Juan',Apellido:'Pérez',DNI:dni}, allergies:['Penicilina'], meds:['Ibuprofeno 400mg'], visits:[{date:'2025-09-10',prof:'Dr. Pérez',reason:'Control',note:'Sin novedades'}] }; renderRecord(data); };
+    document.getElementById('btnRecSave').onclick=()=>{ document.getElementById('recSaveMsg').textContent='Guardado'; toast('Entrada agregada a la ficha'); };
+    function renderRecord(data){ const basics=document.getElementById('recBasics'); basics.innerHTML=Object.entries(data.basics||{}).map(([k,v])=>`<li><b>${k}:</b> ${v}</li>`).join(''); document.getElementById('recAllergies').innerHTML=(data.allergies||[]).map(a=>`<li>${a}</li>`).join('')||'<li>Sin alergias registradas</li>'; document.getElementById('recMeds').innerHTML=(data.meds||[]).map(m=>`<li>${m}</li>`).join('')||'<li>Sin medicación activa</li>'; document.getElementById('recHistory').innerHTML=(data.visits||[]).map(v=>`<tr><td class='p-2'>${v.date}</td><td class='p-2'>${v.prof}</td><td class='p-2'>${v.reason} — ${v.note||''}</td></tr>`).join(''); }
+
+    // Admin
+    let admCurrent=new Date();
+    function renderAdminCalendar(){ const wrap=document.getElementById('admCalendar'); wrap.innerHTML=''; const label=document.getElementById('admMonth'); const s=admCurrent.toLocaleString('es-AR',{month:'long',year:'numeric'}); label.textContent=s.charAt(0).toUpperCase()+s.slice(1); const first=new Date(admCurrent.getFullYear(), admCurrent.getMonth(), 1); const last=new Date(admCurrent.getFullYear(), admCurrent.getMonth()+1, 0); let offset=(first.getDay()+6)%7; for(let i=0;i<offset;i++){ const e=document.createElement('div'); e.className='p-3'; wrap.appendChild(e);} for(let d=1; d<=last.getDate(); d++){ const doc=DOCTORS[(d % (DOCTORS.length||1))] || {name:''}; const cell=document.createElement('div'); cell.className='day-cell text-sm'; cell.innerHTML=`<span class='font-semibold'>${d}</span>${doc.name?`<span class='badge mt-1'>${doc.name}</span>`:''}`; wrap.appendChild(cell);} }
+    function renderUsersTable(){ const body=document.getElementById('usersBody'); body.innerHTML=(DEMO_USERS||[]).map(u=>`<tr><td class='p-2'>${u.name}</td><td class='p-2'>${u.email}</td><td class='p-2'>${u.dni}</td><td class='p-2'>${u.role}</td></tr>`).join(''); }
+    function renderDoctorsTable(){ const body=document.getElementById('docsBody'); if(!body) return; body.innerHTML=DOCTORS.map(d=>`<tr><td class='p-2'>${d.name}</td><td class='p-2'>${d.spec}</td><td class='p-2'><button class='btn' onclick='deleteDoctor(${d.id})'>Dar de baja</button></td></tr>`).join(''); }
+    function renderOfficesTable(){ const body=document.getElementById('officesBody'); if(!body) return; body.innerHTML=OFFICES.map(o=>`<tr><td class='p-2'>${o.name}</td><td class='p-2'><button class='btn' onclick='deleteOffice(${o.id})'>Eliminar</button></td></tr>`).join(''); }
+    async function loadAdminPanel(){ await fetchDoctors(); await fetchOffices(); await fetchUsers(); renderAdminCalendar(); renderUsersTable(); renderDoctorsTable(); renderOfficesTable(); }
+    document.getElementById('admPrev').addEventListener('click',()=>{ admCurrent=new Date(admCurrent.getFullYear(), admCurrent.getMonth()-1, 1); renderAdminCalendar(); });
+    document.getElementById('admNext').addEventListener('click',()=>{ admCurrent=new Date(admCurrent.getFullYear(), admCurrent.getMonth()+1, 1); renderAdminCalendar(); });
+    document.getElementById('btnDocAdd').onclick=()=>{ const name=document.getElementById('docName').value; const spec=document.getElementById('docSpec').value; if(!name||!spec){ toast('Completá nombre y especialidad','error'); return; } DOCTORS.push({id:Date.now(), name, spec}); renderDoctorsTable(); toast('Doctor dado de alta'); };
+    function deleteDoctor(id){ DOCTORS = DOCTORS.filter(d=>d.id!==id); renderDoctorsTable(); toast('Doctor dado de baja'); }
+    document.getElementById('btnOfficeAdd').onclick=()=>{ const name=document.getElementById('officeName').value; if(!name){ toast('Ingresá un nombre','error'); return; } OFFICES.push({id:Date.now(), name}); renderOfficesTable(); toast('Consultorio creado'); };
+    function deleteOffice(id){ OFFICES = OFFICES.filter(o=>o.id!==id); renderOfficesTable(); toast('Consultorio eliminado'); }
+
+    // Init
+    function init(){ showView(location.hash); fetchDoctors().then(()=>{ renderCalendar(new Date()); }); fetchOffices(); if(localStorage.getItem('authToken')){ const role=(JSON.parse(localStorage.getItem('user')||'{}').role)||'user'; if(role==='doctor') loadDoctorPanel(); if(role==='admin') loadAdminPanel(); } }
+    init();
+  </script>
+</body>
+</html>

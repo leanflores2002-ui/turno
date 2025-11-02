@@ -1,0 +1,120 @@
+:root {
+  --brand-950: #08262c;
+  --brand-900: #0b3d4a;
+  --brand-800: #0d5563;
+  --brand-700: #0e7490;
+  --brand-600: #0891b2;
+  --brand-200: #dff7fb;
+  --brand-100: #eefcff;
+  --gray-900: #111827;
+  --gray-700: #374151;
+  --gray-600: #4b5563;
+  --gray-500: #6b7280;
+  --gray-300: #d1d5db;
+  --gray-200: #e5e7eb;
+  --gray-100: #f3f4f6;
+  --body-gradient: radial-gradient(60% 50% at 20% 0%, var(--brand-100) 0%, transparent 70%),
+    radial-gradient(50% 40% at 100% 0%, var(--brand-200) 0%, transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f7fdff 40%, #f1fbfe 100%);
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--gray-900);
+  background: var(--body-gradient);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--brand-700);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--brand-800);
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+.container {
+  width: min(100%, 80rem);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid var(--gray-200);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(2, 6, 23, 0.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.05rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  line-height: 1;
+  min-height: 42px;
+  border: 1px solid var(--brand-700);
+  background: #ffffff;
+  color: var(--brand-700);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn:hover {
+  background: #ecfeff;
+}
+
+.btn-primary {
+  background: var(--brand-700);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--brand-800);
+}
+
+.input {
+  width: 100%;
+  background: #ffffff;
+  color: var(--gray-900);
+  border: 2px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  outline: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15);
+}

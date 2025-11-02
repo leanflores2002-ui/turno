@@ -1,0 +1,65 @@
+<section class="patient-booking">
+  <header class="patient-booking__header">
+    <div>
+      <h3>Reservar nuevo turno</h3>
+      <p>Elegí un profesional y seleccioná uno de los horarios disponibles.</p>
+    </div>
+  </header>
+
+  @if (error()) {
+    <p class="patient-booking__error">{{ error() }}</p>
+  }
+
+  @if (message()) {
+    <p class="patient-booking__message">{{ message() }}</p>
+  }
+
+  <form class="patient-booking__form" [formGroup]="selectionForm">
+    <label class="field">
+      <span>Profesional</span>
+      <select class="input" formControlName="doctorId" [disabled]="isLoadingDoctors() || isBooking()">
+        @if (isLoadingDoctors()) {
+          <option>Cargando profesionales…</option>
+        } @else {
+          @for (doctor of doctors(); track doctor.id) {
+            <option [value]="doctor.id">
+              {{ doctor.full_name || doctor.email }}
+            </option>
+          }
+        }
+      </select>
+    </label>
+  </form>
+
+  @if (isLoadingAvailability()) {
+    <p class="patient-booking__placeholder">Buscando turnos disponibles…</p>
+  } @else if (!availability().length) {
+    <p class="patient-booking__placeholder">
+      Este profesional no tiene turnos disponibles por ahora. Probá con otro horario o profesional.
+    </p>
+  } @else {
+    <ul class="patient-booking__slots">
+      @for (slot of availability(); track slot.id) {
+        <li class="patient-booking__slot">
+          <div class="patient-booking__slot-info">
+            <span class="patient-booking__slot-date">
+              {{ slot.startAt | date: 'EEEE d MMMM':'UTC' }}
+            </span>
+            <span class="patient-booking__slot-time">
+              {{ slot.startAt | date: 'HH:mm':'UTC' }} -
+              {{ slot.endAt | date: 'HH:mm':'UTC' }}
+            </span>
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="bookSlot(slot)"
+            [disabled]="isBooking()"
+          >
+            {{ isBooking() ? 'Reservando…' : 'Reservar turno' }}
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</section>

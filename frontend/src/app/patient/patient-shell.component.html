@@ -1,0 +1,44 @@
+<section class="patient-shell card">
+  <header class="patient-shell__header">
+    <div>
+      <h2>Tu espacio de paciente</h2>
+      <p>Actualizá tus datos personales y consultá tus próximos turnos.</p>
+    </div>
+    <button class="btn btn-secondary" type="button" (click)="refresh()">
+      Refrescar datos
+    </button>
+  </header>
+
+  @if (errorMessage()) {
+    <p class="patient-shell__error">{{ errorMessage() }}</p>
+  }
+
+  <div class="patient-shell__grid">
+    <app-patient-profile
+      [patient]="profile()"
+      [loading]="isLoadingProfile()"
+      [saving]="isSavingProfile()"
+      (save)="onProfileSave($event)"
+    />
+
+    <app-patient-appointments
+      [appointments]="sortedAppointments()"
+      [loading]="isLoadingAppointments()"
+      [actionId]="appointmentActionId()"
+      (cancel)="onCancelAppointment($event)"
+      (confirm)="onConfirmAppointment($event)"
+    />
+
+    <app-patient-booking
+      [patientId]="currentUserId"
+      (booked)="onAppointmentBooked($event)"
+    />
+
+    <app-patient-medical-records
+      [records]="medicalRecords()"
+      [loading]="isLoadingRecords()"
+      [error]="recordsError()"
+      (refresh)="onRefreshRecords()"
+    />
+  </div>
+</section>

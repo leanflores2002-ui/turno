@@ -1,0 +1,173 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam ArrowColor #555
+skinparam ClassFontSize 12
+
+' =======================
+' Domain (core entities)
+' =======================
+package "Domain" {
+  class User {
+    +id: UUID
+    +email: string
+    +passwordHash: string
+    +firstName: string
+    +lastName: string
+  }
+
+  class Patient {
+    +userId: UUID
+    +address: string
+    +phone: string
+    +socialSecurityId: string
+  }
+
+  class Doctor {
+    +userId: UUID
+    +licenseNumber: string
+  }
+
+  class Room {
+    +id: UUID
+    +number: string
+  }
+
+  class Availability {
+    +id: UUID
+    +doctorId: UUID
+    +startAt: datetime
+    +endAt: datetime
+  }
+
+  class MedicalRecord {
+    +id: UUID
+    +patientId: UUID
+    +doctorId: UUID
+    +diagnosis: string
+    +treatment: string
+    +notes: string
+  }
+
+  ' ----- Appointment with State pattern -----
+  class Appointment {
+    +id: UUID
+    +doctorId: UUID
+    +patientId: UUID
+    +roomId: UUID?
+    +startAt: datetime
+    +endAt: datetime
+    -state: AppointmentState
+    --
+    +confirm()
+    +cancel()
+    +attend()
+    +setState(s: AppointmentState)
+    +getState(): AppointmentState
+  }
+
+  interface AppointmentState {
+    +confirm(a: Appointment)
+    +cancel(a: Appointment)
+    +attend(a: Appointment)
+    +name(): string
+  }
+
+  class PendingState
+  class ConfirmedState
+  class CanceledState
+  class AttendedState
+
+  Appointment o- "1" AppointmentState : current
+  AppointmentState <|.. PendingState
+  AppointmentState <|.. ConfirmedState
+  AppointmentState <|.. CanceledState
+  AppointmentState <|.. AttendedState
+}
+
+' Relationships among core entities
+User "1" -- "0..1" Patient
+User "1" -- "0..1" Doctor
+Patient "1" -- "0..*" Appointment
+Doctor  "1" -- "0..*" Appointment
+Room    "1" -- "0..*" Appointment
+Doctor  "1" -- "0..*" Availability
+Patient "1" -- "0..*" MedicalRecord
+Doctor  "1" -- "0..*" MedicalRecord
+
+' =======================
+' Messaging (Pub/Sub)
+' =======================
+package "Messaging" {
+  abstract class DomainEvent {
+    +occurredAt: datetime
+  }
+  class AppointmentBooked extends DomainEvent
+  class AppointmentConfirmed extends DomainEvent
+  class AppointmentCanceled extends DomainEvent
+
+  interface EventHandler {
+    +handle(e: DomainEvent)
+  }
+
+  interface EventBus {
+    +publish(e: DomainEvent)
+    +subscribe(eventType: string, h: EventHandler)
+  }
+
+  class InMemoryEventBus
+  EventBus <|.. InMemoryEventBus
+
+  class NotificationSubscriber
+  class AuditLogSubscriber
+
+  EventHandler <|.. NotificationSubscriber
+  EventHandler <|.. AuditLogSubscriber
+}
+
+' =======================
+' Application layer
+' =======================
+package "Application" {
+  class AppointmentRepository {
+    +save(a: Appointment)
+    +byId(id: UUID): Appointment
+    +findOverlapping(doctorId: UUID, startAt, endAt): List<Appointment>
+  }
+
+  class AppointmentManager {
+    -repo: AppointmentRepository
+    -bus: EventBus
+    --
+    +book(patientId: UUID, doctorId: UUID, roomId: UUID?, startAt, endAt): Appointment
+    +confirm(appointmentId: UUID)
+    +cancel(appointmentId: UUID)
+  }
+}
+
+' Wiring (who talks to whom)
+AppointmentManager --> AppointmentRepository : uses
+AppointmentManager --> EventBus : publishes
+AppointmentManager ..> AppointmentBooked : emits
+AppointmentManager ..> AppointmentConfirmed : emits
+AppointmentManager ..> AppointmentCanceled : emits
+
+InMemoryEventBus --> EventHandler : dispatches
+NotificationSubscriber ..> AppointmentBooked
+NotificationSubscriber ..> AppointmentConfirmed
+NotificationSubscriber ..> AppointmentCanceled
+AuditLogSubscriber ..> DomainEvent
+
+note right of Appointment
+  State pattern keeps business rules
+  for transitions in dedicated classes:
+  Pending -> Confirmed -> Attended|Canceled
+end note
+
+note right of AppointmentManager
+  Publishes domain events on critical
+  actions. Subscribers (notifications,
+  audit) react without coupling.
+end note
+
+@enduml

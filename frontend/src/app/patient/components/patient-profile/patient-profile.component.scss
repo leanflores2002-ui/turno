@@ -1,0 +1,36 @@
+.patient-profile {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(7, 56, 84, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -20px rgba(7, 56, 84, 0.45);
+}
+
+.patient-profile__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.patient-profile__header h3 {
+  margin: 0;
+  color: var(--brand-900);
+}
+
+.patient-profile__saving {
+  font-size: 0.875rem;
+  color: var(--brand-700);
+}
+
+.patient-profile__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.patient-profile__empty {
+  margin: 0;
+  color: var(--gray-600);
+}

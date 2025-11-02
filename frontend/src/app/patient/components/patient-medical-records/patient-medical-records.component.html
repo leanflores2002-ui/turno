@@ -1,0 +1,46 @@
+<section class="patient-records">
+  <header class="patient-records__header">
+    <div>
+      <h3>Historial médico</h3>
+      <p>Diagnósticos, tratamientos y notas registrados por tu equipo.</p>
+    </div>
+    <button type="button" class="btn" (click)="refresh.emit()" [disabled]="loading">
+      {{ loading ? 'Actualizando…' : 'Actualizar' }}
+    </button>
+  </header>
+
+  @if (error) {
+    <p class="patient-records__error">{{ error }}</p>
+  }
+
+  @if (loading && !records.length) {
+    <p class="patient-records__placeholder">Cargando tu historial…</p>
+  } @else if (!records.length) {
+    <p class="patient-records__placeholder">Aún no registramos antecedentes médicos.</p>
+  } @else {
+    <ul class="patient-records__list">
+      @for (record of records; track trackRecordById) {
+        <li class="patient-records__item">
+          <header>
+            <h4>{{ record.diagnosis || 'Consulta sin diagnóstico' }}</h4>
+            <span>
+              Actualizado el
+              {{ record.updated_at | date: 'd/M/yy HH:mm':'UTC' }}
+            </span>
+          </header>
+
+          <dl>
+            <div>
+              <dt>Tratamiento</dt>
+              <dd>{{ record.treatment || 'No indicado' }}</dd>
+            </div>
+            <div>
+              <dt>Notas</dt>
+              <dd>{{ record.notes || 'Sin observaciones adicionales.' }}</dd>
+            </div>
+          </dl>
+        </li>
+      }
+    </ul>
+  }
+</section>

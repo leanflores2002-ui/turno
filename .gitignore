@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+
+# Backend specific
+backend/.venv/
+
+backend/__pycache__/
+backend/*.py[oc]
+backend/.env
+backend/.env.local
+.specify/
+.claude/
+backend/.env
+CLAUDE.MD
+out/
+CLAUDE.md

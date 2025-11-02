@@ -1,0 +1,95 @@
+<section class="doctor-availability card">
+  <header class="doctor-availability__header">
+    <div>
+      <h3>Disponibilidad del profesional</h3>
+      <p>
+        {{ doctorName ? ('Definí tu agenda, ' + doctorName + '.') : 'Definí los turnos disponibles para tus pacientes.' }}
+      </p>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="refresh.emit()" [disabled]="loading">
+      {{ loading ? 'Actualizando…' : 'Actualizar' }}
+    </button>
+  </header>
+
+  <form class="doctor-availability__form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="doctor-availability__form-grid">
+      <label>
+        <span>Inicio</span>
+        <input class="input" type="datetime-local" formControlName="start" />
+      </label>
+      <label>
+        <span>Fin</span>
+        <input class="input" type="datetime-local" formControlName="end" />
+      </label>
+      <label>
+        <span>Turnos</span>
+        <input class="input" type="number" min="1" max="4" formControlName="slots" />
+      </label>
+    </div>
+
+    @if (formError()) {
+      <p class="doctor-availability__form-error">{{ formError() }}</p>
+    }
+
+    <div class="doctor-availability__actions">
+      <button type="submit" class="btn btn-primary" [disabled]="createPending">
+        {{ createPending ? 'Guardando…' : 'Agregar disponibilidad' }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="resetForm()">
+        Limpiar
+      </button>
+    </div>
+  </form>
+
+  @if (message) {
+    <p class="doctor-availability__message success">{{ message }}</p>
+  }
+
+  @if (error) {
+    <p class="doctor-availability__message error">{{ error }}</p>
+  }
+
+  @if (loading && !hasAvailability()) {
+    <p class="doctor-availability__placeholder">Cargando disponibilidad…</p>
+  } @else if (!hasAvailability()) {
+    <p class="doctor-availability__placeholder">
+      Todavía no cargaste turnos disponibles. Usá el formulario para sumar tus horarios.
+    </p>
+  } @else {
+    <ul class="doctor-availability__list">
+      @for (slot of availability; track trackByAvailability) {
+        <li class="doctor-availability__item">
+          <div>
+            <h4>
+              {{ slot.startAt | date: 'EEEE d MMMM' : 'UTC' }}
+            </h4>
+            <p>
+              {{ slot.startAt | date: 'HH:mm' : 'UTC' }} -
+              {{ slot.endAt | date: 'HH:mm' : 'UTC' }} hs ·
+              {{ slot.slots }} turno{{ slot.slots > 1 ? 's' : '' }}
+            </p>
+          </div>
+
+          <div class="doctor-availability__item-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="adjustSlots(slot, -1)"
+              [disabled]="mutationId === slot.id || slot.slots <= 1"
+            >
+              -
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="adjustSlots(slot, 1)"
+              [disabled]="mutationId === slot.id || slot.slots >= 4"
+            >
+              +
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

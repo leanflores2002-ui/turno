@@ -1,0 +1,54 @@
+<section class="auth-card card">
+  <header class="auth-card__header">
+    <h2>Crear cuenta de paciente</h2>
+    <p>Guardá tus datos para reservar turnos en segundos.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="auth-card__form">
+    <label class="field">
+      <span>Nombre completo (opcional)</span>
+      <input formControlName="full_name" class="input" placeholder="Nombre y apellido" />
+    </label>
+
+    <label class="field">
+      <span>Correo electrónico</span>
+      <input type="email" formControlName="email" class="input" placeholder="tu@correo.com" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field__error">Ingresá un email válido.</small>
+      }
+    </label>
+
+    <div class="form-grid">
+      <label class="field">
+        <span>Contraseña</span>
+        <input type="password" formControlName="password" class="input" placeholder="••••••••" />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <small class="field__error">Usá al menos 6 caracteres.</small>
+        }
+      </label>
+
+      <label class="field">
+        <span>Repetir contraseña</span>
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          class="input"
+          placeholder="Repetí tu contraseña"
+        />
+      </label>
+    </div>
+
+    @if (errorMessage) {
+      <p class="auth-card__error">{{ errorMessage }}</p>
+    }
+
+    <button class="btn btn-primary auth-card__submit" type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Creando cuenta...' : 'Crear cuenta' }}
+    </button>
+  </form>
+
+  <footer class="auth-card__footer">
+    <span>¿Ya tenés cuenta?</span>
+    <a routerLink="/auth/login">Ingresar</a>
+  </footer>
+</section>

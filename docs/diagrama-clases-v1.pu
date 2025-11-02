@@ -1,0 +1,106 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class User {
+  +id: UUID
+  +email: string
+  +password_hash: string
+  +firstName: string
+  +lastName: string
+  --
+  +iniciarSesion()
+  +modificarDatos()
+}
+
+class Patient {
+  +id: UUID
+  +direccion: string
+  +telefono: string
+  +seguridadSocialId: string
+  --
+  +registrarse()
+  +solicitarTurno()
+  +cancelarTurno()
+  +consultarTurno()
+  +consultarFichaClinica()
+}
+
+class Doctor {
+  +id: UUID
+  +matricula: string
+  --
+  +ingresarDisponibilidad()
+  +modificarDisponibilidad()
+  +modificarFichaClinica()
+  +consultarFichaClinica()
+}
+
+class Admin {
+  +id: UUID
+  --
+  +altaDoctor()
+  +bajaDoctor()
+  +crearConsultorio()
+  +eliminarConsultorio()
+}
+
+class Consultorio {
+  +id: UUID
+  +numero: string
+  --
+  +crear()
+  +eliminar()
+}
+
+class Disponibilidad {
+  +id: UUID
+  +fecha: date
+  +horaInicial: time
+  +horaFin: time
+  --
+  +ingresar()
+  +modificar()
+}
+
+class Turno {
+  +id: UUID
+  +fecha: date
+  +hora: time
+  +estado: TurnoEstado
+  --
+  +nuevo()
+  +modificar()
+  +cancelar()
+  +consultar()
+}
+
+class FichaClinica {
+  +id: UUID
+  +diagnostico: string
+  +tratamiento: string
+  +observaciones: string
+  --
+  +modificar()
+  +consultar()
+}
+
+enum TurnoEstado {
+  pendiente
+  confirmado
+  cancelado
+  atendido
+}
+
+' Relaciones (modelo recomendado)
+User "1" -- "1" Patient : role
+User "1" -- "1" Doctor : role
+User "1" -- "1" Admin  : role
+
+Doctor "1" -- "0..*" Disponibilidad
+Doctor "1" -- "0..*" Turno
+Patient "1" -- "0..*" Turno
+Doctor "1" -- "0..*" FichaClinica
+Patient "1" -- "0..*" FichaClinica
+Consultorio "1" -- "0..*" Turno : opcional
+
+@enduml

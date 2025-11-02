@@ -1,0 +1,51 @@
+<section class="patient-profile">
+  <header class="patient-profile__header">
+    <h3>Tus datos personales</h3>
+    @if (saving) {
+      <span class="patient-profile__saving">Guardando…</span>
+    }
+  </header>
+
+  @if (loading && !patient) {
+    <p class="patient-profile__empty">Cargando información…</p>
+  } @else {
+    <form class="patient-profile__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <label class="field">
+        <span>Nombre completo</span>
+        <input class="input" type="text" formControlName="full_name" placeholder="Tu nombre" />
+      </label>
+
+      <label class="field">
+        <span>Email</span>
+        <input class="input" type="email" formControlName="email" placeholder="tu@correo.com" />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <small class="field__error">Ingresá un email válido.</small>
+        }
+      </label>
+
+      <label class="field">
+        <span>Número de historia clínica</span>
+        <input
+          class="input"
+          type="text"
+          formControlName="medical_record_number"
+          placeholder="Ej. HC-1234"
+        />
+      </label>
+
+      <label class="field">
+        <span>Contacto de emergencia</span>
+        <input
+          class="input"
+          type="text"
+          formControlName="emergency_contact"
+          placeholder="Nombre y teléfono"
+        />
+      </label>
+
+      <button class="btn btn-primary" type="submit" [disabled]="saving">
+        {{ saving ? 'Guardando cambios…' : 'Guardar cambios' }}
+      </button>
+    </form>
+  }
+</section>

@@ -1,0 +1,89 @@
+.patient-appointments {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(7, 56, 84, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -20px rgba(7, 56, 84, 0.2);
+}
+
+.patient-appointments__header h3 {
+  margin: 0;
+  color: var(--brand-900);
+}
+
+.patient-appointments__header p {
+  margin: 0.25rem 0 0;
+  color: var(--gray-600);
+}
+
+.patient-appointments__placeholder {
+  margin: 0;
+  color: var(--gray-600);
+}
+
+.patient-appointments__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.patient-appointments__item {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 118, 110, 0.12);
+  background: rgba(222, 247, 250, 0.55);
+}
+
+.patient-appointments__summary h4 {
+  margin: 0;
+  color: var(--brand-900);
+}
+
+.patient-appointments__summary p {
+  margin: 0.25rem 0 0;
+  color: var(--gray-600);
+}
+
+.patient-appointments__status {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  justify-self: start;
+  background: rgba(14, 116, 144, 0.1);
+  color: var(--brand-800);
+}
+
+.patient-appointments__status.confirmed {
+  background: rgba(16, 185, 129, 0.2);
+  color: #047857;
+}
+
+.patient-appointments__status.canceled {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+}
+
+.patient-appointments__status.completed {
+  background: rgba(59, 130, 246, 0.15);
+  color: #1d4ed8;
+}
+
+.patient-appointments__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn.btn-secondary {
+  border-color: rgba(15, 118, 110, 0.4);
+  color: var(--brand-800);
+}

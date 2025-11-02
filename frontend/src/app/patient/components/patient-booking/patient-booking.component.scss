@@ -1,0 +1,80 @@
+.patient-booking {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(7, 56, 84, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px -18px rgba(7, 56, 84, 0.25);
+}
+
+.patient-booking__header h3 {
+  margin: 0;
+  color: var(--brand-900);
+}
+
+.patient-booking__header p {
+  margin: 0.25rem 0 0;
+  color: var(--gray-600);
+}
+
+.patient-booking__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.patient-booking__placeholder {
+  margin: 0;
+  color: var(--gray-600);
+}
+
+.patient-booking__error,
+.patient-booking__message {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+}
+
+.patient-booking__error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #991b1b;
+}
+
+.patient-booking__message {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.patient-booking__slots {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.patient-booking__slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(14, 116, 144, 0.18);
+  background: rgba(222, 247, 250, 0.45);
+}
+
+.patient-booking__slot-info {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.patient-booking__slot-date {
+  font-weight: 600;
+  color: var(--brand-900);
+  text-transform: capitalize;
+}
+
+.patient-booking__slot-time {
+  color: var(--gray-700);
+}
