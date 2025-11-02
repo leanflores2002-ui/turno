@@ -57,3 +57,35 @@ Se agregaron archivos para un despliegue simple en Railway usando Docker por ser
   - Cambia `DATABASE_URL` a `postgresql+psycopg://usuario:pass@host:5432/db`.
   - Añade `psycopg[binary]` a `backend/requirements.txt` y elimina `pymysql` si ya no usas MySQL.
 
+## Troubleshooting (Railpack/Nixpacks)
+
+Error: `Railpack could not determine how to build the app` o `Script start.sh not found`.
+
+Motivo: Railway está intentando construir desde la raíz del repo con Railpack (Nixpacks), no encuentra un proyecto válido ni un comando de arranque.
+
+Soluciones:
+- Opción A (recomendada): usar Dockerfile por servicio y definir la carpeta raíz del servicio.
+  - Backend → Root directory: `backend/`, Builder: Dockerfile, Dockerfile path: `backend/Dockerfile`.
+  - Frontend → Root directory: `frontend/`, Builder: Dockerfile, Dockerfile path: `frontend/Dockerfile`.
+- Opción B (sin Dockerfile, usando Railpack): define el root correcto y provee el comando de inicio con `nixpacks.toml`.
+  - En `backend/nixpacks.toml`:
+    ```toml
+    [phases.install]
+    cmds = ["pip install -r requirements.txt"]
+
+    [start]
+    cmd = "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"
+    ```
+  - En `frontend/nixpacks.toml`:
+    ```toml
+    [phases.install]
+    cmds = ["npm ci"]
+
+    [phases.build]
+    cmds = ["npm run build"]
+
+    [start]
+    cmd = "npx http-server dist/turnoplus/browser -p ${PORT}"
+    ```
+  - Y configurar cada servicio con Root directory `backend/` o `frontend/` respectivamente.
+
