@@ -89,3 +89,14 @@ Soluciones:
     ```
   - Y configurar cada servicio con Root directory `backend/` o `frontend/` respectivamente.
 
+## Troubleshooting 502 (no responde)
+Un 502 en Railway suele ser:
+- El proceso no escucha en `$PORT`.
+- El contenedor se cae al iniciar (p.ej. DB inaccesible) y no hay proceso escuchando.
+
+Cómo resolver:
+- Frontend (Nginx): ya se añadió una plantilla para que Nginx escuche en `$PORT` (script `frontend/docker-entrypoint.d/00-nginx-conf.sh`). Re‑deploy el frontend.
+- Backend: verifica logs. Si falla `alembic upgrade head`, revisa `DATABASE_URL` (host, puerto, usuario, DB existente). Crea la base si no existe o usa una existente y vuelve a desplegar.
+- Verifica endpoints:
+  - Backend: `https://TU_BACKEND.up.railway.app/healthz` debe devolver `{ "status": "ok" }`.
+  - Frontend: abrir la URL del servicio debe servir `index.html`.
