@@ -18,12 +18,22 @@ export interface AppointmentCreateRequest {
   notes?: string | null;
 }
 
+export interface AppointmentBlockDto {
+  id: number;
+  availabilityId: number;
+  blockNumber: number;
+  startAt: string;
+  endAt: string;
+  isBooked: boolean;
+}
+
 export interface AvailabilityDto {
   id: number;
   doctor_id: number;
   startAt: string;
   endAt: string;
   slots: number;
+  blocks: AppointmentBlockDto[];
 }
 
 export interface AvailabilityCreateRequest {
@@ -37,4 +47,19 @@ export interface AvailabilityUpdateRequest {
   start_at?: string;
   end_at?: string;
   slots?: number;
+}
+
+export interface SystemSettingDto {
+  id: number;
+  settingKey: string;
+  settingValue: string;
+  description?: string;
+}
+
+export interface SystemSettingUpdateRequest {
+  settingValue: string;
+}
+
+export interface BlockDurationConfig {
+  blockDurationMinutes: number;
 }

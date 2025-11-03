@@ -92,6 +92,7 @@ class UsersService:
             is_active=model.is_active,
             is_superuser=model.is_superuser,
             full_name=model.full_name,
+            role=model.role.value,
         )
 
 

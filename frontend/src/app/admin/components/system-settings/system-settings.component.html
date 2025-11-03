@@ -1,0 +1,93 @@
+<section class="system-settings card">
+  <header class="system-settings__header">
+    <div>
+      <h2>Configuración del Sistema</h2>
+      <p>Gestioná la configuración global del sistema de turnos</p>
+    </div>
+  </header>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <p>Cargando configuración...</p>
+    </div>
+  } @else {
+    <div class="settings-section">
+      <h3>Duración de Bloques de Turnos</h3>
+      <p class="section-description">
+        Configurá la duración mínima de cada bloque de turnos. Los doctores solo podrán crear disponibilidad 
+        en múltiplos de esta duración.
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="settings-form">
+        <div class="form-group">
+          <label for="blockDuration">
+            <span>Duración del bloque (minutos)</span>
+            <span class="current-value" *ngIf="currentDuration()">
+              Valor actual: {{ currentDuration() }} minutos
+            </span>
+          </label>
+          <input
+            id="blockDuration"
+            type="number"
+            formControlName="blockDuration"
+            class="input"
+            min="15"
+            max="240"
+            step="15"
+            placeholder="60"
+          />
+          <div class="form-help">
+            <p>Valor recomendado: 60 minutos (1 hora)</p>
+            <p>Rango permitido: 15 - 240 minutos</p>
+          </div>
+        </div>
+
+        @if (form.get('blockDuration')?.invalid && form.get('blockDuration')?.touched) {
+          <div class="form-error">
+            <p>La duración debe estar entre 15 y 240 minutos</p>
+          </div>
+        }
+
+        @if (error()) {
+          <div class="message error">
+            {{ error() }}
+          </div>
+        }
+
+        @if (message()) {
+          <div class="message success">
+            {{ message() }}
+          </div>
+        }
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid || saving()"
+          >
+            {{ saving() ? 'Guardando...' : 'Guardar Configuración' }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onReset()"
+            [disabled]="saving()"
+          >
+            Restaurar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="settings-info">
+      <h4>Información Importante</h4>
+      <ul>
+        <li>Los cambios solo afectan a nuevas disponibilidades creadas por los doctores</li>
+        <li>Las disponibilidades existentes mantendrán su configuración actual</li>
+        <li>Los doctores deberán crear nueva disponibilidad para usar la nueva duración</li>
+        <li>Los turnos existentes no se verán afectados</li>
+      </ul>
+    </div>
+  }
+</section>

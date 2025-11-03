@@ -57,7 +57,7 @@ export class AuthService {
             token_type: 'bearer',
             user: patient
           },
-          'patient'
+          'user' // Frontend uses 'user' for patients
         )
       ),
       tap((user) => this.persistSession(user))
@@ -65,9 +65,11 @@ export class AuthService {
   }
 
   logout(): void {
+    console.log('AuthService logout called, user before:', this._user());
     localStorage.removeItem(this.storageTokenKey);
     localStorage.removeItem(this.storageUserKey);
     this._user.set(null);
+    console.log('AuthService logout called, user after:', this._user());
   }
 
   private persistSession(user: AuthenticatedUser): void {
@@ -113,11 +115,18 @@ export class AuthService {
     role: UserRole
   ): AuthenticatedUser {
     const { user, access_token: token, token_type: tokenType } = response;
+    
+    // Map backend role to frontend role
+    let normalizedRole = role;
+    if (role === 'patient' || (user as any).role === 'patient') {
+      normalizedRole = 'user'; // Frontend uses 'user' for patients
+    }
+    
     return {
       id: user.id,
       email: user.email,
       fullName: 'full_name' in user ? (user.full_name as string | undefined) : undefined,
-      role,
+      role: normalizedRole,
       token,
       tokenType
     };
@@ -129,6 +138,9 @@ export class AuthService {
         return '/doctors/login';
       case 'admin':
         return '/admins/login';
+      case 'patient':
+      case 'user': // Map 'user' to patient login
+        return '/users/login';
       default:
         return '/users/login';
     }

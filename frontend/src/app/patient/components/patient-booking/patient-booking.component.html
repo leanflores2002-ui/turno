@@ -19,8 +19,9 @@
       <span>Profesional</span>
       <select class="input" formControlName="doctorId" [disabled]="isLoadingDoctors() || isBooking()">
         @if (isLoadingDoctors()) {
-          <option>Cargando profesionales…</option>
+          <option value="">Cargando profesionales…</option>
         } @else {
+          <option value="">Seleccioná un profesional</option>
           @for (doctor of doctors(); track doctor.id) {
             <option [value]="doctor.id">
               {{ doctor.full_name || doctor.email }}
@@ -33,33 +34,38 @@
 
   @if (isLoadingAvailability()) {
     <p class="patient-booking__placeholder">Buscando turnos disponibles…</p>
-  } @else if (!availability().length) {
+  } @else if (isLoadingBlocks()) {
+    <p class="patient-booking__placeholder">Cargando bloques disponibles…</p>
+  } @else if (!availableBlocks().length) {
     <p class="patient-booking__placeholder">
-      Este profesional no tiene turnos disponibles por ahora. Probá con otro horario o profesional.
+      Este profesional no tiene bloques de turnos disponibles por ahora. Probá con otro horario o profesional.
     </p>
   } @else {
-    <ul class="patient-booking__slots">
-      @for (slot of availability(); track slot.id) {
-        <li class="patient-booking__slot">
-          <div class="patient-booking__slot-info">
-            <span class="patient-booking__slot-date">
-              {{ slot.startAt | date: 'EEEE d MMMM':'UTC' }}
-            </span>
-            <span class="patient-booking__slot-time">
-              {{ slot.startAt | date: 'HH:mm':'UTC' }} -
-              {{ slot.endAt | date: 'HH:mm':'UTC' }}
-            </span>
+    <div class="blocks-section">
+      <h4>Bloques de turnos disponibles</h4>
+      <div class="blocks-grid">
+        @for (block of availableBlocks(); track block.id) {
+          <div class="block-card">
+            <div class="block-info">
+              <h5>{{ block.startAt | date: 'EEEE d MMMM' }}</h5>
+              <p class="time-range">
+                {{ block.startAt | date: 'HH:mm' }} - {{ block.endAt | date: 'HH:mm' }} hs
+              </p>
+              <p class="block-status available">
+                Disponible
+              </p>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="bookBlock(block)"
+              [disabled]="isBooking()"
+            >
+              {{ isBooking() ? 'Reservando…' : 'Reservar' }}
+            </button>
           </div>
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="bookSlot(slot)"
-            [disabled]="isBooking()"
-          >
-            {{ isBooking() ? 'Reservando…' : 'Reservar turno' }}
-          </button>
-        </li>
-      }
-    </ul>
+        }
+      </div>
+    </div>
   }
 </section>

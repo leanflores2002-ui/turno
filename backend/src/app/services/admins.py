@@ -142,6 +142,6 @@ class AdminsService:
             is_active=user.is_active,
             is_superuser=user.is_superuser,
             full_name=user.full_name,
-            role=model.role or "support",
+            role=model.role or "support",  # Admin-specific role
             permissions=set(model.permissions or []),
         )

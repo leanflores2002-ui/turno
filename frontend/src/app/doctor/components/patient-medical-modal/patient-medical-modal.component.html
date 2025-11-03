@@ -1,0 +1,146 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Historial Médico - {{ patientName }}</h2>
+      <button type="button" class="modal-close" (click)="onClose()" aria-label="Cerrar">
+        ×
+      </button>
+    </div>
+
+    <div class="modal-tabs">
+      <button
+        type="button"
+        class="modal-tab"
+        [class.modal-tab--active]="activeTab() === 'history'"
+        (click)="onTabChange('history')"
+      >
+        Historial
+      </button>
+      <button
+        type="button"
+        class="modal-tab"
+        [class.modal-tab--active]="activeTab() === 'new'"
+        (click)="onTabChange('new')"
+      >
+        Nuevo Registro
+      </button>
+    </div>
+
+    <div class="modal-content">
+      @if (activeTab() === 'history') {
+        <div class="history-tab">
+          @if (loadingHistory()) {
+            <p class="history-loading">Cargando historial...</p>
+          } @else if (historyError()) {
+            <p class="history-error">{{ historyError() }}</p>
+          } @else if (!patientHistory().length) {
+            <p class="history-empty">
+              Este paciente no tiene registros médicos aún.
+            </p>
+          } @else {
+            <div class="history-list">
+              @for (record of patientHistory(); track trackByRecordId($index, record)) {
+                <div class="history-item">
+                  <div class="history-item__header">
+                    <h4 class="history-item__date">
+                      {{ record.created_at | date: 'dd/MM/yyyy HH:mm' }}
+                    </h4>
+                    <span class="history-item__doctor">
+                      Dr. #{{ record.doctor_id }}
+                    </span>
+                  </div>
+                  
+                  <div class="history-item__content">
+                    @if (record.diagnosis) {
+                      <div class="history-item__field">
+                        <strong>Diagnóstico:</strong>
+                        <p>{{ record.diagnosis }}</p>
+                      </div>
+                    }
+                    
+                    @if (record.treatment) {
+                      <div class="history-item__field">
+                        <strong>Tratamiento:</strong>
+                        <p>{{ record.treatment }}</p>
+                      </div>
+                    }
+                    
+                    @if (record.notes) {
+                      <div class="history-item__field">
+                        <strong>Notas:</strong>
+                        <p>{{ record.notes }}</p>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      @if (activeTab() === 'new') {
+        <div class="new-record-tab">
+          <form [formGroup]="newRecordForm" (ngSubmit)="onSubmitNewRecord()">
+            <div class="form-group">
+              <label>
+                <span>Diagnóstico</span>
+                <input
+                  type="text"
+                  class="input"
+                  formControlName="diagnosis"
+                  placeholder="Diagnóstico del paciente"
+                />
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <span>Tratamiento</span>
+                <textarea
+                  class="input textarea"
+                  rows="3"
+                  formControlName="treatment"
+                  placeholder="Tratamiento prescrito"
+                ></textarea>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <span>Notas</span>
+                <textarea
+                  class="input textarea"
+                  rows="4"
+                  formControlName="notes"
+                  placeholder="Notas adicionales sobre la consulta"
+                ></textarea>
+              </label>
+            </div>
+
+            @if (saveError()) {
+              <p class="form-error">{{ saveError() }}</p>
+            }
+
+            <div class="form-actions">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="savingRecord()"
+              >
+                {{ savingRecord() ? 'Guardando...' : 'Crear Registro' }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="onClose()"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+    </div>
+  </div>
+</div>

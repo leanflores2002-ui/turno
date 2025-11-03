@@ -41,22 +41,54 @@ class AppointmentUpdateStatus(BaseModel):
     status: AppointmentStatus
 
 
+class AppointmentBlock(BaseModel):
+    id: PositiveInt
+    availability_id: PositiveInt
+    block_number: PositiveInt
+    start_at: datetime = Field(serialization_alias="startAt")
+    end_at: datetime = Field(serialization_alias="endAt")
+    is_booked: bool = Field(serialization_alias="isBooked")
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "id": 1,
+                "availability_id": 1,
+                "block_number": 1,
+                "start_at": "2024-10-01T09:00:00",
+                "end_at": "2024-10-01T10:00:00",
+                "is_booked": False,
+            }
+        }
+    }
+
+
 class Availability(BaseModel):
     id: PositiveInt
     doctor_id: PositiveInt
     start_at: datetime = Field(serialization_alias="startAt")
     end_at: datetime = Field(serialization_alias="endAt")
-    slots: PositiveInt = 1
+    blocks: list[AppointmentBlock] = []
 
 
 class AvailabilityCreate(BaseModel):
     doctor_id: PositiveInt
     start_at: datetime = Field(serialization_alias="startAt")
     end_at: datetime = Field(serialization_alias="endAt")
-    slots: PositiveInt = Field(default=1, le=4)
 
 
 class AvailabilityUpdate(BaseModel):
     start_at: Optional[datetime] = Field(None, serialization_alias="startAt")
     end_at: Optional[datetime] = Field(None, serialization_alias="endAt")
-    slots: Optional[PositiveInt] = Field(None, le=4)
+
+
+__all__ = [
+    "AppointmentBase",
+    "AppointmentCreate", 
+    "Appointment",
+    "AppointmentUpdateStatus",
+    "AppointmentBlock",
+    "Availability",
+    "AvailabilityCreate",
+    "AvailabilityUpdate",
+]

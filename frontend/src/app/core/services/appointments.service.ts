@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from '../config/api.config';
 import {
+  AppointmentBlockDto,
   AppointmentCreateRequest,
   AppointmentDto,
   AvailabilityCreateRequest,
@@ -51,5 +52,18 @@ export class AppointmentsService {
 
   book(payload: AppointmentCreateRequest): Observable<AppointmentDto> {
     return this.http.post<AppointmentDto>(`${API_BASE_URL}/appointments`, payload);
+  }
+
+  /**
+   * Get available appointment blocks for a doctor within a date range
+   */
+  getAvailableBlocks(
+    doctorId: number, 
+    startDate: string, 
+    endDate: string
+  ): Observable<AppointmentBlockDto[]> {
+    return this.http.get<AppointmentBlockDto[]>(
+      `${API_BASE_URL}/doctors/${doctorId}/available-blocks?start_date=${startDate}&end_date=${endDate}`
+    );
   }
 }

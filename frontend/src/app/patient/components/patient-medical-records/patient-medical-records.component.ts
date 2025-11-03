@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { MedicalRecordDto } from '../../../core/models/medical-record';
 
 @Component({
   selector: 'app-patient-medical-records',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor, DatePipe],
+  imports: [CommonModule, DatePipe],
   templateUrl: './patient-medical-records.component.html',
   styleUrl: './patient-medical-records.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

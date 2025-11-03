@@ -1,0 +1,224 @@
+<div class="doctor-management">
+  <div class="doctor-management__header">
+    <h2>Gestión de Doctores</h2>
+    <button 
+      class="btn btn-primary" 
+      (click)="showCreateDoctorForm()"
+      [disabled]="loading">
+      <i class="material-icons">person_add</i>
+      Nuevo Doctor
+    </button>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-error">
+    <i class="material-icons">error</i>
+    {{ error }}
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading && doctors.length === 0" class="loading">
+    <i class="material-icons">refresh</i>
+    Cargando doctores...
+  </div>
+
+  <!-- Doctors list -->
+  <div *ngIf="!loading || doctors.length > 0" class="doctor-list">
+    <div *ngIf="doctors.length === 0" class="empty-state">
+      <i class="material-icons">medical_services</i>
+      <p>No hay doctores registrados</p>
+      <button class="btn btn-primary" (click)="showCreateDoctorForm()">
+        Crear primer doctor
+      </button>
+    </div>
+
+    <div *ngFor="let doctor of doctors" class="doctor-card">
+      <div class="doctor-card__content">
+        <div class="doctor-card__header">
+          <h3>{{ doctor.full_name || doctor.email }}</h3>
+          <span class="doctor-status" [class.active]="doctor.is_active">
+            {{ doctor.is_active ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+        <div class="doctor-card__details">
+          <p class="doctor-email">
+            <i class="material-icons">email</i>
+            {{ doctor.email }}
+          </p>
+          <p *ngIf="doctor.specialty" class="doctor-specialty">
+            <i class="material-icons">work</i>
+            {{ doctor.specialty }}
+          </p>
+          <p *ngIf="doctor.license_number" class="doctor-license">
+            <i class="material-icons">badge</i>
+            {{ doctor.license_number }}
+          </p>
+          <p *ngIf="doctor.years_experience" class="doctor-experience">
+            <i class="material-icons">schedule</i>
+            {{ doctor.years_experience }} años de experiencia
+          </p>
+          <p class="doctor-office">
+            <i class="material-icons">business</i>
+            {{ getOfficeName(doctor.office_id) }}
+          </p>
+        </div>
+      </div>
+      <div class="doctor-card__actions">
+        <button 
+          class="btn btn-secondary btn-sm"
+          (click)="showEditDoctorForm(doctor)"
+          [disabled]="loading">
+          <i class="material-icons">edit</i>
+          Editar
+        </button>
+        <button 
+          class="btn btn-danger btn-sm"
+          (click)="deleteDoctor(doctor)"
+          [disabled]="loading">
+          <i class="material-icons">delete</i>
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create/Edit Form Modal -->
+  <div *ngIf="showCreateForm" class="modal-overlay" (click)="cancelForm()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h3>{{ editingDoctor ? 'Editar Doctor' : 'Nuevo Doctor' }}</h3>
+        <button class="btn btn-icon" (click)="cancelForm()">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      
+      <form (ngSubmit)="onSubmit()" class="modal__form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input
+              type="email"
+              id="email"
+              [(ngModel)]="formData.email"
+              name="email"
+              required
+              placeholder="doctor@ejemplo.com"
+              class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="password">{{ editingDoctor ? 'Nueva Contraseña' : 'Contraseña' }} *</label>
+            <input
+              type="password"
+              id="password"
+              [(ngModel)]="formData.password"
+              name="password"
+              [required]="!editingDoctor"
+              placeholder="Contraseña"
+              class="form-control">
+            <small *ngIf="editingDoctor" class="form-help">Dejar vacío para mantener la contraseña actual</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="full_name">Nombre Completo</label>
+          <input
+            type="text"
+            id="full_name"
+            [(ngModel)]="formData.full_name"
+            name="full_name"
+            placeholder="Dr. Juan Pérez"
+            class="form-control">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="specialty">Especialidad</label>
+            <input
+              type="text"
+              id="specialty"
+              [(ngModel)]="formData.specialty"
+              name="specialty"
+              placeholder="Clínica General"
+              class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="license_number">Número de Matrícula</label>
+            <input
+              type="text"
+              id="license_number"
+              [(ngModel)]="formData.license_number"
+              name="license_number"
+              placeholder="MAT-12345"
+              class="form-control">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="years_experience">Años de Experiencia</label>
+            <input
+              type="number"
+              id="years_experience"
+              [(ngModel)]="formData.years_experience"
+              name="years_experience"
+              min="0"
+              class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="office_id">Consultorio</label>
+            <select
+              id="office_id"
+              [(ngModel)]="formData.office_id"
+              name="office_id"
+              class="form-control">
+              <option [value]="undefined">Sin asignar</option>
+              <option *ngFor="let office of offices" [value]="office.id">
+                {{ office.name || office.code }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group form-checkbox">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                [(ngModel)]="formData.is_active"
+                name="is_active">
+              <span class="checkmark"></span>
+              Usuario activo
+            </label>
+          </div>
+
+          <div class="form-group form-checkbox">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                [(ngModel)]="formData.is_superuser"
+                name="is_superuser">
+              <span class="checkmark"></span>
+              Superusuario
+            </label>
+          </div>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn-secondary" (click)="cancelForm()">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="loading || !formData.email.trim() || (!editingDoctor && !formData.password.trim())">
+            <i *ngIf="loading" class="material-icons">refresh</i>
+            {{ editingDoctor ? 'Actualizar' : 'Crear' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
