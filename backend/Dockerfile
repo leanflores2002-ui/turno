@@ -20,7 +20,8 @@ RUN set -eux; \
         cp -r /tmp/build/. /app; \
     fi; \
     pip install --upgrade pip; \
-    pip install -r /app/requirements.txt
+    pip install -r /app/requirements.txt; \
+    if [ -f /app/docker-entrypoint.sh ]; then chmod +x /app/docker-entrypoint.sh; fi
 
 # Ensure src is on PYTHONPATH so `app.*` imports resolve
 ENV PYTHONPATH=/app/src
@@ -30,6 +31,4 @@ ENV PORT=8000
 EXPOSE 8000
 
 # Entrypoint handles migrations (optional) and starts Uvicorn
-COPY docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x /app/docker-entrypoint.sh
 CMD ["/app/docker-entrypoint.sh"]
