@@ -102,3 +102,5 @@ CÃ³mo resolver:
 - Verifica endpoints:
   - Backend: `https://TU_BACKEND.up.railway.app/healthz` debe devolver `{ "status": "ok" }`.
   - Frontend: abrir la URL del servicio debe servir `index.html`.
+
+- Fallback rápido: si solo quieres ver /healthz funcionar, puedes definir DATABASE_URL=sqlite+pysqlite:///data/app.db (SQLite en disco del contenedor) y RUN_MIGRATIONS=0. Esto no es para producción, pero permite validar que el servicio responde en Railway.
