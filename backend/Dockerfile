@@ -29,5 +29,7 @@ ENV PYTHONPATH=/app/src
 ENV PORT=8000
 EXPOSE 8000
 
-# Run migrations, then start API
-CMD sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"
+# Entrypoint handles migrations (optional) and starts Uvicorn
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+CMD ["/app/docker-entrypoint.sh"]

@@ -27,6 +27,7 @@ Se agregaron archivos para un despliegue simple en Railway usando Docker por ser
   - `DATABASE_URL`: cadena SQLAlchemy, p.ej. `mysql+pymysql://usuario:pass@host:3306/turnoplus`.
     - Si usas el plugin de MySQL en Railway, copia sus credenciales y construye la URL anterior.
   - `ALLOWED_ORIGINS`: lista separada por comas con los orígenes permitidos, por ej.: `https://TU_FRONTEND.up.railway.app`.
+  - `RUN_MIGRATIONS` (opcional): `1` por defecto. Pon `0` para arrancar sin aplicar Alembic si la DB aún no está lista.
 - Frontend
   - `API_BASE_URL`: URL base pública del backend, por ej.: `https://TU_BACKEND.up.railway.app/api/v1`.
 
@@ -56,6 +57,7 @@ Se agregaron archivos para un despliegue simple en Railway usando Docker por ser
 - Postgres (opcional):
   - Cambia `DATABASE_URL` a `postgresql+psycopg://usuario:pass@host:5432/db`.
   - Añade `psycopg[binary]` a `backend/requirements.txt` y elimina `pymysql` si ya no usas MySQL.
+  - Si usas variables generadas por Railway (por ejemplo `postgresql://...` o `mysql://...`), asegúrate de incluir el driver para SQLAlchemy: `postgresql+psycopg://...` o `mysql+pymysql://...`.
 
 ## Troubleshooting (Railpack/Nixpacks)
 
