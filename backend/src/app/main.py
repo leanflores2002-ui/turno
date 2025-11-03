@@ -30,6 +30,16 @@ def create_app() -> FastAPI:
         return {"status": "ok"}
 
     app.include_router(api_v1_router, prefix="/api/v1")
+    
+    @app.get("/")
+    def root():
+        return {
+            "status": "ok",
+            "service": "TurnoPlus API",
+            "version": "0.1.0",
+            "docs": "/docs",
+            "healthz": "/healthz",
+        }
     return app
 
 
