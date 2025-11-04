@@ -19,23 +19,14 @@
     <p class="patient-records__placeholder">Aún no registramos antecedentes médicos.</p>
   } @else {
     <ul class="patient-records__list">
-      @for (record of records; track trackRecordById($index, record)) {
+      @for (record of records; track trackRecordById) {
         <li class="patient-records__item">
           <header>
             <h4>{{ record.diagnosis || 'Consulta sin diagnóstico' }}</h4>
-            <div class="patient-records__meta">
-              <span class="patient-records__date">
-                Atendido el {{ record.created_at | date: 'd/M/yyyy' }}
-              </span>
-              @if (record.doctor_name) {
-                <span class="patient-records__doctor">
-                  por {{ record.doctor_name }}
-                </span>
-              }
-              <span class="patient-records__updated">
-                Actualizado el {{ record.updated_at | date: 'd/M/yy HH:mm' }}
-              </span>
-            </div>
+            <span>
+              Actualizado el
+              {{ record.updated_at | date: 'd/M/yy HH:mm':'UTC' }}
+            </span>
           </header>
 
           <dl>

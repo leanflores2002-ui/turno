@@ -59,7 +59,7 @@
 .patient-records__item header {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .patient-records__item h4 {
@@ -67,27 +67,9 @@
   color: var(--brand-900);
 }
 
-.patient-records__meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.patient-records__date {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--brand-800);
-}
-
-.patient-records__doctor {
+.patient-records__item span {
   font-size: 0.85rem;
-  color: var(--brand-700);
-  font-style: italic;
-}
-
-.patient-records__updated {
-  font-size: 0.8rem;
-  color: var(--gray-500);
+  color: var(--gray-600);
 }
 
 .patient-records__item dl {
@@ -104,23 +86,4 @@
 .patient-records__item dd {
   margin: 0.25rem 0 0;
   color: var(--gray-700);
-}
-
-// Responsive design
-@media (max-width: 768px) {
-  .patient-records__meta {
-    gap: 0.2rem;
-  }
-  
-  .patient-records__date {
-    font-size: 0.85rem;
-  }
-  
-  .patient-records__doctor {
-    font-size: 0.8rem;
-  }
-  
-  .patient-records__updated {
-    font-size: 0.75rem;
-  }
 }

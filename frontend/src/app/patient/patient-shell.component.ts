@@ -12,13 +12,11 @@ import { PatientProfileComponent } from './components/patient-profile/patient-pr
 import { PatientAppointmentsComponent } from './components/patient-appointments/patient-appointments.component';
 import { PatientBookingComponent } from './components/patient-booking/patient-booking.component';
 import { PatientMedicalRecordsComponent } from './components/patient-medical-records/patient-medical-records.component';
-import { TabbedShellComponent, TabConfig } from '../shared/components/tabbed-shell/tabbed-shell.component';
 
 @Component({
   selector: 'app-patient-shell',
   standalone: true,
   imports: [
-    TabbedShellComponent,
     PatientProfileComponent,
     PatientAppointmentsComponent,
     PatientBookingComponent,
@@ -53,29 +51,6 @@ export class PatientShellComponent {
   );
 
   readonly hasContent = computed(() => !!this.profile() || this.appointments().length > 0);
-
-  readonly tabs: TabConfig[] = [
-    {
-      id: 'profile',
-      label: 'Mi Perfil',
-      icon: 'person'
-    },
-    {
-      id: 'appointments',
-      label: 'Mis Turnos',
-      icon: 'event'
-    },
-    {
-      id: 'booking',
-      label: 'Reservar Turno',
-      icon: 'add_circle'
-    },
-    {
-      id: 'records',
-      label: 'Historial Médico',
-      icon: 'medical_services'
-    }
-  ];
 
   constructor() {
     this.loadPatient();

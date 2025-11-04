@@ -7,11 +7,7 @@ export interface BaseUserDto {
   is_active: boolean;
   is_superuser: boolean;
   password?: string;
-  role: UserRole;
 }
-
-// Alias for backward compatibility
-export type UserDto = BaseUserDto;
 
 export interface PatientDto extends BaseUserDto {
   date_of_birth?: string | null;
@@ -23,11 +19,10 @@ export interface DoctorDto extends BaseUserDto {
   specialty?: string | null;
   license_number?: string | null;
   years_experience?: number | null;
-  office_id?: number | null;
 }
 
 export interface AdminDto extends BaseUserDto {
-  admin_role?: 'superadmin' | 'manager' | 'support';
+  role?: 'superadmin' | 'manager' | 'support';
   permissions?: string[] | null;
 }
 

@@ -3,7 +3,6 @@ from fastapi import APIRouter, HTTPException
 from app.controllers.medical_records import (
     create_medical_record,
     get_medical_record,
-    get_patient_medical_history,
     list_doctor_records,
     list_patient_records,
     update_medical_record,
@@ -26,11 +25,6 @@ def route_list_patient_records(patient_id: int):
 @router.get("/doctors/{doctor_id}", response_model=list[MedicalRecord])
 def route_list_doctor_records(doctor_id: int):
     return list_doctor_records(doctor_id)
-
-
-@router.get("/patients/{patient_id}/history", response_model=list[MedicalRecord])
-def route_get_patient_medical_history(patient_id: int):
-    return get_patient_medical_history(patient_id)
 
 
 @router.get("/{record_id}", response_model=MedicalRecord)

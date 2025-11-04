@@ -5,18 +5,22 @@
       <span class="brand__tagline">Salud conectada, turnos al instante</span>
     </div>
     <nav class="topbar__nav">
-      @if (isAuthenticated()) {
-        <span class="topbar__user">Hola, {{ user()?.fullName || user()?.email }}</span>
-        <button class="btn btn-secondary" type="button" (click)="logout()">Cerrar sesión</button>
-      } @else {
-        <a routerLink="/auth/login" class="topbar__link">Ingresar</a>
-        <a routerLink="/auth/register" class="btn btn-primary">Crear cuenta</a>
-      }
+      <a routerLink="/auth/login" class="topbar__link">Ingresar</a>
+      <a routerLink="/auth/register" class="btn btn-primary">Crear cuenta</a>
     </nav>
   </div>
 </header>
 
 <main class="app-shell container">
+  <div class="app-shell__intro card">
+    <div class="app-shell__copy">
+      <h1>Gestioná tus turnos con confianza</h1>
+      <p>
+        Pacientes, profesionales y administradores comparten la misma experiencia moderna para
+        coordinar turnos, disponibilidad y fichas clínicas.
+      </p>
+    </div>
+  </div>
   <router-outlet />
 </main>
 

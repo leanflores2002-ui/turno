@@ -6,83 +6,33 @@
         {{ doctorName ? ('Definí tu agenda, ' + doctorName + '.') : 'Definí los turnos disponibles para tus pacientes.' }}
       </p>
     </div>
-    <div class="header-actions">
-      <div class="view-mode-toggle">
-        <button 
-          type="button" 
-          class="btn btn-secondary"
-          [class.active]="viewMode() === 'calendar'"
-          (click)="setViewMode('calendar')"
-        >
-          📅 Calendario
-        </button>
-        <button 
-          type="button" 
-          class="btn btn-secondary"
-          [class.active]="viewMode() === 'list'"
-          (click)="setViewMode('list')"
-        >
-          📋 Lista
-        </button>
-      </div>
-      <button type="button" class="btn btn-secondary" (click)="refresh.emit()" [disabled]="loading">
-        {{ loading ? 'Actualizando…' : 'Actualizar' }}
-      </button>
-    </div>
+    <button type="button" class="btn btn-secondary" (click)="refresh.emit()" [disabled]="loading">
+      {{ loading ? 'Actualizando…' : 'Actualizar' }}
+    </button>
   </header>
 
   <form class="doctor-availability__form" [formGroup]="form" (ngSubmit)="submit()">
-    <!-- Template Selection -->
-    <div class="template-selection">
-      <h4>Seleccioná un horario</h4>
-      <div class="template-grid">
-        @for (template of timeSlotTemplates; track template.id) {
-          <label class="template-option" [class.selected]="form.get('template')?.value === template.id">
-            <input 
-              type="radio" 
-              formControlName="template" 
-              [value]="template.id"
-              class="template-radio"
-            />
-            <div class="template-content">
-              <div class="template-name">{{ template.name }}</div>
-              <div class="template-description">{{ template.description }}</div>
-            </div>
-          </label>
-        }
-      </div>
+    <div class="doctor-availability__form-grid">
+      <label>
+        <span>Inicio</span>
+        <input class="input" type="datetime-local" formControlName="start" />
+      </label>
+      <label>
+        <span>Fin</span>
+        <input class="input" type="datetime-local" formControlName="end" />
+      </label>
+      <label>
+        <span>Turnos</span>
+        <input class="input" type="number" min="1" max="4" formControlName="slots" />
+      </label>
     </div>
 
-    <!-- Date and Time Selection -->
-    <div class="datetime-selection" *ngIf="form.get('template')?.value">
-      <div class="doctor-availability__form-grid">
-        <label>
-          <span>Fecha</span>
-          <input class="input" type="date" formControlName="date" />
-        </label>
-        <label *ngIf="isCustomTemplate()">
-          <span>Inicio</span>
-          <input class="input" type="time" formControlName="start" />
-        </label>
-        <label *ngIf="isCustomTemplate()">
-          <span>Fin</span>
-          <input class="input" type="time" formControlName="end" />
-        </label>
-      </div>
-    </div>
-
-    @if (currentSelectionConflict()) {
-      <p class="doctor-availability__form-warning">
-        ⚠️ Ya tenés disponibilidad en este horario. Elegí otro horario o fecha.
-      </p>
-    }
-    
     @if (formError()) {
       <p class="doctor-availability__form-error">{{ formError() }}</p>
     }
 
     <div class="doctor-availability__actions">
-      <button type="submit" class="btn btn-primary" [disabled]="createPending || currentSelectionConflict()">
+      <button type="submit" class="btn btn-primary" [disabled]="createPending">
         {{ createPending ? 'Guardando…' : 'Agregar disponibilidad' }}
       </button>
       <button type="button" class="btn btn-secondary" (click)="resetForm()">
@@ -99,95 +49,47 @@
     <p class="doctor-availability__message error">{{ error }}</p>
   }
 
-  @if (loading) {
+  @if (loading && !hasAvailability()) {
     <p class="doctor-availability__placeholder">Cargando disponibilidad…</p>
+  } @else if (!hasAvailability()) {
+    <p class="doctor-availability__placeholder">
+      Todavía no cargaste turnos disponibles. Usá el formulario para sumar tus horarios.
+    </p>
   } @else {
-    <!-- Calendar View -->
-    @if (viewMode() === 'calendar') {
-      <app-availability-calendar
-        [availability]="availability"
-        [loading]="loading"
-        (daySelected)="onDaySelected($event)"
-        (availabilitySelected)="onAvailabilitySelected($event)"
-      />
-      
-      @if (!hasAvailability()) {
-        <div class="empty-state">
-          <p class="empty-message">
-            Todavía no cargaste turnos disponibles. Usá el formulario para sumar tus horarios.
-          </p>
-        </div>
-      }
-    } @else {
-      <!-- List View -->
-      @if (!hasAvailability()) {
-        <p class="doctor-availability__placeholder">
-          Todavía no cargaste turnos disponibles. Usá el formulario para sumar tus horarios.
-        </p>
-      } @else {
-        <!-- Block Statistics -->
-    <div class="block-stats" *ngIf="hasAvailability()">
-      <div class="stat-item">
-        <span class="stat-label">Total de bloques:</span>
-        <span class="stat-value">{{ totalBlocks() }}</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Disponibles:</span>
-        <span class="stat-value available">{{ availableBlocks() }}</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Reservados:</span>
-        <span class="stat-value booked">{{ bookedBlocks() }}</span>
-      </div>
-    </div>
-
     <ul class="doctor-availability__list">
-      @for (slot of availability; track trackByAvailability($index, slot)) {
+      @for (slot of availability; track trackByAvailability) {
         <li class="doctor-availability__item">
           <div>
             <h4>
-              {{ slot.startAt | date: 'EEEE d MMMM' }}
+              {{ slot.startAt | date: 'EEEE d MMMM' : 'UTC' }}
             </h4>
             <p>
-              {{ slot.startAt | date: 'HH:mm' }} -
-              {{ slot.endAt | date: 'HH:mm' }} hs
-            </p>
-            <p class="blocks-info">
-              {{ getBlocksCount(slot) }} bloque{{ getBlocksCount(slot) > 1 ? 's' : '' }}
-              ({{ getAvailableBlocksCount(slot) }} disponibles)
+              {{ slot.startAt | date: 'HH:mm' : 'UTC' }} -
+              {{ slot.endAt | date: 'HH:mm' : 'UTC' }} hs ·
+              {{ slot.slots }} turno{{ slot.slots > 1 ? 's' : '' }}
             </p>
           </div>
 
+          <div class="doctor-availability__item-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="adjustSlots(slot, -1)"
+              [disabled]="mutationId === slot.id || slot.slots <= 1"
+            >
+              -
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="adjustSlots(slot, 1)"
+              [disabled]="mutationId === slot.id || slot.slots >= 4"
+            >
+              +
+            </button>
+          </div>
         </li>
       }
     </ul>
-
-    <!-- Block Details -->
-    <div class="blocks-details" *ngIf="availability.length > 0">
-      <h4>Detalle de bloques</h4>
-      <div class="blocks-grid">
-        @for (slot of availability; track trackByAvailability($index, slot)) {
-          <div class="slot-blocks">
-            <div class="slot-header">
-              {{ slot.startAt | date: 'short' }} - {{ slot.endAt | date: 'short' }}
-            </div>
-            <div class="blocks-list">
-              @for (block of (slot.blocks || []); track trackByBlock($index, block)) {
-                <div class="block-item" [ngClass]="{ 'booked': block.isBooked, 'available': !block.isBooked }">
-                  <div class="block-time">
-                    {{ block.startAt | date: 'HH:mm' }} - {{ block.endAt | date: 'HH:mm' }}
-                  </div>
-                  <div class="block-status">
-                    {{ block.isBooked ? 'Reservado' : 'Disponible' }}
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-      }
-    }
   }
 </section>

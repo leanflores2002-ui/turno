@@ -138,7 +138,6 @@ class PatientsService:
             is_active=user.is_active,
             is_superuser=user.is_superuser,
             full_name=user.full_name,
-            role=user.role.value,
             date_of_birth=model.date_of_birth,
             medical_record_number=model.medical_record_number,
             emergency_contact=model.emergency_contact,

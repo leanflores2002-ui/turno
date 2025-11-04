@@ -4,12 +4,10 @@ from contextlib import contextmanager
 from typing import Iterator, Optional
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 
 from app.db.broker import DBBroker, get_dbbroker
 from app.models.medical_record import MedicalRecord as MedicalRecordModel
-from app.models.doctor import Doctor as DoctorModel
-from app.models.user import User as UserModel
 from app.schemas.medical_record import MedicalRecord, MedicalRecordCreate, MedicalRecordUpdate
 from app.services.doctors import DoctorsService
 from app.services.patients import PatientsService
@@ -31,14 +29,11 @@ class MedicalRecordsService:
 
             stmt = (
                 select(MedicalRecordModel)
-                .outerjoin(DoctorModel, MedicalRecordModel.doctor_id == DoctorModel.id)
-                .outerjoin(UserModel, DoctorModel.id == UserModel.id)
-                .options(joinedload(MedicalRecordModel.doctor).joinedload(DoctorModel.user))
                 .where(MedicalRecordModel.patient_id == patient_id)
                 .order_by(MedicalRecordModel.created_at.desc())
             )
             records = session.scalars(stmt).all()
-            return [self._to_schema_with_doctor(record) for record in records]
+            return [self._to_schema(record) for record in records]
 
     def list_for_doctor(self, doctor_id: int) -> list[MedicalRecord]:
         with self._session_scope() as session:
@@ -48,32 +43,11 @@ class MedicalRecordsService:
 
             stmt = (
                 select(MedicalRecordModel)
-                .outerjoin(DoctorModel, MedicalRecordModel.doctor_id == DoctorModel.id)
-                .outerjoin(UserModel, DoctorModel.id == UserModel.id)
-                .options(joinedload(MedicalRecordModel.doctor).joinedload(DoctorModel.user))
                 .where(MedicalRecordModel.doctor_id == doctor_id)
                 .order_by(MedicalRecordModel.created_at.desc())
             )
             records = session.scalars(stmt).all()
-            return [self._to_schema_with_doctor(record) for record in records]
-
-    def get_patient_history(self, patient_id: int) -> list[MedicalRecord]:
-        """Get all medical records for a patient from all doctors."""
-        with self._session_scope() as session:
-            patients = PatientsService(session)
-            if not patients.get(patient_id):
-                return []
-
-            stmt = (
-                select(MedicalRecordModel)
-                .outerjoin(DoctorModel, MedicalRecordModel.doctor_id == DoctorModel.id)
-                .outerjoin(UserModel, DoctorModel.id == UserModel.id)
-                .options(joinedload(MedicalRecordModel.doctor).joinedload(DoctorModel.user))
-                .where(MedicalRecordModel.patient_id == patient_id)
-                .order_by(MedicalRecordModel.created_at.desc())
-            )
-            records = session.scalars(stmt).all()
-            return [self._to_schema_with_doctor(record) for record in records]
+            return [self._to_schema(record) for record in records]
 
     def get(self, record_id: int) -> MedicalRecord | None:
         with self._session_scope() as session:
@@ -141,24 +115,6 @@ class MedicalRecordsService:
             notes=model.notes,
             created_at=model.created_at,
             updated_at=model.updated_at,
-        )
-
-    @staticmethod
-    def _to_schema_with_doctor(model: MedicalRecordModel) -> MedicalRecord:
-        doctor_name = None
-        if model.doctor and model.doctor.user:
-            doctor_name = model.doctor.user.full_name or f"Dr. #{model.doctor.id}"
-        
-        return MedicalRecord(
-            id=model.id,
-            patient_id=model.patient_id,
-            doctor_id=model.doctor_id,
-            diagnosis=model.diagnosis,
-            treatment=model.treatment,
-            notes=model.notes,
-            created_at=model.created_at,
-            updated_at=model.updated_at,
-            doctor_name=doctor_name,
         )
 
 

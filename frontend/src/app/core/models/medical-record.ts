@@ -7,7 +7,6 @@ export interface MedicalRecordDto {
   notes: string | null;
   created_at: string;
   updated_at: string;
-  doctor_name?: string | null;
 }
 
 export interface MedicalRecordCreateRequest {

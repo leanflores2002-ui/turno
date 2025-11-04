@@ -56,18 +56,10 @@ def update_medical_record(record_id: int, data: MedicalRecordUpdate) -> MedicalR
         return record
 
 
-def get_patient_medical_history(patient_id: int) -> list[MedicalRecord]:
-    broker = get_dbbroker()
-    with broker.session() as session:
-        svc = MedicalRecordsService(session)
-        return svc.get_patient_history(patient_id)
-
-
 __all__ = [
     "list_patient_records",
     "list_doctor_records",
     "get_medical_record",
     "create_medical_record",
     "update_medical_record",
-    "get_patient_medical_history",
 ]

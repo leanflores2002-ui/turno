@@ -13,7 +13,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from app.models.appointment import Appointment
     from app.models.availability import Availability
     from app.models.medical_record import MedicalRecord
-    from app.models.office import Office
 
 
 class Doctor(Base):
@@ -26,9 +25,6 @@ class Doctor(Base):
     specialty: Mapped[str | None] = mapped_column(String(120))
     phone: Mapped[str | None] = mapped_column(String(50))
     years_experience: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    office_id: Mapped[int | None] = mapped_column(
-        ForeignKey("offices.id", ondelete="SET NULL"), nullable=True
-    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
@@ -38,7 +34,6 @@ class Doctor(Base):
     )
 
     user: Mapped["User"] = relationship(back_populates="doctor_profile")
-    office: Mapped["Office | None"] = relationship(back_populates="doctors")
     appointments: Mapped[list["Appointment"]] = relationship(
         back_populates="doctor", cascade="all, delete-orphan"
     )

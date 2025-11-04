@@ -12,25 +12,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../core/services/auth.service';
 import { AppointmentsService } from '../core/services/appointments.service';
 import { MedicalRecordsService } from '../core/services/medical-records.service';
-import { DoctorsService } from '../core/services/doctors.service';
 import { AppointmentDto, AvailabilityDto } from '../core/models/appointment';
 import { MedicalRecordDto, MedicalRecordUpdateRequest } from '../core/models/medical-record';
-import { PatientDto } from '../core/models/user';
 import {
   DoctorAvailabilityComponent,
   DoctorAvailabilityCreateEvent,
   DoctorAvailabilityUpdateEvent
 } from './components/doctor-availability/doctor-availability.component';
 import {
+  DoctorRecordCreateEvent,
   DoctorRecordUpdateEvent,
   DoctorRecordsComponent
 } from './components/doctor-records/doctor-records.component';
-import { TabbedShellComponent, TabConfig } from '../shared/components/tabbed-shell/tabbed-shell.component';
 
 @Component({
   selector: 'app-doctor-shell',
   standalone: true,
-  imports: [NgClass, DatePipe, TabbedShellComponent, DoctorAvailabilityComponent, DoctorRecordsComponent],
+  imports: [NgIf, NgFor, NgClass, DatePipe, DoctorAvailabilityComponent, DoctorRecordsComponent],
   templateUrl: './doctor-shell.component.html',
   styleUrl: './doctor-shell.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -39,28 +37,24 @@ export class DoctorShellComponent {
   private readonly authService = inject(AuthService);
   private readonly appointmentsService = inject(AppointmentsService);
   private readonly medicalRecordsService = inject(MedicalRecordsService);
-  private readonly doctorsService = inject(DoctorsService);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly doctorId: number | null;
+  private readonly doctorId: number | null;
   private readonly doctorGreeting = signal<string | null>(null);
 
   readonly appointments = signal<AppointmentDto[]>([]);
   readonly availability = signal<AvailabilityDto[]>([]);
   readonly records = signal<MedicalRecordDto[]>([]);
-  readonly patients = signal<PatientDto[]>([]);
 
   readonly appointmentsError = signal<string | null>(null);
   readonly availabilityError = signal<string | null>(null);
   readonly availabilityMessage = signal<string | null>(null);
   readonly recordsError = signal<string | null>(null);
   readonly recordsMessage = signal<string | null>(null);
-  readonly patientsError = signal<string | null>(null);
 
   readonly isLoadingAppointments = signal<boolean>(false);
   readonly isLoadingAvailability = signal<boolean>(false);
   readonly isLoadingRecords = signal<boolean>(false);
-  readonly isLoadingPatients = signal<boolean>(false);
 
   readonly isCreatingAvailability = signal<boolean>(false);
   readonly availabilityMutationId = signal<number | null>(null);
@@ -75,29 +69,6 @@ export class DoctorShellComponent {
   );
 
   readonly doctorName = computed(() => this.doctorGreeting());
-
-  readonly tabs: TabConfig[] = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: 'dashboard'
-    },
-    {
-      id: 'availability',
-      label: 'Disponibilidad',
-      icon: 'schedule'
-    },
-    {
-      id: 'appointments',
-      label: 'Mis Turnos',
-      icon: 'event'
-    },
-    {
-      id: 'records',
-      label: 'Registros Médicos',
-      icon: 'medical_services'
-    }
-  ];
 
   constructor() {
     const currentUser = this.authService.user();
@@ -117,7 +88,6 @@ export class DoctorShellComponent {
     this.loadAppointments();
     this.loadAvailability();
     this.loadRecords();
-    this.loadPatients();
   }
 
   refreshAppointments(): void {
@@ -132,10 +102,6 @@ export class DoctorShellComponent {
     this.loadRecords(true);
   }
 
-  refreshPatients(): void {
-    this.loadPatients(true);
-  }
-
   onCreateAvailability(event: DoctorAvailabilityCreateEvent): void {
     if (!this.ensureDoctorSession()) {
       return;
@@ -148,7 +114,8 @@ export class DoctorShellComponent {
       .createAvailability({
         doctor_id: this.doctorId as number,
         start_at: event.startAt,
-        end_at: event.endAt
+        end_at: event.endAt,
+        slots: event.slots
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -161,26 +128,9 @@ export class DoctorShellComponent {
           this.isCreatingAvailability.set(false);
           this.availabilityMessage.set('Disponibilidad agregada correctamente.');
         },
-        error: (error) => {
+        error: () => {
           this.isCreatingAvailability.set(false);
-          let errorMessage = 'No pudimos agregar la disponibilidad. Reintentá más tarde.';
-          
-          if (error.error?.detail) {
-            const detail = error.error.detail;
-            if (detail.includes('Overlapping availability slot')) {
-              errorMessage = 'Ya tenés disponibilidad en este horario. Elegí otro horario o fecha.';
-            } else if (detail.includes('Start time must align with block boundaries')) {
-              errorMessage = 'El horario de inicio debe ser en punto (ej: 9:00, 10:00, 11:00).';
-            } else if (detail.includes('Duration must be a multiple of')) {
-              errorMessage = 'La duración debe ser múltiplo de 30 minutos.';
-            } else if (detail.includes('Doctor not found')) {
-              errorMessage = 'No se encontró el profesional. Recargá la página.';
-            } else {
-              errorMessage = detail;
-            }
-          }
-          
-          this.availabilityError.set(errorMessage);
+          this.availabilityError.set('No pudimos agregar la disponibilidad. Reintentá más tarde.');
         }
       });
   }
@@ -194,7 +144,7 @@ export class DoctorShellComponent {
     this.availabilityMessage.set(null);
 
     this.appointmentsService
-      .updateAvailability(event.id, {})
+      .updateAvailability(event.id, { slots: event.slots })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (updated) => {
@@ -213,7 +163,39 @@ export class DoctorShellComponent {
       });
   }
 
-  // Record creation is now handled in the modal component
+  onCreateRecord(event: DoctorRecordCreateEvent): void {
+    if (!this.ensureDoctorSession()) {
+      return;
+    }
+    this.isSavingRecord.set(true);
+    this.recordsError.set(null);
+    this.recordsMessage.set(null);
+
+    this.medicalRecordsService
+      .createRecord({
+        patient_id: event.patientId,
+        doctor_id: this.doctorId as number,
+        diagnosis: event.diagnosis,
+        treatment: event.treatment,
+        notes: event.notes
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (record) => {
+          this.records.update((items) =>
+            [...items, record].sort(
+              (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+            )
+          );
+          this.isSavingRecord.set(false);
+          this.recordsMessage.set('Registro creado con éxito.');
+        },
+        error: () => {
+          this.isSavingRecord.set(false);
+          this.recordsError.set('No pudimos crear el registro. Revisá los datos e intentá nuevamente.');
+        }
+      });
+  }
 
   onUpdateRecord(event: DoctorRecordUpdateEvent): void {
     this.persistRecordChanges(event.recordId, event.changes);
@@ -306,31 +288,6 @@ export class DoctorShellComponent {
       });
   }
 
-  private loadPatients(force = false): void {
-    if (!this.ensureDoctorSession()) {
-      return;
-    }
-    if (this.isLoadingPatients() && !force) {
-      return;
-    }
-    this.isLoadingPatients.set(true);
-    this.patientsError.set(null);
-
-    this.doctorsService
-      .getDoctorPatients(this.doctorId as number)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (items) => {
-          this.patients.set(items);
-          this.isLoadingPatients.set(false);
-        },
-        error: () => {
-          this.isLoadingPatients.set(false);
-          this.patientsError.set('No pudimos obtener tus pacientes.');
-        }
-      });
-  }
-
   private persistRecordChanges(
     recordId: number,
     changes: MedicalRecordUpdateRequest
@@ -369,7 +326,6 @@ export class DoctorShellComponent {
       this.appointmentsError.set('Reiniciá tu sesión para continuar.');
       this.availabilityError.set('Reiniciá tu sesión para continuar.');
       this.recordsError.set('Reiniciá tu sesión para continuar.');
-      this.patientsError.set('Reiniciá tu sesión para continuar.');
       return false;
     }
     return true;

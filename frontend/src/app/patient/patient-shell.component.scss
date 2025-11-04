@@ -1,2 +1,37 @@
-// Patient shell specific styles are now handled by the tabbed-shell component
-// This file can be removed or kept for any patient-specific overrides
+.patient-shell {
+  padding: 2rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.patient-shell__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.patient-shell__header h2 {
+  margin: 0;
+  color: var(--brand-900);
+}
+
+.patient-shell__header p {
+  margin: 0.25rem 0 0;
+  color: var(--gray-600);
+}
+
+.patient-shell__error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(208, 72, 72, 0.12);
+  color: #8b1d1d;
+}
+
+.patient-shell__grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}

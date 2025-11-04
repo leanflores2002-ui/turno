@@ -1,87 +1,11 @@
-// Admin shell specific styles
-.admin-dashboard {
-  display: grid;
-  gap: 2rem;
-}
-
-.admin-dashboard__stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-}
-
-.stat-card {
-  padding: 1.5rem;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.stat-card h3 {
-  margin: 0 0 0.5rem;
-  color: var(--gray-600, #6b7280);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.stat-number {
-  margin: 0;
-  color: var(--brand-900, #0f766e);
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.admin-dashboard__recent {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-}
-
-.admin-dashboard__recent h3 {
-  margin: 0 0 1.5rem;
-  color: var(--brand-900, #0f766e);
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.admin-section {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-}
-
-.admin-section h3 {
-  margin: 0 0 1rem;
-  color: var(--brand-900, #0f766e);
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
 .placeholder {
-  margin: 0;
-  color: var(--gray-600, #6b7280);
-  font-style: italic;
-  text-align: center;
-  padding: 2rem;
+  padding: 2.5rem;
+  display: grid;
+  gap: 1rem;
+  color: var(--gray-700);
 }
 
-.btn.btn-primary {
-  background: var(--brand-700, #0d9488);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background: var(--brand-800, #0f766e);
-  }
+.placeholder h2 {
+  margin: 0;
+  color: var(--brand-900);
 }

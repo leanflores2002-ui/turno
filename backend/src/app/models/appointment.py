@@ -14,7 +14,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from app.models.doctor import Doctor
     from app.models.availability import Availability
     from app.models.office import Office
-    from app.models.appointment_block import AppointmentBlock
 
 
 class Appointment(Base):
@@ -27,9 +26,6 @@ class Appointment(Base):
     )
     availability_id: Mapped[int | None] = mapped_column(
         ForeignKey("doctor_availability.id", ondelete="SET NULL"), nullable=True
-    )
-    block_id: Mapped[int | None] = mapped_column(
-        ForeignKey("appointment_blocks.id", ondelete="SET NULL"), nullable=True
     )
     office_id: Mapped[int | None] = mapped_column(
         ForeignKey("offices.id", ondelete="SET NULL"), nullable=True
@@ -59,7 +55,6 @@ class Appointment(Base):
     availability: Mapped[Optional["Availability"]] = relationship(
         back_populates="appointments"
     )
-    block: Mapped[Optional["AppointmentBlock"]] = relationship(back_populates="appointments")
     office: Mapped[Optional["Office"]] = relationship(back_populates="appointments")
 
     def __repr__(self) -> str:  # pragma: no cover

@@ -7,12 +7,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.appointment import Appointment as AppointmentModel
-from app.models.appointment_block import AppointmentBlock as AppointmentBlockModel
 from app.models.availability import Availability as AvailabilityModel
 from app.models.enums import AppointmentStatus
 from app.schemas.appointment import (
     Appointment,
-    AppointmentBlock,
     AppointmentCreate,
     Availability,
     AvailabilityCreate,
@@ -20,7 +18,6 @@ from app.schemas.appointment import (
 )
 from app.services.doctors import DoctorsService
 from app.services.patients import PatientsService
-from app.services.system_settings import SystemSettingsService
 
 
 class AppointmentError(Exception):
@@ -42,7 +39,6 @@ class AppointmentsService:
         self._session = session
         self._patients = PatientsService(session)
         self._doctors = DoctorsService(session)
-        self._settings = SystemSettingsService(session)
 
     # --------- Query methods ---------
     def list_for_patient(self, patient_id: int) -> list[Appointment]:
@@ -74,21 +70,6 @@ class AppointmentsService:
         )
         availability = self._session.scalars(stmt).all()
         return [self._availability_to_schema(item) for item in availability]
-
-    def list_available_blocks(self, doctor_id: int, start_date: datetime, end_date: datetime) -> list[AppointmentBlock]:
-        """Get available blocks for a doctor within a date range."""
-        self._ensure_doctor_exists(doctor_id)
-        stmt = (
-            select(AppointmentBlockModel)
-            .join(AvailabilityModel, AppointmentBlockModel.availability_id == AvailabilityModel.id)
-            .where(AvailabilityModel.doctor_id == doctor_id)
-            .where(AppointmentBlockModel.start_at >= start_date)
-            .where(AppointmentBlockModel.end_at <= end_date)
-            .where(AppointmentBlockModel.is_booked == False)
-            .order_by(AppointmentBlockModel.start_at)
-        )
-        blocks = self._session.scalars(stmt).all()
-        return [self._block_to_schema(block) for block in blocks]
 
     # --------- Command methods ---------
     def book(self, data: AppointmentCreate) -> Appointment:
@@ -147,22 +128,14 @@ class AppointmentsService:
             start=data.start_at,
             end=data.end_at,
         )
-        
-        # Validate that times align with block boundaries
-        block_duration = self._settings.get_block_duration()
-        self._validate_block_alignment(data.start_at, data.end_at, block_duration)
-        
         availability = AvailabilityModel(
             doctor_id=data.doctor_id,
             start_at=data.start_at,
             end_at=data.end_at,
+            slots=data.slots,
         )
         self._session.add(availability)
         self._session.flush()
-        
-        # Create blocks for this availability
-        self._create_blocks_for_availability(availability, block_duration)
-        
         return self._availability_to_schema(availability)
 
     def update_availability(self, availability_id: int, data: AvailabilityUpdate) -> Availability:
@@ -256,59 +229,10 @@ class AppointmentsService:
 
     @staticmethod
     def _availability_to_schema(model: AvailabilityModel) -> Availability:
-        blocks = [AppointmentsService._block_to_schema(block) for block in model.blocks]
         return Availability(
             id=model.id,
             doctor_id=model.doctor_id,
             start_at=model.start_at,
             end_at=model.end_at,
-            blocks=blocks,
+            slots=model.slots,
         )
-
-    @staticmethod
-    def _block_to_schema(model: AppointmentBlockModel) -> AppointmentBlock:
-        return AppointmentBlock(
-            id=model.id,
-            availability_id=model.availability_id,
-            block_number=model.block_number,
-            start_at=model.start_at,
-            end_at=model.end_at,
-            is_booked=model.is_booked,
-        )
-
-    def _validate_block_alignment(self, start: datetime, end: datetime, block_duration: int) -> None:
-        """Validate that start and end times align with block boundaries."""
-        from datetime import timedelta
-        
-        # Check if start time aligns with block boundaries (e.g., on the hour)
-        if start.minute != 0 or start.second != 0:
-            raise ValidationError("Start time must align with block boundaries (e.g., 9:00, 10:00)")
-        
-        # Check if duration is a multiple of block duration
-        duration_minutes = int((end - start).total_seconds() / 60)
-        if duration_minutes % block_duration != 0:
-            raise ValidationError(f"Duration must be a multiple of {block_duration} minutes")
-
-    def _create_blocks_for_availability(self, availability: AvailabilityModel, block_duration: int) -> None:
-        """Create appointment blocks for an availability period."""
-        from datetime import timedelta
-        
-        current_time = availability.start_at
-        block_number = 1
-        
-        while current_time < availability.end_at:
-            block_end = current_time + timedelta(minutes=block_duration)
-            
-            block = AppointmentBlockModel(
-                availability_id=availability.id,
-                block_number=block_number,
-                start_at=current_time,
-                end_at=block_end,
-                is_booked=False,
-            )
-            self._session.add(block)
-            
-            current_time = block_end
-            block_number += 1
-        
-        self._session.flush()
