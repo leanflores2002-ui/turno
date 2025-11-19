@@ -11,6 +11,7 @@ class User(BaseModel):
     is_active: bool
     is_superuser: bool
     full_name: Optional[str] = None
+    role: str
 
 
 class Patient(User):
@@ -23,6 +24,7 @@ class Doctor(User):
     specialty: Optional[str] = None
     license_number: Optional[str] = None
     years_experience: int = 0
+    office_id: Optional[int] = None
 
 
 class Admin(User):
@@ -48,6 +50,7 @@ class DoctorCreate(UserCreate):
     specialty: Optional[str] = None
     license_number: Optional[str] = None
     years_experience: int = 0
+    office_id: Optional[int] = None
 
 
 class AdminCreate(UserCreate):
@@ -73,6 +76,7 @@ class DoctorUpdate(UserUpdate):
     specialty: Optional[str] = None
     license_number: Optional[str] = None
     years_experience: Optional[int] = None
+    office_id: Optional[int] = None
 
 
 class AdminUpdate(UserUpdate):

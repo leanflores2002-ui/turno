@@ -1,65 +1,91 @@
-.doctor-shell {
+// Doctor shell specific styles for dashboard and appointments
+.doctor-dashboard {
   display: grid;
   gap: 2rem;
-  padding: 2rem 0 3rem;
 }
 
-.doctor-shell__hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+.doctor-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
+}
+
+.stat-card {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--gray-600, #6b7280);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-number {
+  margin: 0;
+  color: var(--brand-900, #0f766e);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.doctor-dashboard__recent {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 2rem;
 }
 
-.doctor-shell__hero h2 {
-  margin: 0;
-  color: var(--brand-900);
+.doctor-dashboard__recent h3 {
+  margin: 0 0 1.5rem;
+  color: var(--brand-900, #0f766e);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-.doctor-shell__hero p {
-  margin: 0.5rem 0 0;
-  color: var(--gray-600);
-}
-
-.doctor-shell__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 2rem;
-}
-
-.doctor-shell__column {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.doctor-shell__column--records {
-  align-content: start;
-}
-
-.doctor-shell__appointments {
+.appointments-section {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   display: grid;
   gap: 1.25rem;
 }
 
-.doctor-shell__appointments-header h3 {
+.appointments-header h3 {
   margin: 0;
-  color: var(--brand-900);
+  color: var(--brand-900, #0f766e);
 }
 
-.doctor-shell__appointments-header p {
+.appointments-header p {
   margin: 0.35rem 0 0;
-  color: var(--gray-600);
+  color: var(--gray-600, #6b7280);
 }
 
-.doctor-shell__placeholder {
+.placeholder {
   margin: 0;
-  color: var(--gray-600);
+  color: var(--gray-600, #6b7280);
   font-style: italic;
+  text-align: center;
+  padding: 2rem;
 }
 
-.doctor-shell__appointments-list {
+.error-message {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.appointments-list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -67,7 +93,7 @@
   gap: 1rem;
 }
 
-.doctor-shell__appointment-item {
+.appointment-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,17 +104,17 @@
   background: rgba(236, 254, 255, 0.6);
 }
 
-.doctor-shell__appointment-item h4 {
+.appointment-item h4 {
   margin: 0;
-  color: var(--brand-900);
+  color: var(--brand-900, #0f766e);
 }
 
-.doctor-shell__appointment-item p {
+.appointment-item p {
   margin: 0.35rem 0 0;
-  color: var(--gray-600);
+  color: var(--gray-600, #6b7280);
 }
 
-.doctor-shell__status {
+.status {
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -96,49 +122,30 @@
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
   background: rgba(14, 116, 144, 0.15);
-  color: var(--brand-800);
+  color: var(--brand-800, #0d9488);
 }
 
-.doctor-shell__status.confirmed {
+.status.confirmed {
   background: rgba(16, 185, 129, 0.2);
   color: #047857;
 }
 
-.doctor-shell__status.canceled {
+.status.canceled {
   background: rgba(239, 68, 68, 0.2);
   color: #b91c1c;
 }
 
-.doctor-shell__status.completed {
+.status.completed {
   background: rgba(59, 130, 246, 0.2);
   color: #1d4ed8;
 }
 
-.doctor-shell__status.pending {
+.status.pending {
   background: rgba(14, 116, 144, 0.15);
-  color: var(--brand-800);
-}
-
-.doctor-shell__message {
-  margin: 0;
-  padding: 0.65rem 0.85rem;
-  border-radius: 12px;
-  font-weight: 600;
-}
-
-.doctor-shell__message.error {
-  background: #fee2e2;
-  color: #991b1b;
+  color: var(--brand-800, #0d9488);
 }
 
 .btn.btn-secondary {
   border-color: rgba(14, 116, 144, 0.3);
-  color: var(--brand-700);
-}
-
-@media (min-width: 960px) {
-  .doctor-shell__grid {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    align-items: start;
-  }
+  color: var(--brand-700, #0d9488);
 }

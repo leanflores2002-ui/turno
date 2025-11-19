@@ -11,6 +11,7 @@ from app.db.base import Base
 if TYPE_CHECKING:  # pragma: no cover
     from app.models.admin import Admin
     from app.models.appointment import Appointment
+    from app.models.doctor import Doctor
 
 
 class Office(Base):
@@ -29,6 +30,7 @@ class Office(Base):
     )
 
     administrators: Mapped[list["Admin"]] = relationship(back_populates="office")
+    doctors: Mapped[list["Doctor"]] = relationship(back_populates="office")
     appointments: Mapped[list["Appointment"]] = relationship(back_populates="office")
 
     def __repr__(self) -> str:  # pragma: no cover

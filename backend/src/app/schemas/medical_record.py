@@ -45,6 +45,7 @@ class MedicalRecord(MedicalRecordBase):
     id: PositiveInt
     created_at: datetime
     updated_at: datetime
+    doctor_name: Optional[str] = None
 
 
 __all__ = ["MedicalRecord", "MedicalRecordCreate", "MedicalRecordUpdate"]

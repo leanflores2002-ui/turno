@@ -98,7 +98,10 @@ def main() -> int:
     report.append({"step": "doctor_login", "result": {"access_token": login["access_token"]}})
 
     # Create availability
-    start_at = datetime.now(timezone.utc) + timedelta(days=1)
+    # Align to next full hour to satisfy block boundary validation
+    now_utc = datetime.now(timezone.utc)
+    next_hour = (now_utc.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1))
+    start_at = next_hour + timedelta(days=1)
     end_at = start_at + timedelta(hours=1)
     availability_payload = {
         "doctor_id": doctor_id,
@@ -190,6 +193,53 @@ def main() -> int:
         label="list_doctor_records",
     )
     report.append({"step": "list_doctor_records", "result": doctor_records})
+
+    # ------------------------------------------------------------------
+    # Offices CRUD smoke
+    office_code = f"OFC-{suffix}"
+    office_payload = {
+        "code": office_code,
+        "name": "Consultorio API",
+        "address": "Av. Siempre Viva 123",
+    }
+    created_office = expect_status(
+        client.post("/api/v1/offices/", json=office_payload),
+        201,
+        label="create_office",
+    )
+    report.append({"step": "create_office", "result": created_office})
+    office_id = created_office["id"]
+
+    offices_list = expect_status(
+        client.get("/api/v1/offices/"),
+        200,
+        label="list_offices",
+    )
+    report.append({"step": "list_offices", "result": offices_list})
+
+    fetched_office = expect_status(
+        client.get(f"/api/v1/offices/{office_id}"),
+        200,
+        label="get_office",
+    )
+    report.append({"step": "get_office", "result": fetched_office})
+
+    updated_office = expect_status(
+        client.put(
+            f"/api/v1/offices/{office_id}",
+            json={"name": "Consultorio API Actualizado"},
+        ),
+        200,
+        label="update_office",
+    )
+    report.append({"step": "update_office", "result": updated_office})
+
+    delete_resp = client.delete(f"/api/v1/offices/{office_id}")
+    if delete_resp.status_code != 204:
+        raise RuntimeError(
+            f"delete_office failed: expected HTTP 204, got {delete_resp.status_code}: {delete_resp.text}"
+        )
+    report.append({"step": "delete_office", "result": {"status": 204}})
 
     # Output compact summary
     print(json.dumps(report, ensure_ascii=False, indent=2))

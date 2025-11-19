@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 
 from app.db.broker import get_dbbroker
 from app.schemas.appointment import (
     Appointment,
+    AppointmentBlock,
     AppointmentCreate,
     Availability,
     AvailabilityCreate,
@@ -105,3 +108,25 @@ def update_availability(availability_id: int, data: AvailabilityUpdate) -> Avail
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         except ValidationError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+def get_doctor_availability(doctor_id: int) -> list[Availability]:
+    """Get doctor's availability with blocks."""
+    broker = get_dbbroker()
+    with broker.session() as session:
+        svc = AppointmentsService(session)
+        try:
+            return svc.list_availability(doctor_id)
+        except ValidationError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+def get_available_blocks(doctor_id: int, start_date: datetime, end_date: datetime) -> list[AppointmentBlock]:
+    """Get available appointment blocks for a doctor within a date range."""
+    broker = get_dbbroker()
+    with broker.session() as session:
+        svc = AppointmentsService(session)
+        try:
+            return svc.list_available_blocks(doctor_id, start_date, end_date)
+        except ValidationError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc

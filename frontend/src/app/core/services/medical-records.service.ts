@@ -31,4 +31,8 @@ export class MedicalRecordsService {
   ): Observable<MedicalRecordDto> {
     return this.http.patch<MedicalRecordDto>(`${API_BASE_URL}/medical-records/${recordId}`, payload);
   }
+
+  getPatientHistory(patientId: number): Observable<MedicalRecordDto[]> {
+    return this.http.get<MedicalRecordDto[]>(`${API_BASE_URL}/medical-records/patients/${patientId}/history`);
+  }
 }

@@ -1,83 +1,132 @@
-<section class="doctor-shell">
-  <header class="doctor-shell__hero card">
-    <div>
-      <h2>Agenda del profesional</h2>
-      <p>
-        {{ doctorName() ? ('Bienvenido, ' + doctorName() + '.') : 'Gestioná tus turnos y fichas clínicas.' }}
-      </p>
-    </div>
+<app-tabbed-shell
+  title="Agenda del profesional"
+  [subtitle]="doctorName() ? ('Bienvenido, ' + doctorName() + '.') : 'Gestioná tus turnos y fichas clínicas.'"
+  [tabs]="tabs"
+  [errorMessage]="appointmentsError() || availabilityError() || recordsError()"
+>
+  <div slot="actions">
     <button class="btn btn-secondary" type="button" (click)="refreshAppointments()" [disabled]="isLoadingAppointments()">
       {{ isLoadingAppointments() ? 'Actualizando…' : 'Actualizar turnos' }}
     </button>
-  </header>
+  </div>
 
-  <div class="doctor-shell__grid">
-    <div class="doctor-shell__column">
-      <app-doctor-availability
-        [availability]="availability()"
-        [loading]="isLoadingAvailability()"
-        [createPending]="isCreatingAvailability()"
-        [mutationId]="availabilityMutationId()"
-        [error]="availabilityError()"
-        [message]="availabilityMessage()"
-        [doctorName]="doctorName()"
-        (refresh)="refreshAvailability()"
-        (create)="onCreateAvailability($event)"
-        (update)="onUpdateAvailability($event)"
-      ></app-doctor-availability>
-
-      <section class="doctor-shell__appointments card">
-        <header class="doctor-shell__appointments-header">
-          <div>
-            <h3>Turnos agendados</h3>
-            <p>Visualizá tu agenda próxima.</p>
-          </div>
-        </header>
-
-        @if (appointmentsError()) {
-          <p class="doctor-shell__message error">{{ appointmentsError() }}</p>
-        }
-
+  <div slot="dashboard">
+    <div class="doctor-dashboard">
+      <div class="doctor-dashboard__stats">
+        <div class="stat-card">
+          <h3>Turnos Hoy</h3>
+          <p class="stat-number">{{ sortedAppointments().length }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Disponibilidad</h3>
+          <p class="stat-number">{{ availability().length }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Registros</h3>
+          <p class="stat-number">{{ records().length }}</p>
+        </div>
+      </div>
+      
+      <div class="doctor-dashboard__recent">
+        <h3>Próximos Turnos</h3>
         @if (isLoadingAppointments() && !sortedAppointments().length) {
-          <p class="doctor-shell__placeholder">Cargando turnos…</p>
+          <p class="placeholder">Cargando turnos…</p>
         } @else if (!sortedAppointments().length) {
-          <p class="doctor-shell__placeholder">
+          <p class="placeholder">
             Todavía no tenés turnos asignados. Tus citas confirmadas aparecerán acá.
           </p>
         } @else {
-          <ul class="doctor-shell__appointments-list">
-            @for (appointment of sortedAppointments(); track appointment.id) {
-              <li class="doctor-shell__appointment-item">
+          <ul class="appointments-list">
+            @for (appointment of sortedAppointments().slice(0, 5); track appointment.id) {
+              <li class="appointment-item">
                 <div>
                   <h4>Paciente #{{ appointment.patient_id }}</h4>
                   <p>
-                    {{ appointment.startAt | date: 'EEEE d MMMM' : 'UTC' }} ·
-                    {{ appointment.startAt | date: 'HH:mm' : 'UTC' }} -
-                    {{ appointment.endAt | date: 'HH:mm' : 'UTC' }}
+                    {{ appointment.startAt | date: 'EEEE d MMMM' }} ·
+                    {{ appointment.startAt | date: 'HH:mm' }} -
+                    {{ appointment.endAt | date: 'HH:mm' }}
                   </p>
                 </div>
-                <span class="doctor-shell__status" [ngClass]="appointment.status">
+                <span class="status" [ngClass]="appointment.status">
                   {{ appointment.status }}
                 </span>
               </li>
             }
           </ul>
         }
-      </section>
-    </div>
-
-    <div class="doctor-shell__column doctor-shell__column--records">
-      <app-doctor-records
-        [records]="records()"
-        [loading]="isLoadingRecords()"
-        [saving]="isSavingRecord()"
-        [mutationId]="recordMutationId()"
-        [error]="recordsError()"
-        [message]="recordsMessage()"
-        (refresh)="refreshRecords()"
-        (createRecord)="onCreateRecord($event)"
-        (updateRecord)="onUpdateRecord($event)"
-      ></app-doctor-records>
+      </div>
     </div>
   </div>
-</section>
+
+  <div slot="availability">
+    <app-doctor-availability
+      [availability]="availability()"
+      [loading]="isLoadingAvailability()"
+      [createPending]="isCreatingAvailability()"
+      [mutationId]="availabilityMutationId()"
+      [error]="availabilityError()"
+      [message]="availabilityMessage()"
+      [doctorName]="doctorName()"
+      (refresh)="refreshAvailability()"
+      (create)="onCreateAvailability($event)"
+      (update)="onUpdateAvailability($event)"
+    ></app-doctor-availability>
+  </div>
+
+  <div slot="appointments">
+    <section class="appointments-section">
+      <header class="appointments-header">
+        <div>
+          <h3>Turnos agendados</h3>
+          <p>Visualizá tu agenda próxima.</p>
+        </div>
+      </header>
+
+      @if (appointmentsError()) {
+        <p class="error-message">{{ appointmentsError() }}</p>
+      }
+
+      @if (isLoadingAppointments() && !sortedAppointments().length) {
+        <p class="placeholder">Cargando turnos…</p>
+      } @else if (!sortedAppointments().length) {
+        <p class="placeholder">
+          Todavía no tenés turnos asignados. Tus citas confirmadas aparecerán acá.
+        </p>
+      } @else {
+        <ul class="appointments-list">
+          @for (appointment of sortedAppointments(); track appointment.id) {
+            <li class="appointment-item">
+              <div>
+                <h4>Paciente #{{ appointment.patient_id }}</h4>
+                <p>
+                  {{ appointment.startAt | date: 'EEEE d MMMM' }} ·
+                  {{ appointment.startAt | date: 'HH:mm' }} -
+                  {{ appointment.endAt | date: 'HH:mm' }}
+                </p>
+              </div>
+              <span class="status" [ngClass]="appointment.status">
+                {{ appointment.status }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  </div>
+
+  <div slot="records">
+    <app-doctor-records
+      [patients]="patients()"
+      [records]="records()"
+      [loadingPatients]="isLoadingPatients()"
+      [loadingRecords]="isLoadingRecords()"
+      [saving]="isSavingRecord()"
+      [mutationId]="recordMutationId()"
+      [error]="recordsError() || patientsError()"
+      [message]="recordsMessage()"
+      [doctorId]="doctorId"
+      (refresh)="refreshRecords(); refreshPatients()"
+      (updateRecord)="onUpdateRecord($event)"
+    ></app-doctor-records>
+  </div>
+</app-tabbed-shell>

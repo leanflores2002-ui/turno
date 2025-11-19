@@ -1,47 +1,13 @@
-<section class="doctor-records card">
+<section class="doctor-records">
   <header class="doctor-records__header">
     <div>
       <h3>Historias clínicas</h3>
-      <p>Registrá evoluciones y notas de tus consultas.</p>
+      <p>Seleccioná un paciente para ver su historial médico o agregar un nuevo registro.</p>
     </div>
-    <button type="button" class="btn btn-secondary" (click)="refresh.emit()" [disabled]="loading">
-      {{ loading ? 'Actualizando…' : 'Actualizar' }}
+    <button type="button" class="btn btn-secondary" (click)="refresh.emit()" [disabled]="loadingPatients || loadingRecords">
+      {{ (loadingPatients || loadingRecords) ? 'Actualizando…' : 'Actualizar' }}
     </button>
   </header>
-
-  <form class="doctor-records__form" [formGroup]="createForm" (ngSubmit)="submitCreate()">
-    <div class="doctor-records__form-grid">
-      <label>
-        <span>ID de paciente *</span>
-        <input class="input" type="number" min="1" formControlName="patientId" placeholder="Ej: 120" />
-      </label>
-
-      <label>
-        <span>Diagnóstico</span>
-        <input class="input" type="text" formControlName="diagnosis" placeholder="Diagnóstico breve" />
-      </label>
-    </div>
-
-    <label>
-      <span>Tratamiento</span>
-      <textarea class="input doctor-records__textarea" rows="2" formControlName="treatment"></textarea>
-    </label>
-
-    <label>
-      <span>Notas</span>
-      <textarea class="input doctor-records__textarea" rows="3" formControlName="notes"></textarea>
-    </label>
-
-    @if (createFormError()) {
-      <p class="doctor-records__form-error">{{ createFormError() }}</p>
-    }
-
-    <div class="doctor-records__actions">
-      <button type="submit" class="btn btn-primary" [disabled]="saving">
-        {{ saving ? 'Guardando…' : 'Crear registro' }}
-      </button>
-    </div>
-  </form>
 
   @if (message) {
     <p class="doctor-records__alert success">{{ message }}</p>
@@ -51,79 +17,19 @@
     <p class="doctor-records__alert error">{{ error }}</p>
   }
 
-  @if (loading && !hasRecords) {
-    <p class="doctor-records__placeholder">Cargando historial…</p>
-  } @else if (!hasRecords) {
-    <p class="doctor-records__placeholder">
-      Aún no registraste evoluciones. Utilizá el formulario para documentar tus consultas.
-    </p>
-  } @else {
-    <ul class="doctor-records__list">
-      @for (record of records; track trackByRecord) {
-        <li class="doctor-records__item">
-          <div class="doctor-records__item-summary">
-            <h4>Paciente #{{ record.patient_id }}</h4>
-            <p>
-              Creado {{ record.created_at | date: 'd MMM, HH:mm' : 'UTC' }} ·
-              Última actualización {{ record.updated_at | date: 'd MMM, HH:mm' : 'UTC' }}
-            </p>
-            <dl>
-              <div>
-                <dt>Diagnóstico</dt>
-                <dd>{{ record.diagnosis || '—' }}</dd>
-              </div>
-              <div>
-                <dt>Tratamiento</dt>
-                <dd>{{ record.treatment || '—' }}</dd>
-              </div>
-              <div>
-                <dt>Notas</dt>
-                <dd>{{ record.notes || '—' }}</dd>
-              </div>
-            </dl>
-          </div>
+  <app-doctor-patients-list
+    [patients]="patients"
+    [loading]="loadingPatients"
+    [error]="error"
+    (patientSelected)="onPatientSelected($event)"
+  ></app-doctor-patients-list>
 
-          <div class="doctor-records__item-actions">
-            @if (editingRecordId() === record.id) {
-              <form class="doctor-records__edit-form" [formGroup]="editForm" (ngSubmit)="submitEdit()">
-                <label>
-                  <span>Diagnóstico</span>
-                  <input class="input" type="text" formControlName="diagnosis" />
-                </label>
-                <label>
-                  <span>Tratamiento</span>
-                  <textarea class="input doctor-records__textarea" rows="2" formControlName="treatment"></textarea>
-                </label>
-                <label>
-                  <span>Notas</span>
-                  <textarea class="input doctor-records__textarea" rows="3" formControlName="notes"></textarea>
-                </label>
-
-                @if (editFormError()) {
-                  <p class="doctor-records__form-error">{{ editFormError() }}</p>
-                }
-
-                <div class="doctor-records__edit-actions">
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    [disabled]="mutationId === record.id"
-                  >
-                    {{ mutationId === record.id ? 'Actualizando…' : 'Guardar cambios' }}
-                  </button>
-                  <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            } @else {
-              <button type="button" class="btn btn-secondary" (click)="startEdit(record)">
-                Editar registro
-              </button>
-            }
-          </div>
-        </li>
-      }
-    </ul>
+  @if (showModal() && selectedPatient() && doctorId) {
+    <app-patient-medical-modal
+      [patientId]="selectedPatient()!.id"
+      [patientName]="selectedPatient()!.full_name || 'Paciente #' + selectedPatient()!.id"
+      [doctorId]="doctorId"
+      (modalClose)="onModalClose($event)"
+    ></app-patient-medical-modal>
   }
 </section>

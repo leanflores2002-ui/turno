@@ -1,26 +1,25 @@
-<section class="patient-shell card">
-  <header class="patient-shell__header">
-    <div>
-      <h2>Tu espacio de paciente</h2>
-      <p>Actualizá tus datos personales y consultá tus próximos turnos.</p>
-    </div>
+<app-tabbed-shell
+  title="Tu espacio de paciente"
+  subtitle="Actualizá tus datos personales y consultá tus próximos turnos."
+  [tabs]="tabs"
+  [errorMessage]="errorMessage()"
+>
+  <div slot="actions">
     <button class="btn btn-secondary" type="button" (click)="refresh()">
       Refrescar datos
     </button>
-  </header>
+  </div>
 
-  @if (errorMessage()) {
-    <p class="patient-shell__error">{{ errorMessage() }}</p>
-  }
-
-  <div class="patient-shell__grid">
+  <div slot="profile">
     <app-patient-profile
       [patient]="profile()"
       [loading]="isLoadingProfile()"
       [saving]="isSavingProfile()"
       (save)="onProfileSave($event)"
     />
+  </div>
 
+  <div slot="appointments">
     <app-patient-appointments
       [appointments]="sortedAppointments()"
       [loading]="isLoadingAppointments()"
@@ -28,12 +27,16 @@
       (cancel)="onCancelAppointment($event)"
       (confirm)="onConfirmAppointment($event)"
     />
+  </div>
 
+  <div slot="booking">
     <app-patient-booking
       [patientId]="currentUserId"
       (booked)="onAppointmentBooked($event)"
     />
+  </div>
 
+  <div slot="records">
     <app-patient-medical-records
       [records]="medicalRecords()"
       [loading]="isLoadingRecords()"
@@ -41,4 +44,4 @@
       (refresh)="onRefreshRecords()"
     />
   </div>
-</section>
+</app-tabbed-shell>

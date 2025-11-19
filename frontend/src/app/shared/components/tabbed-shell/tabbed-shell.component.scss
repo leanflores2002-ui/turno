@@ -1,0 +1,150 @@
+.tabbed-shell {
+  padding: 2rem;
+  display: grid;
+  gap: 2rem;
+  min-height: 100vh;
+}
+
+.tabbed-shell__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tabbed-shell__title h2 {
+  margin: 0;
+  color: var(--brand-900, #0f766e);
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.tabbed-shell__title p {
+  margin: 0.5rem 0 0;
+  color: var(--gray-600, #6b7280);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.tabbed-shell__actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.tabbed-shell__error {
+  margin: 0;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  font-weight: 500;
+}
+
+.tabbed-shell__tabs {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  ::ng-deep {
+    .mat-mdc-tab-group {
+      .mat-mdc-tab-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        background: #f8fafc;
+      }
+
+      .mat-mdc-tab {
+        min-width: 120px;
+        
+        .mat-mdc-tab-label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 1rem 1.5rem;
+          font-weight: 500;
+          color: var(--gray-600, #6b7280);
+          
+          mat-icon {
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+          }
+        }
+
+        &.mdc-tab--active .mat-mdc-tab-label {
+          color: var(--brand-700, #0d9488);
+          font-weight: 600;
+        }
+
+        &:hover .mat-mdc-tab-label {
+          color: var(--brand-600, #0d9488);
+        }
+      }
+
+      .mat-mdc-tab-body-wrapper {
+        .mat-mdc-tab-body-content {
+          padding: 2rem;
+          min-height: 400px;
+        }
+      }
+    }
+  }
+}
+
+.tabbed-shell__content {
+  width: 100%;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .tabbed-shell {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .tabbed-shell__header {
+    padding: 1.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .tabbed-shell__actions {
+    justify-content: flex-end;
+  }
+
+  .tabbed-shell__tabs {
+    ::ng-deep {
+      .mat-mdc-tab-group {
+        .mat-mdc-tab {
+          min-width: 80px;
+          
+          .mat-mdc-tab-label {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            
+            mat-icon {
+              font-size: 0.875rem;
+              width: 0.875rem;
+              height: 0.875rem;
+            }
+          }
+        }
+
+        .mat-mdc-tab-body-wrapper {
+          .mat-mdc-tab-body-content {
+            padding: 1.5rem;
+            min-height: 300px;
+          }
+        }
+      }
+    }
+  }
+}

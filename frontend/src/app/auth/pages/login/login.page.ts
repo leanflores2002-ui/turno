@@ -21,7 +21,7 @@ export class LoginPage {
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    role: 'user' as UserRole
+    role: 'patient' as UserRole
   });
 
   errorMessage = '';
@@ -55,6 +55,10 @@ export class LoginPage {
         break;
       case 'admin':
         this.router.navigate(['/admin']);
+        break;
+      case 'patient':
+      case 'user':
+        this.router.navigate(['/patient']);
         break;
       default:
         this.router.navigate(['/patient']);
