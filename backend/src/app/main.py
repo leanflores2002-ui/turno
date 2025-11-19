@@ -8,7 +8,7 @@ def create_app() -> FastAPI:
     app = FastAPI(title="TurnoPlus API", version="0.1.0")
 
     allowed_origins = [
-        "http://localhost:4200",
+        "turnoplus.netlify.app",
         "http://127.0.0.1:4200",
     ]
 
