@@ -14,21 +14,18 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="catalog">
+  <div class="announcement-bar" role="status" aria-live="polite">
+    <span>Envío gratis en compras desde $15.000</span>
+  </div>
   <div class="site-shell">
     <header class="site-header">
       <a class="brand-lockup" href="index.html" aria-label="Jazmin Macetas">
         <span class="brand-mark">JM</span>
         <div>
-          <p class="eyebrow">Catalogo</p>
+          <p class="eyebrow">Productos</p>
           <h1>Jazmin Macetas</h1>
         </div>
       </a>
-
-      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
 
       <nav class="main-nav" id="main-nav" aria-label="Principal">
         <a href="index.html">Inicio</a>
@@ -42,6 +39,12 @@
 
       <button class="primary-button compact header-cta" type="button" data-open-order>
         Hacer pedido
+      </button>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </header>
 
@@ -73,15 +76,54 @@
     </main>
 
     <footer class="site-footer" id="contacto">
-      <div>
-        <p class="eyebrow">Contacto</p>
-        <h2>Jazmin Macetas</h2>
-        <p>Pedidos personalizados, regalos, souvenirs y venta por mayor coordinados por WhatsApp.</p>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="brand-mark">JM</span>
+          <p class="footer-tagline">Piezas de yeso cerámico hechas a mano para espacios con personalidad.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram" class="social-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+            </a>
+            <a href="https://wa.me/5491100000000" aria-label="WhatsApp" class="social-link" id="footer-whatsapp" target="_blank" rel="noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.12 1.535 5.849L.057 23.571a.5.5 0 00.6.6l5.764-1.476A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.003-1.37l-.36-.214-3.716.952.97-3.634-.234-.373A9.79 9.79 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Catálogo</h4>
+          <nav>
+            <a href="productos.html">Todos los productos</a>
+            <a href="productos.html?categoria=macetas">Macetas</a>
+            <a href="productos.html?categoria=floreros">Floreros</a>
+            <a href="productos.html?categoria=combos">Combos</a>
+            <a href="productos.html?categoria=por-mayor">Por mayor</a>
+          </nav>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Ayuda</h4>
+          <nav>
+            <a href="index.html#como-comprar">Cómo comprar</a>
+            <a href="nosotros.html">Nuestra historia</a>
+            <a href="https://wa.me/5491100000000" id="footer-whatsapp-help" target="_blank" rel="noreferrer">Contacto por WhatsApp</a>
+          </nav>
+        </div>
+
+        <div class="footer-col footer-col-cta">
+          <h4 class="footer-col-title">¿Listo para pedir?</h4>
+          <p>Armá tu selección y coordinamos todo por WhatsApp, sin pasos complicados.</p>
+          <button class="primary-button" type="button" data-open-order>Hacer pedido</button>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="index.html">Inicio</a>
-        <a href="nosotros.html">Nosotros</a>
-        <button class="text-button" type="button" data-open-order>Hacer pedido</button>
+
+      <div class="footer-bottom">
+        <p>© 2025 Jazmin Macetas · Hecho a mano con cuidado</p>
+        <div class="footer-payment-icons">
+          <span>Transferencia</span>
+          <span>Efectivo</span>
+          <span>Mercado Pago</span>
+        </div>
       </div>
     </footer>
   </div>
@@ -125,5 +167,25 @@
   <script src="productos.js"></script>
   <script src="database.js"></script>
   <script src="script.js"></script>
+  <script>
+  (function() {
+    const msgs = [
+      "Envío gratis en compras desde $15.000",
+      "Piezas artesanales de yeso cerámico hechas a mano",
+      "Pedidos personalizados por WhatsApp · Sin mínimo"
+    ];
+    const el = document.querySelector(".announcement-bar span");
+    if (!el) return;
+    let i = 0;
+    setInterval(() => {
+      el.style.opacity = "0";
+      setTimeout(() => {
+        i = (i + 1) % msgs.length;
+        el.textContent = msgs[i];
+        el.style.opacity = "1";
+      }, 500);
+    }, 4000);
+  })();
+  </script>
 </body>
 </html>
