@@ -6,6 +6,16 @@
     return JSON.parse(JSON.stringify(value));
   }
 
+  function slugify(value) {
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "")
+      .slice(0, 64);
+  }
+
   function sortCategories(categories) {
     return categories.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || a.name.localeCompare(b.name));
   }
@@ -19,25 +29,67 @@
   function normalizeCategory(category) {
     return {
       id: category.id,
-      name: category.name.trim(),
+      name: String(category.name || "").trim(),
       description: category.description?.trim() || "",
+      image: category.image?.trim() || "img/placeholder.svg",
       order: Number(category.order) || 0,
     };
   }
 
   function normalizeProduct(product) {
+    const name = String(product.name || product.nombre || "").trim();
+    const shortDescription =
+      product.shortDescription?.trim() ||
+      product.descripcionCorta?.trim() ||
+      product.description?.trim() ||
+      "";
+    const fullDescription =
+      product.fullDescription?.trim() ||
+      product.descripcionCompleta?.trim() ||
+      shortDescription;
+    const image = product.image?.trim() || product.imagenPrincipal?.trim() || "img/placeholder.svg";
+    const gallerySource = product.gallery || product.imagenes || [];
+    const gallery = Array.isArray(gallerySource) ? gallerySource.filter(Boolean) : [];
+    const tags = Array.isArray(product.tags)
+      ? product.tags.filter(Boolean)
+      : product.etiqueta
+        ? [product.etiqueta]
+        : [];
+    const careSource = product.care || product.cuidados || [];
+
     return {
       id: product.id,
-      name: product.name.trim(),
-      categoryId: product.categoryId,
-      price: Number(product.price) || 0,
-      description: product.description?.trim() || "",
-      image: product.image?.trim() || "",
-      gallery: Array.isArray(product.gallery) ? product.gallery.filter(Boolean) : [],
-      colors: Array.isArray(product.colors) ? product.colors.filter(Boolean) : [],
-      sizes: Array.isArray(product.sizes) ? product.sizes.filter(Boolean) : [],
-      tags: Array.isArray(product.tags) ? product.tags.filter(Boolean) : [],
-      status: product.status === "out_of_stock" ? "out_of_stock" : "available",
+      slug: product.slug?.trim() || slugify(name || product.id),
+      name,
+      categoryId: product.categoryId || product.categoriaId,
+      price: Number(product.price ?? product.precio) || 0,
+      description: shortDescription,
+      shortDescription,
+      fullDescription,
+      image,
+      gallery: gallery.length ? gallery : [image],
+      colors: Array.isArray(product.colors || product.colores)
+        ? (product.colors || product.colores).filter(Boolean)
+        : [],
+      sizes: Array.isArray(product.sizes || product.tamanios)
+        ? (product.sizes || product.tamanios).filter(Boolean)
+        : [],
+      tags,
+      material: product.material?.trim() || "Yeso ceramico",
+      finish: product.finish?.trim() || product.terminacion?.trim() || "Pintado y sellado con barniz",
+      style: product.style?.trim() || product.estilo?.trim() || "Minimalista artesanal",
+      use: product.use?.trim() || product.uso?.trim() || "Decorativo / funcional",
+      personalization:
+        product.personalization?.trim() ||
+        product.personalizacion?.trim() ||
+        "Consultar colores disponibles",
+      idealFor:
+        product.idealFor?.trim() ||
+        product.idealPara?.trim() ||
+        "Hogar, regalos, souvenirs y emprendimientos",
+      care: Array.isArray(careSource) ? careSource.filter(Boolean) : [],
+      featured: product.featured === true || product.destacado === true,
+      status: product.status === "out_of_stock" || product.disponible === false ? "out_of_stock" : "available",
       active: product.active !== false,
       order: Number(product.order) || 0,
     };
@@ -116,7 +168,7 @@
     const next = normalizeProduct(product);
     const exists = store.products.some((item) => item.id === next.id);
     const products = exists
-      ? store.products.map((item) => (item.id === next.id ? next : item))
+      ? store.products.map((item) => (item.id === next.id ? { ...item, ...next } : item))
       : store.products.concat(next);
     return saveStore({ ...store, products });
   }
@@ -163,5 +215,6 @@
     deleteProduct,
     subscribe,
     resetStore,
+    slugify,
   };
 })();

@@ -6,282 +6,171 @@
   <title>Jazmin Macetas</title>
   <meta
     name="description"
-    content="Catalogo artesanal de macetas, floreros y deco de yeso. Arma tu pedido y envialo directo por WhatsApp."
+    content="Jazmin Macetas: catalogo artesanal de macetas, floreros y deco en yeso ceramico con pedidos personalizados por WhatsApp."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-page="home">
   <div class="site-shell">
     <header class="site-header" id="inicio">
-      <div class="brand-lockup">
+      <a class="brand-lockup" href="index.html" aria-label="Jazmin Macetas">
         <span class="brand-mark">JM</span>
         <div>
-          <p class="eyebrow">Hecho a mano en yeso</p>
+          <p class="eyebrow">Hecho a mano</p>
           <h1>Jazmin Macetas</h1>
         </div>
-      </div>
+      </a>
 
-      <nav class="main-nav" aria-label="Principal">
-        <a href="#inicio">Inicio</a>
-        <a href="#catalogo">Productos</a>
-        <a href="#destacados">Combos</a>
-        <a href="#mayorista">Por mayor</a>
-        <a href="#nosotros">Nosotros</a>
-        <a href="#como-comprar">Como comprar</a>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="main-nav" aria-label="Principal">
+        <a href="index.html#inicio" aria-current="page">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="productos.html?categoria=combos">Combos</a>
+        <a href="productos.html?categoria=por-mayor">Por mayor</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="index.html#como-comprar">Como comprar</a>
         <a href="#contacto">Contacto</a>
       </nav>
 
-      <button class="primary-button compact" type="button" data-scroll-order>
+      <button class="primary-button compact header-cta" type="button" data-open-order>
         Hacer pedido
       </button>
     </header>
 
-    <main>
-      <section class="hero">
+    <main class="page-main">
+      <section class="hero-section">
         <div class="hero-copy">
-          <p class="eyebrow">Catalogo artesanal</p>
-          <h2>Macetas, floreros y deco artesanal de yeso</h2>
-          <p>
-            Elegi tus productos favoritos, ajusta color y tamano, y arma tu pedido
-            para enviarlo por WhatsApp en un solo clic.
+          <p class="eyebrow">Yeso ceramico artesanal</p>
+          <h2>Jazmin Macetas</h2>
+          <h3>Macetas, floreros y deco artesanal de yeso</h3>
+          <p class="hero-description">
+            Piezas hechas a mano para darle esencia a cada rincon.
           </p>
 
           <div class="hero-actions">
-            <a class="primary-button" href="#catalogo">Ver catalogo</a>
-            <button class="secondary-button" type="button" data-scroll-order>
-              Hacer pedido
-            </button>
+            <a class="primary-button" href="productos.html">Ver catalogo</a>
+            <button class="secondary-button" type="button" data-open-order>Hacer pedido</button>
           </div>
 
-          <ul class="hero-points">
-            <li>Diseno delicado con tonos pastel</li>
-            <li>Pedido sin registro ni pago online</li>
-            <li>Coordinacion final por WhatsApp</li>
-          </ul>
+          <p class="hero-note">Ponele tu esencia a cada rincon.</p>
+
+          <div class="hero-stats" id="hero-stats"></div>
         </div>
 
-        <div class="hero-panel">
-          <div class="hero-card">
-            <p class="eyebrow">Seleccion curada</p>
-            <div class="hero-stats" id="hero-stats"></div>
-          </div>
-          <div class="hero-note">
-            <p>Combos para regalar, piezas por mayor y stock actualizado desde el panel oculto.</p>
+        <div class="hero-visual">
+          <div class="hero-visual-stage">
+            <figure class="hero-shot hero-shot-large">
+              <img src="img/florero-luna.svg" alt="Florero Luna">
+            </figure>
+            <figure class="hero-shot hero-shot-small hero-shot-top">
+              <img src="img/maceta-aura.svg" alt="Maceta Oval Aura">
+            </figure>
+            <figure class="hero-shot hero-shot-small hero-shot-bottom">
+              <img src="img/bandeja-lienzo.svg" alt="Bandeja Lienzo">
+            </figure>
+            <div class="hero-caption">
+              <p class="eyebrow">Seleccion curada</p>
+              <strong>Piezas para hogares, regalos, souvenirs y venta por mayor</strong>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="category-strip" aria-labelledby="categorias-title">
+      <section class="intro-section">
+        <div>
+          <p class="eyebrow">Presentacion</p>
+          <h2>Deco artesanal para espacios con personalidad</h2>
+        </div>
+        <div class="intro-copy">
+          <p>
+            Creamos piezas de yeso ceramico con diseno minimalista, pensadas para decorar
+            hogares, emprendimientos, eventos, souvenirs y rincones especiales.
+          </p>
+          <a class="text-link" href="nosotros.html">Conoce mas sobre nosotros</a>
+        </div>
+      </section>
+
+      <section class="category-section">
         <div class="section-heading">
-          <p class="eyebrow">Categorias</p>
-          <h2 id="categorias-title">Explora por tipo de pieza</h2>
-        </div>
-        <div class="filter-chips" id="category-filters"></div>
-      </section>
-
-      <section class="feature-grid" id="destacados">
-        <article class="feature-card">
-          <p class="eyebrow">Combos</p>
-          <h3>Sets listos para regalar o ambientar</h3>
-          <p>Combina floreros, bandejas y porta sahumerios con una estetica uniforme.</p>
-          <button class="text-button" type="button" data-filter="combos">Ver combos</button>
-        </article>
-        <article class="feature-card" id="mayorista">
-          <p class="eyebrow">Por mayor</p>
-          <h3>Piezas para tiendas, eventos y revendedores</h3>
-          <p>Selecciona modelos mayoristas y coordina cantidades especiales despues del pedido.</p>
-          <button class="text-button" type="button" data-filter="por-mayor">Ver por mayor</button>
-        </article>
-      </section>
-
-      <section class="about-section" id="nosotros">
-        <div class="section-heading about-heading">
           <div>
-            <p class="eyebrow">Nosotros</p>
-            <h2>Nosotros</h2>
-            <p class="about-subtitle">Piezas artesanales pensadas para transformar cada rincon.</p>
+            <p class="eyebrow">Categorias</p>
+            <h2>Explora el catalogo desde una mirada mas visual</h2>
           </div>
-          <p class="about-lead">
+          <a class="text-link" href="productos.html">Ver todos los productos</a>
+        </div>
+        <div class="category-mosaic" id="home-category-grid"></div>
+      </section>
+
+      <section class="featured-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Destacados</p>
+            <h2>Productos elegidos para regalar, decorar y revender</h2>
+          </div>
+          <a class="text-link" href="productos.html">Ir al catalogo completo</a>
+        </div>
+        <div class="featured-grid" id="featured-grid"></div>
+      </section>
+
+      <section class="home-about-section" id="nosotros">
+        <div class="home-about-copy">
+          <p class="eyebrow">Nosotros</p>
+          <h2>En Jazmin Macetas creamos objetos simples con presencia calida.</h2>
+          <p>
             En Jazmin Macetas creamos productos artesanales de yeso ceramico con diseno minimalista,
             pensados para decorar espacios con calidez, estilo y personalidad. Cada pieza nace del
-            trabajo hecho a mano, cuidando los detalles, la terminacion y la estetica para que pueda
-            formar parte de hogares, emprendimientos, regalos, souvenirs o proyectos de decoracion.
+            trabajo hecho a mano, cuidando los detalles, la terminacion y la estetica.
           </p>
+          <a class="primary-button" href="nosotros.html">Ver pagina Nosotros</a>
         </div>
 
-        <div class="about-story-grid">
-          <article class="about-card">
-            <p class="eyebrow">Nuestra mision</p>
-            <h3>Diseno artesanal con intencion cotidiana</h3>
-            <p>
-              Transformar espacios cotidianos en refugios de bienestar a traves de macetas decorativas
-              de yeso ceramico con diseno minimalista. Creamos para quienes decoran con intencion,
-              para clientes que eligen lo hecho a mano y para revendedores que confian en la calidad
-              y el estilo para hacer crecer sus propios proyectos.
-            </p>
-          </article>
-
-          <article class="about-card">
-            <p class="eyebrow">Nuestra vision</p>
-            <h3>Una marca referente en deco minimalista</h3>
-            <p>
-              Ser una marca referente en diseno artesanal minimalista, conectando la naturaleza con
-              la arquitectura del hogar y ofreciendo piezas decorativas de calidad para clientes
-              minoristas y mayoristas.
-            </p>
-          </article>
-
-          <article class="about-card">
-            <p class="eyebrow">Lo que hacemos</p>
-            <h3>Catalogo funcional para decorar y regalar</h3>
-            <p>
-              Disenamos y comercializamos macetas, floreros, bandejas, carameleras, porta sahumerios
-              y piezas decorativas de yeso ceramico. Nuestros productos combinan funcionalidad,
-              estetica y diseno minimalista.
-            </p>
-          </article>
-        </div>
-
-        <div class="about-differential">
-          <div class="about-differential-copy">
-            <p class="eyebrow">Nuestro diferencial</p>
-            <h3>Detalles simples, identidad clara y atencion personalizada</h3>
-            <p>
-              Trabajamos sobre catalogos cuidados, pedidos personalizados y opciones por mayor,
-              siempre coordinando cada pedido directamente por WhatsApp.
-            </p>
-          </div>
-
-          <div class="differential-grid">
-            <article class="differential-card">
-              <span>01</span>
-              <strong>Hecho a mano</strong>
-            </article>
-            <article class="differential-card">
-              <span>02</span>
-              <strong>Diseno minimalista</strong>
-            </article>
-            <article class="differential-card">
-              <span>03</span>
-              <strong>Piezas personalizables</strong>
-            </article>
-            <article class="differential-card">
-              <span>04</span>
-              <strong>Yeso ceramico</strong>
-            </article>
-            <article class="differential-card">
-              <span>05</span>
-              <strong>Ideal para decoracion</strong>
-            </article>
-            <article class="differential-card">
-              <span>06</span>
-              <strong>Opcion para revendedores y souvenirs</strong>
-            </article>
-            <article class="differential-card">
-              <span>07</span>
-              <strong>Atencion personalizada por WhatsApp</strong>
-            </article>
-          </div>
-        </div>
-
-        <div class="about-closing">
-          <p>
-            Cada producto esta pensado para darle un toque especial a tu espacio. En Jazmin Macetas
-            creemos que los detalles simples pueden transformar un ambiente.
-          </p>
+        <div class="mini-feature-grid">
+          <article class="mini-feature-card"><span>01</span><strong>Hecho a mano</strong></article>
+          <article class="mini-feature-card"><span>02</span><strong>Diseno minimalista</strong></article>
+          <article class="mini-feature-card"><span>03</span><strong>Piezas personalizables</strong></article>
+          <article class="mini-feature-card"><span>04</span><strong>Yeso ceramico</strong></article>
+          <article class="mini-feature-card"><span>05</span><strong>Atencion por WhatsApp</strong></article>
+          <article class="mini-feature-card"><span>06</span><strong>Venta por mayor</strong></article>
         </div>
       </section>
 
-      <section class="catalog-section" id="catalogo">
-        <div class="section-heading catalog-heading">
-          <div>
-            <p class="eyebrow">Catalogo</p>
-            <h2>Piezas disponibles</h2>
-          </div>
-          <div class="catalog-meta" id="catalog-meta"></div>
-        </div>
-
-        <div class="catalog-layout">
-          <div class="product-grid" id="product-grid" aria-live="polite"></div>
-
-          <aside class="order-panel" id="pedido">
-            <div class="order-header">
-              <div>
-                <p class="eyebrow">Tu pedido</p>
-                <h3>Envio por WhatsApp</h3>
-              </div>
-              <button class="ghost-button" type="button" id="open-order-mobile">
-                Ver pedido
-              </button>
-            </div>
-
-            <div class="order-card" id="order-card">
-              <div class="order-items" id="order-items"></div>
-
-              <div class="order-summary">
-                <div class="summary-row">
-                  <span>Total</span>
-                  <strong id="order-total">$0</strong>
-                </div>
-                <button class="secondary-button block" type="button" id="clear-cart">
-                  Vaciar pedido
-                </button>
-              </div>
-
-              <form class="customer-form" id="customer-form">
-                <label>
-                  Nombre
-                  <input type="text" id="customer-name" placeholder="Tu nombre" required>
-                </label>
-                <label>
-                  Localidad / zona
-                  <input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required>
-                </label>
-                <label>
-                  Forma de pago
-                  <select id="customer-payment" required>
-                    <option value="">Selecciona una opcion</option>
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Transferencia">Transferencia</option>
-                  </select>
-                </label>
-                <label>
-                  Comentarios adicionales
-                  <textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea>
-                </label>
-                <button class="primary-button block" type="submit">
-                  Finalizar pedido
-                </button>
-              </form>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="steps-section" id="como-comprar">
+      <section class="process-section" id="como-comprar">
         <div class="section-heading">
-          <p class="eyebrow">Como comprar</p>
-          <h2>Proceso simple y directo</h2>
+          <div>
+            <p class="eyebrow">Como comprar</p>
+            <h2>Un recorrido simple para armar pedidos personalizados</h2>
+          </div>
         </div>
-        <div class="steps-grid">
-          <article>
-            <span>1</span>
-            <h3>Elige tus piezas</h3>
-            <p>Navega el catalogo, filtra por categoria y selecciona color, tamano y cantidad.</p>
-          </article>
-          <article>
-            <span>2</span>
-            <h3>Arma tu pedido</h3>
-            <p>Revisa el resumen, completa tus datos y elige forma de pago.</p>
-          </article>
-          <article>
-            <span>3</span>
-            <h3>Coordina por WhatsApp</h3>
-            <p>El mensaje sale listo para enviar y el resto se coordina de forma personalizada.</p>
-          </article>
+        <div class="process-grid">
+          <article><span>1</span><h3>Elegi tus productos</h3><p>Recorre el catalogo y entra a cada pieza para ver su detalle completo.</p></article>
+          <article><span>2</span><h3>Selecciona color, tamano y cantidad</h3><p>Define las opciones disponibles segun cada producto.</p></article>
+          <article><span>3</span><h3>Agregalos al pedido</h3><p>El pedido se mantiene activo desde la home, el catalogo y cada ficha individual.</p></article>
+          <article><span>4</span><h3>Completa tus datos</h3><p>Nombre, localidad, forma de pago y comentarios adicionales.</p></article>
+          <article><span>5</span><h3>Envia el pedido por WhatsApp</h3><p>Todo se coordina de forma personalizada directamente por WhatsApp.</p></article>
+        </div>
+      </section>
+
+      <section class="wholesale-section" id="mayorista">
+        <div class="wholesale-card">
+          <div>
+            <p class="eyebrow">Venta por mayor</p>
+            <h2>Consultanos por precios por volumen, combos y piezas personalizadas.</h2>
+            <p>
+              Trabajamos pedidos para reventa, souvenirs, tiendas y emprendimientos que buscan una
+              linea artesanal prolija, personalizable y lista para crecer con identidad propia.
+            </p>
+          </div>
+          <a class="primary-button" id="wholesale-link" href="#" target="_blank" rel="noreferrer">
+            Consultar por mayor por WhatsApp
+          </a>
         </div>
       </section>
     </main>
@@ -290,15 +179,50 @@
       <div>
         <p class="eyebrow">Contacto</p>
         <h2>Jazmin Macetas</h2>
-        <p>Catalogo web para macetas, floreros y deco artesanal de yeso.</p>
+        <p>Catalogo artesanal para pedidos personalizados, regalos, souvenirs y venta por mayor.</p>
       </div>
       <div class="footer-links">
-        <a id="whatsapp-link" href="#" target="_blank" rel="noreferrer">WhatsApp</a>
-        <a href="#catalogo">Ver productos</a>
-        <a href="#pedido">Ir al pedido</a>
+        <a href="productos.html">Productos</a>
+        <a href="nosotros.html">Nosotros</a>
+        <button class="text-button" type="button" data-open-order>Hacer pedido</button>
       </div>
     </footer>
   </div>
+
+  <button class="order-fab" id="order-fab" type="button" data-open-order>
+    <span>Pedido</span>
+    <strong id="order-count">0</strong>
+  </button>
+  <div class="order-overlay hidden" id="order-overlay"></div>
+  <aside class="order-drawer" id="order-drawer" aria-hidden="true">
+    <div class="order-drawer-header">
+      <div>
+        <p class="eyebrow">Tu pedido</p>
+        <h2>Pedido por WhatsApp</h2>
+      </div>
+      <button class="ghost-button" id="close-order" type="button">Cerrar</button>
+    </div>
+    <div class="order-items" id="order-items"></div>
+    <div class="order-summary">
+      <div class="summary-row"><span>Total</span><strong id="order-total">$0</strong></div>
+      <button class="secondary-button block" id="clear-cart" type="button">Vaciar pedido</button>
+    </div>
+    <form class="customer-form" id="customer-form">
+      <label>Nombre<input type="text" id="customer-name" placeholder="Tu nombre" required></label>
+      <label>Localidad / zona<input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required></label>
+      <label>
+        Forma de pago
+        <select id="customer-payment" required>
+          <option value="">Selecciona una opcion</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Mercado Pago">Mercado Pago</option>
+        </select>
+      </label>
+      <label>Comentarios adicionales<textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea></label>
+      <button class="primary-button block" type="submit">Finalizar pedido</button>
+    </form>
+  </aside>
 
   <script src="config.js"></script>
   <script src="productos.js"></script>

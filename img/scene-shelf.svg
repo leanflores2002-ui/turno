@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Escena de estante artesanal">
+  <rect width="900" height="900" fill="#f7efe8"/>
+  <rect x="0" y="590" width="900" height="310" fill="#ece0d5"/>
+  <circle cx="168" cy="164" r="96" fill="#efd6d0"/>
+  <circle cx="742" cy="196" r="118" fill="#e4d3c5"/>
+  <rect x="120" y="528" width="660" height="28" rx="14" fill="#cab29f"/>
+  <rect x="206" y="274" width="180" height="242" rx="44" fill="#fffaf5" stroke="#d4bcae" stroke-width="8"/>
+  <rect x="476" y="238" width="140" height="278" rx="58" fill="#fbf6f1" stroke="#d8c3b6" stroke-width="8"/>
+  <rect x="666" y="338" width="92" height="178" rx="28" fill="#f5e0d8" stroke="#cc9690" stroke-width="8"/>
+  <path d="M258 228c18-34 44-52 74-52 30 0 56 18 72 52" fill="none" stroke="#c88f8b" stroke-width="12" stroke-linecap="round"/>
+  <path d="M514 190c18 10 36 28 48 54m50-54c-16 12-30 28-42 54" fill="none" stroke="#c88f8b" stroke-width="10" stroke-linecap="round"/>
+</svg>

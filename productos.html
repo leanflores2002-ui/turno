@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos | Jazmin Macetas</title>
+  <meta
+    name="description"
+    content="Explora el catalogo completo de Jazmin Macetas: macetas, floreros, bandejas, combos y piezas de yeso ceramico."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="catalog">
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand-lockup" href="index.html" aria-label="Jazmin Macetas">
+        <span class="brand-mark">JM</span>
+        <div>
+          <p class="eyebrow">Catalogo</p>
+          <h1>Jazmin Macetas</h1>
+        </div>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="main-nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html" aria-current="page">Productos</a>
+        <a href="productos.html?categoria=combos">Combos</a>
+        <a href="productos.html?categoria=por-mayor">Por mayor</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="index.html#como-comprar">Como comprar</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <button class="primary-button compact header-cta" type="button" data-open-order>
+        Hacer pedido
+      </button>
+    </header>
+
+    <main class="page-main">
+      <section class="page-hero">
+        <div>
+          <p class="eyebrow">Productos</p>
+          <h2>Catalogo pensado como una seleccion de piezas, no como una grilla generica.</h2>
+        </div>
+        <p>
+          Explora cada producto, entra a su ficha individual y arma tu pedido de forma personalizada
+          para enviarlo por WhatsApp cuando quieras.
+        </p>
+      </section>
+
+      <section class="catalog-page-section">
+        <div class="catalog-toolbar">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Filtros</p>
+              <h2>Elige una categoria</h2>
+            </div>
+          </div>
+          <div class="catalog-meta" id="catalog-count"></div>
+        </div>
+        <div class="filter-chips" id="catalog-filters"></div>
+        <div class="catalog-grid" id="catalog-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contacto">
+      <div>
+        <p class="eyebrow">Contacto</p>
+        <h2>Jazmin Macetas</h2>
+        <p>Pedidos personalizados, regalos, souvenirs y venta por mayor coordinados por WhatsApp.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="nosotros.html">Nosotros</a>
+        <button class="text-button" type="button" data-open-order>Hacer pedido</button>
+      </div>
+    </footer>
+  </div>
+
+  <button class="order-fab" id="order-fab" type="button" data-open-order>
+    <span>Pedido</span>
+    <strong id="order-count">0</strong>
+  </button>
+  <div class="order-overlay hidden" id="order-overlay"></div>
+  <aside class="order-drawer" id="order-drawer" aria-hidden="true">
+    <div class="order-drawer-header">
+      <div>
+        <p class="eyebrow">Tu pedido</p>
+        <h2>Pedido por WhatsApp</h2>
+      </div>
+      <button class="ghost-button" id="close-order" type="button">Cerrar</button>
+    </div>
+    <div class="order-items" id="order-items"></div>
+    <div class="order-summary">
+      <div class="summary-row"><span>Total</span><strong id="order-total">$0</strong></div>
+      <button class="secondary-button block" id="clear-cart" type="button">Vaciar pedido</button>
+    </div>
+    <form class="customer-form" id="customer-form">
+      <label>Nombre<input type="text" id="customer-name" placeholder="Tu nombre" required></label>
+      <label>Localidad / zona<input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required></label>
+      <label>
+        Forma de pago
+        <select id="customer-payment" required>
+          <option value="">Selecciona una opcion</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Mercado Pago">Mercado Pago</option>
+        </select>
+      </label>
+      <label>Comentarios adicionales<textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea></label>
+      <button class="primary-button block" type="submit">Finalizar pedido</button>
+    </form>
+  </aside>
+
+  <script src="config.js"></script>
+  <script src="productos.js"></script>
+  <script src="database.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Escena de estudio artesanal">
+  <rect width="900" height="900" fill="#faf4ee"/>
+  <path d="M0 610c134-52 314-66 468-6s284 56 432-12v308H0z" fill="#eadfd4"/>
+  <circle cx="712" cy="174" r="112" fill="#edd6d1"/>
+  <circle cx="214" cy="262" r="90" fill="#dfd0c3"/>
+  <rect x="214" y="298" width="176" height="258" rx="88" fill="#fffaf6" stroke="#d8c1b4" stroke-width="8"/>
+  <rect x="444" y="402" width="248" height="104" rx="36" fill="#fffaf6" stroke="#d8c1b4" stroke-width="8"/>
+  <rect x="564" y="264" width="114" height="214" rx="50" fill="#f2ddd7" stroke="#c8938c" stroke-width="8"/>
+  <path d="M260 252c18-22 42-34 70-34 24 0 50 12 68 34" fill="none" stroke="#c8938c" stroke-width="12" stroke-linecap="round"/>
+</svg>

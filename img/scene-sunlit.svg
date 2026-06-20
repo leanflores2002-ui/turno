@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Escena iluminada artesanal">
+  <rect width="900" height="900" fill="#fbf5ef"/>
+  <path d="M0 0h900v900H0z" fill="url(#g)"/>
+  <rect x="0" y="608" width="900" height="292" fill="#eee1d6"/>
+  <path d="M0 92l276 0v516H0z" fill="rgba(255,255,255,0.25)"/>
+  <path d="M98 232h188v376H98z" fill="rgba(255,255,255,0.18)"/>
+  <rect x="270" y="342" width="178" height="238" rx="44" fill="#fffaf6" stroke="#d6c1b5" stroke-width="8"/>
+  <rect x="520" y="298" width="140" height="282" rx="62" fill="#fbf7f2" stroke="#d6c1b5" stroke-width="8"/>
+  <rect x="676" y="450" width="112" height="84" rx="28" fill="#f1ddd6" stroke="#cc968f" stroke-width="8"/>
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fffdfb"/>
+      <stop offset="45%" stop-color="#f6eee7"/>
+      <stop offset="100%" stop-color="#efe4da"/>
+    </linearGradient>
+  </defs>
+</svg>
