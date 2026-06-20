@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Placeholder de producto">
+  <rect width="640" height="720" fill="#f5ebe4"/>
+  <circle cx="160" cy="156" r="92" fill="#efd5cf"/>
+  <circle cx="484" cy="598" r="120" fill="#e1d1c2"/>
+  <rect x="136" y="176" width="368" height="392" rx="54" fill="#fffaf6" stroke="#d5beb0" stroke-width="6"/>
+  <path d="M226 452c0-62 42-120 106-120s106 58 106 120v40H226v-40z" fill="#d9c1b0"/>
+  <path d="M248 334c18-28 44-42 72-42 30 0 57 15 74 42" fill="none" stroke="#c18f8a" stroke-width="12" stroke-linecap="round"/>
+  <text x="320" y="112" text-anchor="middle" fill="#8b6960" font-size="42" font-family="Georgia, serif">Jazmin</text>
+  <text x="320" y="612" text-anchor="middle" fill="#8b6960" font-size="30" font-family="Arial, sans-serif">Reemplaza por tu foto</text>
+</svg>

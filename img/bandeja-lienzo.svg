@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Bandeja Lienzo">
+  <rect width="640" height="720" fill="#f9f0ea"/>
+  <rect x="110" y="274" width="420" height="180" rx="42" fill="#fcf8f4" stroke="#d9c4b8" stroke-width="8"/>
+  <rect x="144" y="308" width="352" height="112" rx="26" fill="#efe2d8"/>
+  <circle cx="196" cy="364" r="24" fill="#d3b09e"/>
+  <circle cx="320" cy="364" r="24" fill="#e0c0af"/>
+  <circle cx="444" cy="364" r="24" fill="#d3b09e"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Pack mayorista Harmonia">
+  <rect width="640" height="720" fill="#f8efe8"/>
+  <rect x="118" y="228" width="404" height="284" rx="36" fill="#fffaf6" stroke="#d8c2b5" stroke-width="8"/>
+  <g fill="#e9d6ca">
+    <rect x="162" y="276" width="84" height="84" rx="18"/>
+    <rect x="278" y="276" width="84" height="84" rx="18"/>
+    <rect x="394" y="276" width="84" height="84" rx="18"/>
+    <rect x="162" y="382" width="84" height="84" rx="18"/>
+    <rect x="278" y="382" width="84" height="84" rx="18"/>
+    <rect x="394" y="382" width="84" height="84" rx="18"/>
+  </g>
+  <path d="M214 154c34-34 74-52 106-52 38 0 82 18 120 56" fill="none" stroke="#ca908d" stroke-width="14" stroke-linecap="round"/>
+</svg>

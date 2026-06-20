@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Caramelera Nube">
+  <rect width="640" height="720" fill="#f7ede7"/>
+  <ellipse cx="320" cy="606" rx="170" ry="24" fill="#e1d4ca"/>
+  <path d="M232 256h176l-18 224c-3 40-36 72-76 72h12c-40 0-73-32-76-72l-18-224z" fill="#fffaf6" stroke="#d8c2b5" stroke-width="8"/>
+  <path d="M238 238c0-44 36-80 82-80s82 36 82 80" fill="#f3ddd6" stroke="#ca908d" stroke-width="8"/>
+  <circle cx="320" cy="154" r="22" fill="#ca908d"/>
+</svg>

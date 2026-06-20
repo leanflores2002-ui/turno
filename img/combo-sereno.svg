@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Combo Sereno">
+  <rect width="640" height="720" fill="#f7eee8"/>
+  <ellipse cx="320" cy="610" rx="190" ry="28" fill="#dfd0c5"/>
+  <rect x="154" y="450" width="332" height="66" rx="30" fill="#fffaf5" stroke="#d6bfb2" stroke-width="8"/>
+  <path d="M198 314h108l-12 136c-4 32-30 58-62 58s-58-26-62-58l-12-136z" fill="#fcf8f4" stroke="#d6bfb2" stroke-width="8"/>
+  <path d="M344 228h58c-14 52-12 84 10 124 18 30 28 58 28 90 0 64-28 100-67 100s-67-36-67-100c0-32 10-60 28-90 22-40 24-72 10-124z" fill="#fbf7f2" stroke="#d6bfb2" stroke-width="8"/>
+  <path d="M472 438h-46c0-54 22-78 46-78s46 24 46 78h-46z" fill="#edd9d1" stroke="#ca908d" stroke-width="8"/>
+</svg>

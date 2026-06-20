@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Porta sahumerio Brisa">
+  <rect width="640" height="720" fill="#f8efe9"/>
+  <rect x="122" y="362" width="396" height="64" rx="32" fill="#fff9f5" stroke="#d9c2b5" stroke-width="8"/>
+  <circle cx="486" cy="394" r="11" fill="#ca908d"/>
+  <path d="M212 346c18-20 22-40 12-60m30 58c20-24 24-48 14-72m34 72c20-26 24-52 12-82" fill="none" stroke="#c59790" stroke-width="8" stroke-linecap="round"/>
+</svg>

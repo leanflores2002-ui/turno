@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Jazmin Macetas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../admin.css">
+</head>
+<body class="admin-body">
+  <section class="login-screen" id="login-screen">
+    <article class="login-card">
+      <p class="eyebrow">Acceso oculto</p>
+      <h1>Panel Jazmin</h1>
+      <p>Este acceso no se muestra en la web publica. Usa la contrasena del admin para continuar.</p>
+
+      <form id="login-form">
+        <label>
+          Contrasena
+          <input id="login-password" type="password" placeholder="Ingresa la contrasena" required>
+        </label>
+        <div class="message error hidden" id="login-error"></div>
+        <button class="primary-button block" type="submit">Ingresar</button>
+      </form>
+    </article>
+  </section>
+
+  <div class="admin-shell hidden" id="admin-app">
+    <header class="admin-header">
+      <div>
+        <p class="eyebrow">Ruta oculta /admin-jazmin</p>
+        <h1>Administrador de catalogo</h1>
+        <p class="helper-text">
+          Opcion simple con <code>localStorage</code>: los cambios se ven en este navegador y se reflejan
+          automaticamente en la portada.
+        </p>
+      </div>
+      <div class="admin-actions">
+        <button class="ghost-button" type="button" id="reset-store">Restaurar demo</button>
+        <button class="secondary-button" type="button" id="logout-button">Cerrar sesion</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-cards" id="admin-stats"></section>
+
+      <div class="message hidden" id="admin-message"></div>
+
+      <section class="admin-layout">
+        <article class="admin-card">
+          <div class="admin-toolbar">
+            <div>
+              <p class="eyebrow">Gestion de productos</p>
+              <h2>Lista, filtros y acciones rapidas</h2>
+            </div>
+            <button class="primary-button" type="button" id="new-product">Agregar producto</button>
+          </div>
+
+          <div class="form-row">
+            <label>
+              Buscar por nombre
+              <input id="search-products" type="search" placeholder="Ej. Maceta Aura">
+            </label>
+            <label>
+              Filtrar por categoria
+              <select id="filter-category"></select>
+            </label>
+          </div>
+
+          <div class="admin-list" id="product-list"></div>
+        </article>
+
+        <div class="admin-grid">
+          <article class="admin-card">
+            <p class="eyebrow">Formulario</p>
+            <h2>Cargar o editar producto</h2>
+
+            <form class="admin-form" id="product-form">
+              <input type="hidden" name="productId">
+              <label>
+                Nombre del producto
+                <input name="name" type="text" placeholder="Maceta Oval Aura" required>
+              </label>
+
+              <div class="form-row">
+                <label>
+                  Categoria
+                  <select name="categoryId" required>
+                    <option value="">Selecciona una categoria</option>
+                    <option value="macetas">Macetas</option>
+                    <option value="floreros">Floreros</option>
+                    <option value="carameleras">Carameleras</option>
+                    <option value="bandejas">Bandejas</option>
+                    <option value="porta-sahumerios">Porta sahumerios</option>
+                    <option value="combos">Combos</option>
+                    <option value="por-mayor">Por mayor</option>
+                  </select>
+                </label>
+                <label>
+                  Precio
+                  <input name="price" type="number" min="0" step="100" placeholder="0">
+                </label>
+              </div>
+
+              <label>
+                Descripcion
+                <textarea name="description" rows="3" placeholder="Describe el producto"></textarea>
+              </label>
+
+              <label>
+                Foto principal
+                <input name="image" type="text" placeholder="URL o ruta local tipo img/mi-foto.jpg" required>
+              </label>
+
+              <label>
+                Galeria adicional
+                <textarea name="gallery" rows="3" placeholder="Una URL o ruta por linea"></textarea>
+              </label>
+
+              <div class="form-row">
+                <label>
+                  Colores disponibles
+                  <input name="colors" type="text" placeholder="Crema, Arena, Rosa viejo">
+                </label>
+                <label>
+                  Tamanos disponibles
+                  <input name="sizes" type="text" placeholder="S, M, L">
+                </label>
+              </div>
+
+              <div>
+                <p class="eyebrow">Etiqueta</p>
+                <div class="tag-grid">
+                  <label><input type="checkbox" value="Nuevo" data-tag-value="Nuevo">Nuevo</label>
+                  <label><input type="checkbox" value="Mas vendido" data-tag-value="Mas vendido">Mas vendido</label>
+                  <label><input type="checkbox" value="Por mayor" data-tag-value="Por mayor">Por mayor</label>
+                  <label><input type="checkbox" value="Combo" data-tag-value="Combo">Combo</label>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  Estado
+                  <select name="status">
+                    <option value="available">Disponible</option>
+                    <option value="out_of_stock">Sin stock</option>
+                  </select>
+                </label>
+                <label>
+                  Orden de aparicion
+                  <input name="order" type="number" min="0" step="1" placeholder="1">
+                </label>
+              </div>
+
+              <div class="checkbox-row">
+                <label><input name="active" type="checkbox" checked>Producto activo en la web</label>
+              </div>
+
+              <div class="admin-actions">
+                <button class="ghost-button" type="button" id="cancel-product">Cancelar</button>
+                <button class="primary-button" type="submit" id="product-submit">Agregar producto</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="admin-card preview-card" id="product-preview">
+            <p class="eyebrow">Vista previa</p>
+            <h3 id="preview-title">Vista previa del producto</h3>
+            <p id="preview-meta">Sin categoria · $0</p>
+            <img id="preview-image" src="../img/placeholder.svg" alt="Vista previa del producto">
+            <p id="preview-description">Completa el formulario para ver el resultado.</p>
+          </article>
+
+          <article class="admin-card">
+            <p class="eyebrow">Categorias</p>
+            <h2>Gestion de categorias</h2>
+
+            <form class="category-form" id="category-form">
+              <input type="hidden" name="categoryId">
+              <label>
+                Nombre
+                <input name="categoryName" type="text" placeholder="Macetas">
+              </label>
+              <label>
+                Descripcion
+                <textarea name="categoryDescription" rows="2" placeholder="Breve descripcion"></textarea>
+              </label>
+              <label>
+                Orden
+                <input name="categoryOrder" type="number" min="0" step="1" placeholder="1">
+              </label>
+              <div class="admin-actions">
+                <button class="ghost-button" type="button" id="cancel-category">Cancelar</button>
+                <button class="secondary-button" type="submit">Guardar categoria</button>
+              </div>
+            </form>
+
+            <div class="category-list" id="category-list"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../config.js"></script>
+  <script src="../productos.js"></script>
+  <script src="../database.js"></script>
+  <script src="../admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Maceta Clara Mini">
+  <rect width="640" height="720" fill="#f9f0ea"/>
+  <ellipse cx="320" cy="606" rx="144" ry="22" fill="#e0d2c8"/>
+  <path d="M244 294h152l-16 176c-4 36-34 62-76 62s-72-26-76-62l-16-176z" fill="#fff9f5" stroke="#dcc5b8" stroke-width="8"/>
+  <ellipse cx="320" cy="294" rx="86" ry="22" fill="#f4ded6" stroke="#cc9592" stroke-width="8"/>
+</svg>

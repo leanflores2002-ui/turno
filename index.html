@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jazmin Macetas</title>
+  <meta
+    name="description"
+    content="Catalogo artesanal de macetas, floreros y deco de yeso. Arma tu pedido y envialo directo por WhatsApp."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header" id="inicio">
+      <div class="brand-lockup">
+        <span class="brand-mark">JM</span>
+        <div>
+          <p class="eyebrow">Hecho a mano en yeso</p>
+          <h1>Jazmin Macetas</h1>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#catalogo">Productos</a>
+        <a href="#destacados">Combos</a>
+        <a href="#mayorista">Por mayor</a>
+        <a href="#como-comprar">Como comprar</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <button class="primary-button compact" type="button" data-scroll-order>
+        Hacer pedido
+      </button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Catalogo artesanal</p>
+          <h2>Macetas, floreros y deco artesanal de yeso</h2>
+          <p>
+            Elegi tus productos favoritos, ajusta color y tamano, y arma tu pedido
+            para enviarlo por WhatsApp en un solo clic.
+          </p>
+
+          <div class="hero-actions">
+            <a class="primary-button" href="#catalogo">Ver catalogo</a>
+            <button class="secondary-button" type="button" data-scroll-order>
+              Hacer pedido
+            </button>
+          </div>
+
+          <ul class="hero-points">
+            <li>Diseno delicado con tonos pastel</li>
+            <li>Pedido sin registro ni pago online</li>
+            <li>Coordinacion final por WhatsApp</li>
+          </ul>
+        </div>
+
+        <div class="hero-panel">
+          <div class="hero-card">
+            <p class="eyebrow">Seleccion curada</p>
+            <div class="hero-stats" id="hero-stats"></div>
+          </div>
+          <div class="hero-note">
+            <p>Combos para regalar, piezas por mayor y stock actualizado desde el panel oculto.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="category-strip" aria-labelledby="categorias-title">
+        <div class="section-heading">
+          <p class="eyebrow">Categorias</p>
+          <h2 id="categorias-title">Explora por tipo de pieza</h2>
+        </div>
+        <div class="filter-chips" id="category-filters"></div>
+      </section>
+
+      <section class="feature-grid" id="destacados">
+        <article class="feature-card">
+          <p class="eyebrow">Combos</p>
+          <h3>Sets listos para regalar o ambientar</h3>
+          <p>Combina floreros, bandejas y porta sahumerios con una estetica uniforme.</p>
+          <button class="text-button" type="button" data-filter="combos">Ver combos</button>
+        </article>
+        <article class="feature-card" id="mayorista">
+          <p class="eyebrow">Por mayor</p>
+          <h3>Piezas para tiendas, eventos y revendedores</h3>
+          <p>Selecciona modelos mayoristas y coordina cantidades especiales despues del pedido.</p>
+          <button class="text-button" type="button" data-filter="por-mayor">Ver por mayor</button>
+        </article>
+      </section>
+
+      <section class="catalog-section" id="catalogo">
+        <div class="section-heading catalog-heading">
+          <div>
+            <p class="eyebrow">Catalogo</p>
+            <h2>Piezas disponibles</h2>
+          </div>
+          <div class="catalog-meta" id="catalog-meta"></div>
+        </div>
+
+        <div class="catalog-layout">
+          <div class="product-grid" id="product-grid" aria-live="polite"></div>
+
+          <aside class="order-panel" id="pedido">
+            <div class="order-header">
+              <div>
+                <p class="eyebrow">Tu pedido</p>
+                <h3>Envio por WhatsApp</h3>
+              </div>
+              <button class="ghost-button" type="button" id="open-order-mobile">
+                Ver pedido
+              </button>
+            </div>
+
+            <div class="order-card" id="order-card">
+              <div class="order-items" id="order-items"></div>
+
+              <div class="order-summary">
+                <div class="summary-row">
+                  <span>Total</span>
+                  <strong id="order-total">$0</strong>
+                </div>
+                <button class="secondary-button block" type="button" id="clear-cart">
+                  Vaciar pedido
+                </button>
+              </div>
+
+              <form class="customer-form" id="customer-form">
+                <label>
+                  Nombre
+                  <input type="text" id="customer-name" placeholder="Tu nombre" required>
+                </label>
+                <label>
+                  Localidad / zona
+                  <input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required>
+                </label>
+                <label>
+                  Forma de pago
+                  <select id="customer-payment" required>
+                    <option value="">Selecciona una opcion</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia">Transferencia</option>
+                  </select>
+                </label>
+                <label>
+                  Comentarios adicionales
+                  <textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea>
+                </label>
+                <button class="primary-button block" type="submit">
+                  Finalizar pedido
+                </button>
+              </form>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="steps-section" id="como-comprar">
+        <div class="section-heading">
+          <p class="eyebrow">Como comprar</p>
+          <h2>Proceso simple y directo</h2>
+        </div>
+        <div class="steps-grid">
+          <article>
+            <span>1</span>
+            <h3>Elige tus piezas</h3>
+            <p>Navega el catalogo, filtra por categoria y selecciona color, tamano y cantidad.</p>
+          </article>
+          <article>
+            <span>2</span>
+            <h3>Arma tu pedido</h3>
+            <p>Revisa el resumen, completa tus datos y elige forma de pago.</p>
+          </article>
+          <article>
+            <span>3</span>
+            <h3>Coordina por WhatsApp</h3>
+            <p>El mensaje sale listo para enviar y el resto se coordina de forma personalizada.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contacto">
+      <div>
+        <p class="eyebrow">Contacto</p>
+        <h2>Jazmin Macetas</h2>
+        <p>Catalogo web para macetas, floreros y deco artesanal de yeso.</p>
+      </div>
+      <div class="footer-links">
+        <a id="whatsapp-link" href="#" target="_blank" rel="noreferrer">WhatsApp</a>
+        <a href="#catalogo">Ver productos</a>
+        <a href="#pedido">Ir al pedido</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="productos.js"></script>
+  <script src="database.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

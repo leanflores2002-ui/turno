@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Maceta Aura">
+  <rect width="640" height="720" fill="#f8efe9"/>
+  <ellipse cx="320" cy="618" rx="186" ry="28" fill="#decec2"/>
+  <path d="M214 248h212l-24 250c-4 42-39 74-82 74h0c-43 0-78-32-82-74l-24-250z" fill="#fffaf5" stroke="#dac2b5" stroke-width="8"/>
+  <ellipse cx="320" cy="248" rx="114" ry="34" fill="#fef9f3" stroke="#dac2b5" stroke-width="8"/>
+  <path d="M246 168c20-34 46-50 74-50 32 0 59 16 74 50" fill="none" stroke="#ca908d" stroke-width="14" stroke-linecap="round"/>
+</svg>
