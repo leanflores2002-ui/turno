@@ -99,15 +99,29 @@
     window.dispatchEvent(new CustomEvent("jazmin-store-updated"));
   }
 
+  function buildInitialStore() {
+    return {
+      seedVersion: seed.seedVersion || "default",
+      categories: sortCategories(seed.categories).map(normalizeCategory),
+      products: sortProducts(seed.products).map(normalizeProduct),
+      updatedAt: new Date().toISOString(),
+    };
+  }
+
   function ensureStore() {
     const existing = localStorage.getItem(config.STORAGE_KEY);
     if (!existing) {
-      const initial = {
-        categories: sortCategories(seed.categories).map(normalizeCategory),
-        products: sortProducts(seed.products).map(normalizeProduct),
-        updatedAt: new Date().toISOString(),
-      };
-      localStorage.setItem(config.STORAGE_KEY, JSON.stringify(initial));
+      localStorage.setItem(config.STORAGE_KEY, JSON.stringify(buildInitialStore()));
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(existing);
+      if ((parsed.seedVersion || "") !== (seed.seedVersion || "default")) {
+        localStorage.setItem(config.STORAGE_KEY, JSON.stringify(buildInitialStore()));
+      }
+    } catch (error) {
+      localStorage.setItem(config.STORAGE_KEY, JSON.stringify(buildInitialStore()));
     }
   }
 
@@ -115,6 +129,7 @@
     ensureStore();
     const parsed = JSON.parse(localStorage.getItem(config.STORAGE_KEY));
     return {
+      seedVersion: parsed.seedVersion || seed.seedVersion || "default",
       categories: sortCategories((parsed.categories || []).map(normalizeCategory)),
       products: sortProducts((parsed.products || []).map(normalizeProduct)),
       updatedAt: parsed.updatedAt || null,
@@ -123,6 +138,7 @@
 
   function saveStore(nextStore) {
     const payload = {
+      seedVersion: seed.seedVersion || "default",
       categories: sortCategories((nextStore.categories || []).map(normalizeCategory)),
       products: sortProducts((nextStore.products || []).map(normalizeProduct)),
       updatedAt: new Date().toISOString(),

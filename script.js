@@ -10,7 +10,12 @@
     page: document.body.dataset.page || "home",
     store: db.getStore(),
     cart: loadCart(),
-    catalogFilter: "all",
+    catalog: {
+      category: "all",
+      search: "",
+      color: "all",
+      sort: "featured",
+    },
   };
 
   const refs = {};
@@ -30,6 +35,7 @@
   document.addEventListener("DOMContentLoaded", init);
 
   function init() {
+    hydratePageState();
     cacheRefs();
     bindCommonEvents();
     setStaticLinks();
@@ -45,11 +51,28 @@
     });
   }
 
+  function hydratePageState() {
+    if (state.page !== "catalog") {
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const defaultCategory = document.body.dataset.defaultCategory || "all";
+    const queryCategory = params.get("categoria");
+    const nextCategory = isValidCategory(queryCategory) ? queryCategory : defaultCategory;
+
+    state.catalog.category = isValidCategory(nextCategory) ? nextCategory : "all";
+    state.catalog.search = params.get("q")?.trim() || "";
+    state.catalog.color = params.get("color")?.trim() || "all";
+    state.catalog.sort = params.get("orden")?.trim() || "featured";
+  }
+
   function cacheRefs() {
     refs.menuToggle = document.getElementById("menu-toggle");
     refs.mainNav = document.getElementById("main-nav");
     refs.orderFab = document.getElementById("order-fab");
     refs.orderCount = document.getElementById("order-count");
+    refs.inlineOrderCounts = Array.from(document.querySelectorAll("[data-order-count-inline]"));
     refs.orderOverlay = document.getElementById("order-overlay");
     refs.orderDrawer = document.getElementById("order-drawer");
     refs.closeOrder = document.getElementById("close-order");
@@ -63,6 +86,10 @@
     refs.catalogFilters = document.getElementById("catalog-filters");
     refs.catalogGrid = document.getElementById("catalog-grid");
     refs.catalogCount = document.getElementById("catalog-count");
+    refs.catalogSearch = document.getElementById("catalog-search");
+    refs.catalogColor = document.getElementById("catalog-color");
+    refs.catalogSort = document.getElementById("catalog-sort");
+    refs.catalogReset = document.getElementById("catalog-reset");
     refs.productDetailPage = document.getElementById("product-detail-page");
     refs.relatedGrid = document.getElementById("related-grid");
     refs.aboutFeaturedGrid = document.getElementById("about-featured-grid");
@@ -81,6 +108,34 @@
     refs.customerForm?.addEventListener("submit", finalizeOrder);
     refs.orderItems?.addEventListener("click", handleOrderActionClick);
 
+    refs.catalogSearch?.addEventListener("input", () => {
+      state.catalog.search = refs.catalogSearch.value.trim();
+      applyCatalogStateToLocation();
+      renderCatalogPage();
+    });
+
+    refs.catalogColor?.addEventListener("change", () => {
+      state.catalog.color = refs.catalogColor.value || "all";
+      applyCatalogStateToLocation();
+      renderCatalogPage();
+    });
+
+    refs.catalogSort?.addEventListener("change", () => {
+      state.catalog.sort = refs.catalogSort.value || "featured";
+      applyCatalogStateToLocation();
+      renderCatalogPage();
+    });
+
+    refs.catalogReset?.addEventListener("click", () => {
+      state.catalog.search = "";
+      state.catalog.color = "all";
+      state.catalog.sort = "featured";
+      const defaultCategory = document.body.dataset.defaultCategory || "all";
+      state.catalog.category = isValidCategory(defaultCategory) ? defaultCategory : "all";
+      applyCatalogStateToLocation();
+      renderCatalogPage();
+    });
+
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeOrderDrawer();
@@ -96,11 +151,12 @@
   }
 
   function setStaticLinks() {
-    const wholesaleUrl = createWhatsAppUrl(
-      "Hola Jazmin Macetas, quiero consultar por venta por mayor, modelos disponibles y precios por volumen."
-    );
-    document.getElementById("wholesale-link")?.setAttribute("href", wholesaleUrl);
-    document.getElementById("about-wholesale-link")?.setAttribute("href", wholesaleUrl);
+    document.querySelectorAll("[data-whatsapp-message]").forEach((link) => {
+      const message = link.getAttribute("data-whatsapp-message") || "";
+      if (link.tagName === "A") {
+        link.setAttribute("href", createWhatsAppUrl(message));
+      }
+    });
   }
 
   function renderCurrentPage() {
@@ -124,20 +180,51 @@
   function renderHomePage() {
     renderHeroStats();
     renderHomeCategories();
-    renderProductCollection(refs.featuredGrid, getFeaturedProducts().slice(0, 4));
+    renderProductCollection(refs.featuredGrid, getFeaturedProducts().slice(0, 4), { showCategory: true });
   }
 
   function renderCatalogPage() {
-    const queryCategory = new URLSearchParams(window.location.search).get("categoria");
-    const categoryExists = state.store.categories.some((category) => category.id === queryCategory);
-    state.catalogFilter = categoryExists ? queryCategory : "all";
+    renderCatalogControls();
     renderCatalogFilters();
+
     const products = getFilteredCatalogProducts();
     if (refs.catalogCount) {
       refs.catalogCount.textContent =
         products.length === 1 ? "1 producto visible" : `${products.length} productos visibles`;
     }
+
     renderProductCollection(refs.catalogGrid, products, { showCategory: true });
+  }
+
+  function renderCatalogControls() {
+    if (refs.catalogSearch) {
+      refs.catalogSearch.value = state.catalog.search;
+    }
+
+    const relevantProducts = getProductsForCurrentCategory();
+    const colors = Array.from(new Set(relevantProducts.flatMap((product) => product.colors))).sort((a, b) =>
+      a.localeCompare(b)
+    );
+
+    if (refs.catalogColor) {
+      refs.catalogColor.innerHTML = [`<option value="all">Todos los colores</option>`]
+        .concat(
+          colors.map((color) => {
+            const selected = state.catalog.color === color ? " selected" : "";
+            return `<option value="${escapeAttribute(color)}"${selected}>${escapeHtml(color)}</option>`;
+          })
+        )
+        .join("");
+
+      if (state.catalog.color !== "all" && !colors.includes(state.catalog.color)) {
+        state.catalog.color = "all";
+        refs.catalogColor.value = "all";
+      }
+    }
+
+    if (refs.catalogSort) {
+      refs.catalogSort.value = state.catalog.sort;
+    }
   }
 
   function renderProductPage() {
@@ -154,11 +241,13 @@
       refs.productDetailPage.innerHTML = `
         <article class="not-found-card">
           <p class="eyebrow">Producto no encontrado</p>
-          <h3>Esta pieza ya no esta disponible o la URL es invalida.</h3>
+          <h3>Esta pieza ya no esta disponible o la URL no es valida.</h3>
           <a class="primary-button" href="productos.html">Volver al catalogo</a>
         </article>
       `;
-      refs.relatedGrid && (refs.relatedGrid.innerHTML = "");
+      if (refs.relatedGrid) {
+        refs.relatedGrid.innerHTML = "";
+      }
       return;
     }
 
@@ -169,19 +258,22 @@
     const related = getPublicProducts()
       .filter((item) => item.categoryId === product.categoryId && item.id !== product.id)
       .slice(0, 3);
+
     renderProductCollection(refs.relatedGrid, related, { showCategory: true });
   }
 
   function renderAboutPage() {
-    renderProductCollection(refs.aboutFeaturedGrid, getFeaturedProducts().slice(0, 4));
+    renderProductCollection(refs.aboutFeaturedGrid, getFeaturedProducts().slice(0, 4), { showCategory: true });
   }
 
   function renderHeroStats() {
     if (!refs.heroStats) {
       return;
     }
+
     const visibleProducts = getPublicProducts();
     const available = visibleProducts.filter((product) => product.status === "available");
+
     refs.heroStats.innerHTML = [
       renderStat("Piezas", visibleProducts.length),
       renderStat("Disponibles", available.length),
@@ -193,15 +285,21 @@
     if (!refs.homeCategoryGrid) {
       return;
     }
+
     refs.homeCategoryGrid.innerHTML = state.store.categories
       .map(
         (category) => `
-          <a class="category-card" href="${createCategoryUrl(category.id)}">
-            <img src="${escapeAttribute(category.image || "img/placeholder.svg")}" alt="${escapeAttribute(category.name)}">
-            <div class="category-card-content">
-              <h3>${escapeHtml(category.name)}</h3>
+          <a class="category-card" href="${escapeAttribute(createCategoryUrl(category.id))}">
+            <div class="category-card-media">
+              <img src="${escapeAttribute(category.image || "img/placeholder.svg")}" alt="${escapeAttribute(category.name)}">
+            </div>
+            <div class="category-card-body">
+              <div>
+                <p class="eyebrow">${escapeHtml(category.name)}</p>
+                <h3>${escapeHtml(category.name)}</h3>
+              </div>
               <p>${escapeHtml(category.description)}</p>
-              <span class="text-link">Ver productos</span>
+              <span class="section-link">Ver productos</span>
             </div>
           </a>
         `
@@ -213,14 +311,16 @@
     if (!refs.catalogFilters) {
       return;
     }
+
     const chips = [{ id: "all", name: "Todo el catalogo" }].concat(
       state.store.categories.map((category) => ({ id: category.id, name: category.name }))
     );
+
     refs.catalogFilters.innerHTML = chips
       .map(
         (chip) => `
           <button
-            class="filter-chip ${chip.id === state.catalogFilter ? "active" : ""}"
+            class="filter-chip ${chip.id === state.catalog.category ? "active" : ""}"
             type="button"
             data-filter-chip="${escapeAttribute(chip.id)}"
           >
@@ -232,15 +332,20 @@
 
     refs.catalogFilters.querySelectorAll("[data-filter-chip]").forEach((button) => {
       button.addEventListener("click", () => {
-        const nextFilter = button.dataset.filterChip;
-        state.catalogFilter = nextFilter;
-        const url = new URL(window.location.href);
-        if (nextFilter === "all") {
-          url.searchParams.delete("categoria");
-        } else {
-          url.searchParams.set("categoria", nextFilter);
+        const nextCategory = button.dataset.filterChip || "all";
+        const targetUrl = createCategoryUrl(nextCategory, {
+          search: state.catalog.search,
+          color: state.catalog.color,
+          sort: state.catalog.sort,
+        });
+
+        if (!isSameCatalogDocument(targetUrl)) {
+          window.location.assign(targetUrl);
+          return;
         }
-        window.history.replaceState({}, "", url);
+
+        state.catalog.category = nextCategory;
+        applyCatalogStateToLocation();
         renderCatalogPage();
       });
     });
@@ -255,7 +360,8 @@
       container.innerHTML = `
         <article class="empty-state">
           <p class="eyebrow">Sin resultados</p>
-          <h3>No hay productos visibles para esta seleccion.</h3>
+          <h3>No hay productos para esta seleccion.</h3>
+          <p>Prueba con otra categoria, color o palabra clave.</p>
         </article>
       `;
       return;
@@ -269,19 +375,28 @@
 
   function renderProductCard(product, options = {}) {
     const category = getCategoryById(product.categoryId);
-    const tag = product.tags[0];
-    const disabled = product.status !== "available";
     const swatches = product.colors
       .slice(0, 5)
       .map(
         (color) =>
-          `<span class="swatch" title="${escapeAttribute(color)}" style="background:${escapeAttribute(getColorHex(color))};"></span>`
+          `<span class="swatch" title="${escapeAttribute(color)}" style="background:${escapeAttribute(
+            getColorHex(color)
+          )};"></span>`
       )
       .join("");
 
+    const tags = product.tags
+      .slice(0, 2)
+      .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+      .join("");
+
+    const disabled = product.status !== "available";
+    const categoryHtml =
+      options.showCategory && category ? `<p class="eyebrow">${escapeHtml(category.name)}</p>` : `<p class="eyebrow">Pieza</p>`;
+
     return `
       <article class="product-preview-card">
-        <a class="product-preview-link" href="${createProductUrl(product)}">
+        <a class="product-preview-link" href="${escapeAttribute(createProductUrl(product))}">
           <img
             class="product-preview-image"
             src="${escapeAttribute(product.image || "img/placeholder.svg")}"
@@ -290,17 +405,17 @@
         </a>
         <div class="product-preview-body">
           <div class="product-topline">
-            <p class="eyebrow">${escapeHtml(category?.name || "Categoria")}</p>
-            ${tag ? `<span class="tag">${escapeHtml(tag)}</span>` : ""}
+            ${categoryHtml}
+            <div class="product-badges">${tags}</div>
           </div>
-          <a class="product-title-link" href="${createProductUrl(product)}">${escapeHtml(product.name)}</a>
-          <p class="product-meta">${escapeHtml(product.shortDescription || product.description)}</p>
-          <div class="product-meta">
+          <a class="product-title-link" href="${escapeAttribute(createProductUrl(product))}">${escapeHtml(product.name)}</a>
+          <p class="product-preview-copy">${escapeHtml(product.shortDescription || product.description)}</p>
+          <div class="product-meta-row">
             <strong class="product-preview-price">${formatCurrency(product.price)}</strong>
             <div class="swatches">${swatches}</div>
           </div>
           <div class="product-actions">
-            <a class="ghost-button" href="${createProductUrl(product)}">Ver producto</a>
+            <a class="ghost-button" href="${escapeAttribute(createProductUrl(product))}">Ver producto</a>
             <button
               class="primary-button"
               type="button"
@@ -317,7 +432,7 @@
 
   function renderProductDetail(product) {
     const category = getCategoryById(product.categoryId);
-    const tag = product.tags[0];
+    const tags = product.tags.length ? product.tags : [product.status === "available" ? "Disponible" : "Sin stock"];
     const details = [
       ["Material", product.material],
       ["Terminacion", product.finish],
@@ -356,14 +471,14 @@
         <div class="product-detail-copy">
           <div class="product-topline">
             <p class="eyebrow">${escapeHtml(category?.name || "Categoria")}</p>
-            ${tag ? `<span class="tag">${escapeHtml(tag)}</span>` : ""}
+            <div class="product-badges">${tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>
           </div>
-          <h2>${escapeHtml(product.name)}</h2>
+          <h1>${escapeHtml(product.name)}</h1>
           <strong class="product-preview-price">${formatCurrency(product.price)}</strong>
           <p class="product-short">${escapeHtml(product.shortDescription)}</p>
           <p class="product-long">${escapeHtml(product.fullDescription)}</p>
 
-          <div class="product-options product-option-grid">
+          <div class="product-options">
             <label>
               Color
               <select id="detail-color">
@@ -382,7 +497,7 @@
             </label>
           </div>
 
-          <div class="detail-action-row">
+          <div class="detail-actions">
             <button
               class="primary-button"
               type="button"
@@ -393,7 +508,7 @@
             </button>
             <a
               class="secondary-button"
-              href="${createWhatsAppUrl(`Hola Jazmin Macetas, quiero consultar por ${product.name}.`)}"
+              href="${escapeAttribute(createWhatsAppUrl(`Hola Jazmin Macetas, quiero consultar por ${product.name}.`))}"
               target="_blank"
               rel="noreferrer"
             >
@@ -407,7 +522,7 @@
               .map(
                 ([label, value]) => `
                   <article class="info-card">
-                    <h4>${escapeHtml(label)}</h4>
+                    <h3>${escapeHtml(label)}</h3>
                     <p>${escapeHtml(value)}</p>
                   </article>
                 `
@@ -416,7 +531,7 @@
           </div>
 
           <div class="care-panel">
-            <h3>Cuidados</h3>
+            <h3>Cuidados del producto</h3>
             <ul class="care-list">
               ${product.care.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
             </ul>
@@ -455,6 +570,7 @@
     if (!product) {
       return;
     }
+
     addToCart(product.id, {
       color: product.colors[0] || "Sin definir",
       size: product.sizes[0] || "Unico",
@@ -491,8 +607,12 @@
     }
 
     syncCartWithStore();
-    refs.orderCount.textContent = String(getCartCount());
-    refs.orderFab?.classList.toggle("has-items", getCartCount() > 0);
+    const count = getCartCount();
+    refs.orderCount.textContent = String(count);
+    refs.inlineOrderCounts.forEach((node) => {
+      node.textContent = String(count);
+    });
+    refs.orderFab?.classList.toggle("has-items", count > 0);
 
     if (!state.cart.length) {
       refs.orderItems.innerHTML = `
@@ -514,22 +634,28 @@
     if (!product) {
       return "";
     }
+
     const subtotal = product.price * item.quantity;
     return `
       <article class="order-item">
-        <h4>${escapeHtml(product.name)}</h4>
-        <p>Color: ${escapeHtml(item.color)} · Tamano: ${escapeHtml(item.size)}</p>
-        <p>Unitario: ${formatCurrency(product.price)} · Subtotal: ${formatCurrency(subtotal)}</p>
-        <footer>
-          <div class="quantity-controls">
-            <button type="button" data-cart-action="decrease" data-cart-key="${escapeAttribute(item.key)}">-</button>
-            <span class="quantity-value">${item.quantity}</span>
-            <button type="button" data-cart-action="increase" data-cart-key="${escapeAttribute(item.key)}">+</button>
+        <div class="order-item-thumb">
+          <img src="${escapeAttribute(product.image || "img/placeholder.svg")}" alt="${escapeAttribute(product.name)}">
+        </div>
+        <div class="order-item-details">
+          <h4>${escapeHtml(product.name)}</h4>
+          <p>Color: ${escapeHtml(item.color)} | Tamano: ${escapeHtml(item.size)}</p>
+          <p>Unitario: ${formatCurrency(product.price)} | Subtotal: ${formatCurrency(subtotal)}</p>
+          <div class="order-item-footer">
+            <div class="quantity-controls">
+              <button type="button" data-cart-action="decrease" data-cart-key="${escapeAttribute(item.key)}">-</button>
+              <span class="quantity-value">${item.quantity}</span>
+              <button type="button" data-cart-action="increase" data-cart-key="${escapeAttribute(item.key)}">+</button>
+            </div>
+            <button class="tiny-button" type="button" data-cart-action="remove" data-cart-key="${escapeAttribute(item.key)}">
+              Eliminar
+            </button>
           </div>
-          <button class="tiny-button" type="button" data-cart-action="remove" data-cart-key="${escapeAttribute(item.key)}">
-            Eliminar
-          </button>
-        </footer>
+        </div>
       </article>
     `;
   }
@@ -539,6 +665,7 @@
     if (!button) {
       return;
     }
+
     const action = button.dataset.cartAction;
     const key = button.dataset.cartKey;
     const item = state.cart.find((entry) => entry.key === key);
@@ -599,7 +726,8 @@
           `- Color: ${item.color}`,
           `- Tamano: ${item.size}`,
           `- Cantidad: ${item.quantity}`,
-          `- Precio: ${formatCurrency(product.price * item.quantity)}`,
+          `- Precio unitario: ${formatCurrency(product.price)}`,
+          `- Subtotal: ${formatCurrency(product.price * item.quantity)}`,
           "",
         ];
       }),
@@ -642,12 +770,67 @@
     return getPublicProducts().filter((product) => product.featured);
   }
 
-  function getFilteredCatalogProducts() {
+  function getProductsForCurrentCategory() {
     const products = getPublicProducts();
-    if (state.catalogFilter === "all") {
+    if (state.catalog.category === "all") {
       return products;
     }
-    return products.filter((product) => product.categoryId === state.catalogFilter);
+    return products.filter((product) => product.categoryId === state.catalog.category);
+  }
+
+  function getFilteredCatalogProducts() {
+    let products = getPublicProducts().slice();
+
+    if (state.catalog.category !== "all") {
+      products = products.filter((product) => product.categoryId === state.catalog.category);
+    }
+
+    if (state.catalog.search) {
+      const query = normalizeText(state.catalog.search);
+      products = products.filter((product) => {
+        const categoryName = getCategoryById(product.categoryId)?.name || "";
+        const haystack = [
+          product.name,
+          product.shortDescription,
+          product.fullDescription,
+          categoryName,
+          product.tags.join(" "),
+        ]
+          .join(" ")
+          .toLowerCase();
+        return normalizeText(haystack).includes(query);
+      });
+    }
+
+    if (state.catalog.color !== "all") {
+      products = products.filter((product) => product.colors.includes(state.catalog.color));
+    }
+
+    const orderWeight = (product) => Number(product.order) || 0;
+    const featuredWeight = (product) => (product.featured ? 0 : 1);
+
+    if (state.catalog.sort === "price-asc") {
+      products.sort((a, b) => a.price - b.price || orderWeight(a) - orderWeight(b));
+      return products;
+    }
+
+    if (state.catalog.sort === "price-desc") {
+      products.sort((a, b) => b.price - a.price || orderWeight(a) - orderWeight(b));
+      return products;
+    }
+
+    if (state.catalog.sort === "name-asc") {
+      products.sort((a, b) => a.name.localeCompare(b.name) || orderWeight(a) - orderWeight(b));
+      return products;
+    }
+
+    products.sort(
+      (a, b) =>
+        featuredWeight(a) - featuredWeight(b) ||
+        orderWeight(a) - orderWeight(b) ||
+        a.name.localeCompare(b.name)
+    );
+    return products;
   }
 
   function getCategoryById(categoryId) {
@@ -686,7 +869,7 @@
   }
 
   function renderStat(label, value) {
-    return `<article><span>${escapeHtml(label)}</span><strong>${value}</strong></article>`;
+    return `<article class="stat-card"><span>${escapeHtml(label)}</span><strong>${value}</strong></article>`;
   }
 
   function renderOptions(values, fallback) {
@@ -698,8 +881,71 @@
     return `producto.html?slug=${encodeURIComponent(product.slug)}`;
   }
 
-  function createCategoryUrl(categoryId) {
-    return `productos.html?categoria=${encodeURIComponent(categoryId)}`;
+  function createCategoryUrl(categoryId, options = {}) {
+    const nextCategory = categoryId || "all";
+    let pathname = "productos.html";
+
+    if (nextCategory === "combos") {
+      pathname = "combos.html";
+    }
+    if (nextCategory === "por-mayor") {
+      pathname = "por-mayor.html";
+    }
+
+    const url = new URL(pathname, window.location.href);
+    if (pathname === "productos.html" && nextCategory !== "all") {
+      url.searchParams.set("categoria", nextCategory);
+    }
+    if (options.search) {
+      url.searchParams.set("q", options.search);
+    }
+    if (options.color && options.color !== "all") {
+      url.searchParams.set("color", options.color);
+    }
+    if (options.sort && options.sort !== "featured") {
+      url.searchParams.set("orden", options.sort);
+    }
+    return `${url.pathname.split("/").pop()}${url.search}`;
+  }
+
+  function applyCatalogStateToLocation() {
+    if (state.page !== "catalog") {
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    const defaultCategory = document.body.dataset.defaultCategory || "all";
+
+    if (
+      state.catalog.category &&
+      state.catalog.category !== "all" &&
+      state.catalog.category !== defaultCategory &&
+      url.pathname.toLowerCase().endsWith("productos.html")
+    ) {
+      url.searchParams.set("categoria", state.catalog.category);
+    } else {
+      url.searchParams.delete("categoria");
+    }
+
+    if (state.catalog.search) {
+      url.searchParams.set("q", state.catalog.search);
+    } else {
+      url.searchParams.delete("q");
+    }
+
+    if (state.catalog.color !== "all") {
+      url.searchParams.set("color", state.catalog.color);
+    } else {
+      url.searchParams.delete("color");
+    }
+
+    if (state.catalog.sort !== "featured") {
+      url.searchParams.set("orden", state.catalog.sort);
+    } else {
+      url.searchParams.delete("orden");
+    }
+
+    window.history.replaceState({}, "", `${url.pathname.split("/").pop()}${url.search}`);
   }
 
   function createWhatsAppUrl(text) {
@@ -708,6 +954,26 @@
 
   function getColorHex(colorName) {
     return colorMap[colorName] || "#d9d0c8";
+  }
+
+  function isValidCategory(categoryId) {
+    if (!categoryId || categoryId === "all") {
+      return true;
+    }
+    return state.store.categories.some((category) => category.id === categoryId);
+  }
+
+  function isSameCatalogDocument(targetUrl) {
+    const currentName = window.location.pathname.split("/").pop().toLowerCase();
+    const targetName = new URL(targetUrl, window.location.href).pathname.split("/").pop().toLowerCase();
+    return currentName === targetName;
+  }
+
+  function normalizeText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
   }
 
   function formatCurrency(value) {

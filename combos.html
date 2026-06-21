@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Producto | Jazmin Macetas</title>
+  <title>Combos | Jazmin Macetas</title>
   <meta
     name="description"
-    content="Detalle de producto de Jazmin Macetas con galeria, opciones, cuidados y pedido por WhatsApp."
+    content="Combos de Jazmin Macetas: sets coordinados para regalar, decorar y resolver espacios con una seleccion artesanal."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="product">
+<body data-page="catalog" data-default-category="combos">
   <div class="announcement-bar" role="status" aria-live="polite">
     <span>Hecho a mano en yeso ceramico</span>
   </div>
@@ -35,7 +35,7 @@
       </nav>
 
       <div class="header-actions">
-        <a class="icon-button" href="productos.html#catalog-explorer" aria-label="Buscar en el catalogo">
+        <a class="icon-button" href="#catalog-explorer" aria-label="Buscar en el catalogo">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <circle cx="11" cy="11" r="7"></circle>
             <path d="M20 20l-3.5-3.5"></path>
@@ -60,28 +60,54 @@
     </header>
 
     <main class="page-main">
-      <section class="page-hero compact">
+      <section class="page-hero">
         <div class="page-hero-copy">
-          <p class="eyebrow">Producto individual</p>
-          <h1>Una ficha completa para elegir con calma y pedir por WhatsApp.</h1>
+          <p class="eyebrow">Combos</p>
+          <h1>Sets artesanales listos para regalar o resolver un ambiente completo.</h1>
           <p>
-            Cada producto muestra galeria, colores, tamanos, material, cuidados y acciones claras
-            para sumar la pieza al pedido o consultar directamente.
+            Selecciones coordinadas con piezas que conversan entre si. Ideales para regalos, deco integral
+            y pedidos donde necesitas una propuesta ya curada.
           </p>
         </div>
-        <a class="secondary-button" href="productos.html">Volver al catalogo</a>
+        <a class="secondary-button" href="productos.html">Ver todo el catalogo</a>
       </section>
 
-      <section class="product-page-section" id="product-detail-page" aria-live="polite"></section>
-
-      <section class="related-section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Relacionados</p>
-            <h2>Otras piezas que pueden completar tu seleccion.</h2>
-          </div>
+      <section class="catalog-page-section">
+        <div class="catalog-controls" id="catalog-explorer">
+          <label class="control-field">
+            <span>Buscar</span>
+            <input id="catalog-search" type="search" placeholder="Busca un combo o set">
+          </label>
+          <label class="control-field">
+            <span>Color</span>
+            <select id="catalog-color"></select>
+          </label>
+          <label class="control-field">
+            <span>Ordenar</span>
+            <select id="catalog-sort">
+              <option value="featured">Recomendados</option>
+              <option value="price-asc">Precio: menor a mayor</option>
+              <option value="price-desc">Precio: mayor a menor</option>
+              <option value="name-asc">Nombre A-Z</option>
+            </select>
+          </label>
+          <button class="ghost-button" id="catalog-reset" type="button">Limpiar filtros</button>
         </div>
-        <div class="related-grid" id="related-grid"></div>
+
+        <div class="helper-strip">
+          Los combos se coordinan por WhatsApp y pueden ajustarse segun colores o disponibilidad.
+        </div>
+
+        <div class="catalog-toolbar">
+          <div>
+            <p class="eyebrow">Seleccion curada</p>
+            <h2>Explora combinaciones listas para regalar o ambientar.</h2>
+          </div>
+          <div class="catalog-meta" id="catalog-count"></div>
+        </div>
+
+        <div class="filter-chips" id="catalog-filters"></div>
+        <div class="catalog-grid" id="catalog-grid" aria-live="polite"></div>
       </section>
     </main>
 
@@ -98,14 +124,7 @@
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"></circle>
               </svg>
             </a>
-            <a
-              href="#"
-              aria-label="WhatsApp"
-              class="social-link"
-              data-whatsapp-message="Hola Jazmin Macetas, quiero hacer una consulta sobre sus productos."
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="#" aria-label="WhatsApp" class="social-link" data-whatsapp-message="Hola Jazmin Macetas, quiero hacer una consulta sobre sus productos." target="_blank" rel="noreferrer">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path>
                 <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.12 1.535 5.849L.057 23.571a.5.5 0 00.6.6l5.764-1.476A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.003-1.37l-.36-.214-3.716.952.97-3.634-.234-.373A9.79 9.79 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"></path>
@@ -131,14 +150,7 @@
             <a href="como-comprar.html">Como comprar</a>
             <a href="nosotros.html">Nuestra historia</a>
             <a href="contacto.html">Contacto</a>
-            <a
-              href="#"
-              data-whatsapp-message="Hola Jazmin Macetas, quiero hacer una consulta sobre sus productos."
-              target="_blank"
-              rel="noreferrer"
-            >
-              Contacto por WhatsApp
-            </a>
+            <a href="#" data-whatsapp-message="Hola Jazmin Macetas, quiero hacer una consulta sobre sus productos." target="_blank" rel="noreferrer">Contacto por WhatsApp</a>
           </nav>
         </div>
 
@@ -164,36 +176,21 @@
     <span>Pedido</span>
     <strong id="order-count">0</strong>
   </button>
-
   <div class="order-overlay hidden" id="order-overlay"></div>
-
   <aside class="order-drawer" id="order-drawer" aria-hidden="true">
     <div class="order-drawer-header">
-      <div>
-        <p class="eyebrow">Tu pedido</p>
-        <h2>Pedido por WhatsApp</h2>
-      </div>
+      <div><p class="eyebrow">Tu pedido</p><h2>Pedido por WhatsApp</h2></div>
       <button class="ghost-button" id="close-order" type="button">Cerrar</button>
     </div>
     <div class="order-items" id="order-items"></div>
     <div class="order-summary">
-      <div class="summary-row">
-        <span>Total</span>
-        <strong id="order-total">$0</strong>
-      </div>
+      <div class="summary-row"><span>Total</span><strong id="order-total">$0</strong></div>
       <button class="secondary-button block" id="clear-cart" type="button">Vaciar pedido</button>
     </div>
     <form class="customer-form" id="customer-form">
-      <label>
-        Nombre
-        <input type="text" id="customer-name" placeholder="Tu nombre" required>
-      </label>
-      <label>
-        Localidad / zona
-        <input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required>
-      </label>
-      <label>
-        Forma de pago
+      <label>Nombre<input type="text" id="customer-name" placeholder="Tu nombre" required></label>
+      <label>Localidad / zona<input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required></label>
+      <label>Forma de pago
         <select id="customer-payment" required>
           <option value="">Selecciona una opcion</option>
           <option value="Efectivo">Efectivo</option>
@@ -201,10 +198,7 @@
           <option value="Mercado Pago">Mercado Pago</option>
         </select>
       </label>
-      <label>
-        Comentarios adicionales
-        <textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea>
-      </label>
+      <label>Comentarios adicionales<textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea></label>
       <button class="primary-button block" type="submit">Finalizar pedido</button>
     </form>
   </aside>

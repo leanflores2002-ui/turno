@@ -3,45 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jazmin Macetas</title>
+  <title>Jazm&iacute;n Macetas | Cat&aacute;logo artesanal</title>
   <meta
     name="description"
-    content="Jazmin Macetas: catalogo artesanal de macetas, floreros y deco en yeso ceramico con pedidos personalizados por WhatsApp."
+    content="Jazm&iacute;n Macetas: macetas, floreros y deco artesanal de yeso cer&aacute;mico con pedidos coordinados por WhatsApp."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="home">
   <div class="announcement-bar" role="status" aria-live="polite">
-    <span>Envio gratis en compras desde $15.000</span>
+    <span>Hecho a mano en yeso ceramico</span>
   </div>
+
   <div class="site-shell">
     <header class="site-header" id="inicio">
-      <a class="brand-lockup brand-lockup-logo" href="index.html" aria-label="Jazmin Macetas">
-        <img
-          class="brand-logo-img"
-          src="img/LOGO.jpg"
-          alt="Jazmin Macetas"
-          width="140"
-          height="56"
-        >
+      <a class="brand-lockup-logo" href="index.html" aria-label="Jazmin Macetas">
+        <img class="brand-logo-img" src="img/LOGO.jpg" alt="Jazmin Macetas" width="160" height="54">
       </a>
 
       <nav class="main-nav" id="main-nav" aria-label="Principal">
-        <a href="index.html#inicio" aria-current="page">Inicio</a>
-        <a href="productos.html">Productos</a>
-        <a href="productos.html?categoria=combos">Combos</a>
-        <a href="productos.html?categoria=por-mayor">Por mayor</a>
-        <a href="index.html#nosotros">Nosotros</a>
-        <a href="index.html#como-comprar">Como comprar</a>
-        <a href="#contacto">Contacto</a>
+        <a href="index.html" aria-current="page">Inicio</a>
+        <a href="index.html#destacados">Productos</a>
+        <a href="productos.html">Catalogo</a>
+        <a href="por-mayor.html">Por mayor</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="como-comprar.html">Como comprar</a>
+        <a href="contacto.html">Contacto</a>
       </nav>
 
-      <button class="primary-button compact header-cta" type="button" data-open-order>
-        Hacer pedido
-      </button>
+      <div class="header-actions">
+        <a class="icon-button" href="productos.html#catalog-explorer" aria-label="Buscar en el catalogo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20l-3.5-3.5"></path>
+          </svg>
+        </a>
+        <button class="icon-button" type="button" data-open-order aria-label="Abrir pedido">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 6h15l-1.4 7.3a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5 3H2"></path>
+            <circle cx="9" cy="20" r="1.4"></circle>
+            <circle cx="18" cy="20" r="1.4"></circle>
+          </svg>
+          <span class="icon-count" data-order-count-inline>0</span>
+        </button>
+        <button class="primary-button compact header-cta" type="button" data-open-order>Hacer pedido</button>
+      </div>
 
       <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
         <span></span>
@@ -51,69 +60,98 @@
     </header>
 
     <main class="page-main">
-      <section class="hero-section">
-
-        <div class="hero-copy">
-          <p class="hero-eyebrow-tag">✦ Yeso ceramico artesanal</p>
-          <h2>Jazmin<br>Macetas</h2>
-          <h3>Macetas, floreros y deco artesanal de yeso</h3>
+      <section class="home-hero">
+        <div class="home-hero-copy">
+          <p class="hero-kicker">Deco artesanal en yeso</p>
+          <h1>Jazm&iacute;n<br>Macetas</h1>
+          <p class="hero-subtitle">Macetas, floreros y deco artesanal de yeso.</p>
           <p class="hero-description">
-            Piezas hechas a mano para darle esencia a cada rincon.
+            Piezas unicas hechas a mano para darle esencia, calidez y personalidad a cada rincon.
           </p>
           <div class="hero-actions">
             <a class="primary-button" href="productos.html">Ver catalogo</a>
             <button class="secondary-button" type="button" data-open-order>Hacer pedido</button>
           </div>
-          <p class="hero-note">Ponele tu esencia a cada rincon.</p>
+          <p class="hero-note">Catalogo pensado para decorar, regalar, revender y personalizar por WhatsApp.</p>
           <div class="hero-stats" id="hero-stats"></div>
         </div>
 
-        <div class="hero-visual">
+        <div class="home-hero-visual">
           <div class="hero-visual-stage">
-
             <img
               class="hero-main-photo"
               src="img/H-.jpg"
-              alt="Bandeja con florero y flores secas de Jazmin Macetas"
+              alt="Pieza artesanal de Jazmin Macetas"
             >
-
-            <div class="hero-float-card hero-float-top">
-              <img src="img/B-.jpg" alt="Caramelera Nube">
-              <div>
-                <p class="eyebrow">Mas vendido</p>
-                <strong>Caramelera Nube</strong>
-              </div>
+            <div class="hero-floating-card top">
+              <strong>Diseno que transforma</strong>
+              <p>Pequenos detalles que realzan tus espacios y sostienen una deco serena.</p>
             </div>
-
-            <div class="hero-float-card hero-float-bottom">
-              <img src="img/J-.jpg" alt="Combo Sereno">
-              <div>
-                <p class="eyebrow">Ideal regalo</p>
-                <strong>Combo Sereno</strong>
-              </div>
+            <div class="hero-floating-card bottom">
+              <strong>Pedidos personalizados</strong>
+              <p>Arma tu seleccion y coordinamos colores, cantidades y combinaciones por WhatsApp.</p>
             </div>
-
             <div class="hero-caption">
-              <p class="eyebrow">Seleccion curada</p>
-              <strong>Piezas para hogares, regalos, souvenirs y venta por mayor</strong>
+              <strong>Una seleccion artesanal para hogares, regalos, souvenirs y venta por mayor.</strong>
+              <p>Piezas de yeso ceramico con lenguaje minimalista y terminacion cuidada.</p>
             </div>
-
           </div>
         </div>
-
       </section>
 
-      <section class="intro-section">
-        <div>
-          <p class="eyebrow">Presentacion</p>
-          <h2>Deco artesanal para espacios con personalidad</h2>
-        </div>
-        <div class="intro-copy">
-          <p>
-            Creamos piezas de yeso ceramico con diseno minimalista, pensadas para decorar
-            hogares, emprendimientos, eventos, souvenirs y rincones especiales.
+      <section class="benefits-strip" aria-label="Beneficios">
+        <article class="benefit-card">
+          <span class="benefit-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 21s-6.7-4.3-8.8-8.2C1.2 9.5 2.8 5 7 5c2.1 0 3.3 1 5 3 1.7-2 2.9-3 5-3 4.2 0 5.8 4.5 3.8 7.8C18.7 16.7 12 21 12 21z"></path>
+            </svg>
+          </span>
+          <h3>Hechas a mano</h3>
+          <p>Cada pieza nace de un proceso artesanal cuidado en cada detalle.</p>
+        </article>
+        <article class="benefit-card">
+          <span class="benefit-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 18h16"></path>
+              <path d="M6 18V8l6-4 6 4v10"></path>
+            </svg>
+          </span>
+          <h3>Calidad artesanal</h3>
+          <p>Terminaciones prolijas, sellado y una estetica lista para lucirse.</p>
+        </article>
+        <article class="benefit-card">
+          <span class="benefit-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 3v18"></path>
+              <path d="M7 8c0-2.8 2.2-5 5-5s5 2.2 5 5c0 5-5 5-5 10"></path>
+            </svg>
+          </span>
+          <h3>Material resistente</h3>
+          <p>Yeso ceramico pintado y sellado para acompanar el uso decorativo diario.</p>
+        </article>
+        <article class="benefit-card">
+          <span class="benefit-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 3l2.7 5.5L21 9.4l-4.5 4.4L17.6 21 12 18l-5.6 3 1.1-7.2L3 9.4l6.3-.9L12 3z"></path>
+            </svg>
+          </span>
+          <h3>Piezas unicas</h3>
+          <p>Objetos simples con presencia, ideales para regalar o ambientar con intencion.</p>
+        </article>
+      </section>
+
+      <section class="essence-section">
+        <div class="essence-copy">
+          <p class="eyebrow">Nuestra esencia</p>
+          <h2>Deco artesanal para espacios con personalidad.</h2>
+          <p class="section-copy">
+            Creamos piezas de yeso ceramico pensadas para decorar, regalar y acompanar cada momento especial.
+            Cada producto esta hecho a mano, cuidando los detalles, la terminacion y la estetica.
           </p>
-          <a class="text-link" href="nosotros.html">Conoce mas sobre nosotros</a>
+          <a class="section-link" href="nosotros.html">Conoce mas sobre Jazmin Macetas</a>
+        </div>
+        <div class="essence-media">
+          <img src="img/C-.jpg" alt="Florero artesanal de Jazmin Macetas">
         </div>
       </section>
 
@@ -121,75 +159,111 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">Categorias</p>
-            <h2>Explora el catalogo desde una mirada mas visual</h2>
+            <h2>Explora el catalogo desde una grilla visual, clara y ordenada.</h2>
           </div>
-          <a class="text-link" href="productos.html">Ver todos los productos</a>
+          <a class="section-link" href="productos.html">Ver todo el catalogo</a>
         </div>
-        <div class="category-mosaic" id="home-category-grid"></div>
+        <div class="category-grid" id="home-category-grid"></div>
       </section>
 
-      <section class="featured-section">
+      <section class="featured-section" id="destacados">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Destacados</p>
-            <h2>Productos elegidos para regalar, decorar y revender</h2>
+            <h2>Elegidos para regalar, decorar y revender.</h2>
           </div>
-          <a class="text-link" href="productos.html">Ir al catalogo completo</a>
+          <a class="section-link" href="productos.html">Ir al catalogo completo</a>
         </div>
         <div class="featured-grid" id="featured-grid"></div>
       </section>
 
-      <section class="home-about-section" id="nosotros">
-        <div class="home-about-copy">
+      <section class="about-teaser" id="nosotros">
+        <div class="about-copy">
           <p class="eyebrow">Nosotros</p>
-          <h2>En Jazmin Macetas creamos objetos simples con presencia calida.</h2>
+          <h2>Piezas artesanales pensadas para transformar cada rincon.</h2>
           <p>
-            En Jazmin Macetas creamos productos artesanales de yeso ceramico con diseno minimalista,
-            pensados para decorar espacios con calidez, estilo y personalidad. Cada pieza nace del
-            trabajo hecho a mano, cuidando los detalles, la terminacion y la estetica.
+            En Jazmin Macetas creamos productos artesanales de yeso ceramico con diseno minimalista, pensados
+            para decorar espacios con calidez, estilo y personalidad. Cada pieza nace del trabajo hecho a mano,
+            cuidando los detalles, la terminacion y la estetica.
           </p>
           <a class="primary-button" href="nosotros.html">Ver pagina Nosotros</a>
         </div>
-
-        <div class="mini-feature-grid">
-          <article class="mini-feature-card"><span>01</span><strong>Hecho a mano</strong></article>
-          <article class="mini-feature-card"><span>02</span><strong>Diseno minimalista</strong></article>
-          <article class="mini-feature-card"><span>03</span><strong>Piezas personalizables</strong></article>
-          <article class="mini-feature-card"><span>04</span><strong>Yeso ceramico</strong></article>
-          <article class="mini-feature-card"><span>05</span><strong>Atencion por WhatsApp</strong></article>
-          <article class="mini-feature-card"><span>06</span><strong>Venta por mayor</strong></article>
+        <div class="about-teaser-media">
+          <img src="img/B-.jpg" alt="Caramelera artesanal de Jazmin Macetas">
         </div>
       </section>
 
-      <section class="process-section" id="como-comprar">
+      <section class="process-preview">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Como comprar</p>
-            <h2>Un recorrido simple para armar pedidos personalizados</h2>
+            <h2>Un recorrido simple para armar tu pedido.</h2>
           </div>
+          <a class="section-link" href="como-comprar.html">Ver el paso a paso</a>
         </div>
         <div class="process-grid">
-          <article><span>1</span><h3>Elegi tus productos</h3><p>Recorre el catalogo y entra a cada pieza para ver su detalle completo.</p></article>
-          <article><span>2</span><h3>Selecciona color, tamano y cantidad</h3><p>Define las opciones disponibles segun cada producto.</p></article>
-          <article><span>3</span><h3>Agregalos al pedido</h3><p>El pedido se mantiene activo desde la home, el catalogo y cada ficha individual.</p></article>
-          <article><span>4</span><h3>Completa tus datos</h3><p>Nombre, localidad, forma de pago y comentarios adicionales.</p></article>
-          <article><span>5</span><h3>Envia el pedido por WhatsApp</h3><p>Todo se coordina de forma personalizada directamente por WhatsApp.</p></article>
+          <article class="process-step">
+            <span class="step-number">1</span>
+            <h3>Explora</h3>
+            <p>Recorre productos, categorias, combos y fichas individuales.</p>
+          </article>
+          <article class="process-step">
+            <span class="step-number">2</span>
+            <h3>Elige</h3>
+            <p>Selecciona color, tamano y cantidad segun cada pieza disponible.</p>
+          </article>
+          <article class="process-step">
+            <span class="step-number">3</span>
+            <h3>Suma al pedido</h3>
+            <p>Agrega productos desde cualquier pagina del sitio.</p>
+          </article>
+          <article class="process-step">
+            <span class="step-number">4</span>
+            <h3>Coordina por WhatsApp</h3>
+            <p>Envia el pedido con tus datos y definimos todo de forma personalizada.</p>
+          </article>
         </div>
       </section>
 
-      <section class="wholesale-section" id="mayorista">
-        <div class="wholesale-card">
-          <div>
-            <p class="eyebrow">Venta por mayor</p>
-            <h2>Consultanos por precios por volumen, combos y piezas personalizadas.</h2>
-            <p>
-              Trabajamos pedidos para reventa, souvenirs, tiendas y emprendimientos que buscan una
-              linea artesanal prolija, personalizable y lista para crecer con identidad propia.
-            </p>
+      <section class="wholesale-showcase">
+        <div class="wholesale-copy">
+          <p class="eyebrow">Venta por mayor</p>
+          <h2>Tambien trabajamos para revendedores, souvenirs, tiendas y eventos.</h2>
+          <p>
+            Si necesitas volumen, personalizacion o un set pensado para reventa, te acompanamos con una propuesta
+            artesanal ordenada, lista para coordinar por WhatsApp.
+          </p>
+          <div class="wholesale-points">
+            <div class="wholesale-point">Modelos para souvenirs, regalos empresariales y revendedores.</div>
+            <div class="wholesale-point">Combinaciones de colores, sets y cantidades segun tu proyecto.</div>
+            <div class="wholesale-point">Atencion directa para definir tiempos, estilos y terminaciones.</div>
           </div>
-          <a class="primary-button" id="wholesale-link" href="#" target="_blank" rel="noreferrer">
-            Consultar por mayor por WhatsApp
+          <a
+            class="primary-button"
+            id="wholesale-link"
+            data-whatsapp-message="Hola Jazmin Macetas, quiero consultar por venta por mayor, modelos disponibles y precios por volumen."
+            target="_blank"
+            rel="noreferrer"
+          >
+            Consultar por mayor
           </a>
+        </div>
+        <div class="wholesale-media">
+          <img src="img/G-.jpg" alt="Set mayorista de Jazmin Macetas">
+        </div>
+      </section>
+
+      <section class="instagram-section">
+        <div class="instagram-copy">
+          <p class="eyebrow">Instagram</p>
+          <h2>Inspirate en nuestro Instagram.</h2>
+          <p>Novedades, lanzamientos y mucha deco para sumar ideas a tus espacios.</p>
+          <a class="primary-button" href="#">Seguinos</a>
+        </div>
+        <div class="instagram-grid">
+          <img src="img/H-.jpg" alt="Escena artesanal 1">
+          <img src="img/J-.jpg" alt="Escena artesanal 2">
+          <img src="img/I-.jpg" alt="Escena artesanal 3">
         </div>
       </section>
     </main>
@@ -201,10 +275,24 @@
           <p class="footer-tagline">Piezas de yeso ceramico hechas a mano para espacios con personalidad.</p>
           <div class="footer-social">
             <a href="#" aria-label="Instagram" class="social-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+                <circle cx="12" cy="12" r="4"></circle>
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"></circle>
+              </svg>
             </a>
-            <a href="https://wa.me/5491100000000" aria-label="WhatsApp" class="social-link" id="footer-whatsapp" target="_blank" rel="noreferrer">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.12 1.535 5.849L.057 23.571a.5.5 0 00.6.6l5.764-1.476A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.003-1.37l-.36-.214-3.716.952.97-3.634-.234-.373A9.79 9.79 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+            <a
+              href="#"
+              aria-label="WhatsApp"
+              class="social-link"
+              data-whatsapp-message="Hola Jazmin Macetas, quiero hacer una consulta sobre sus productos."
+              target="_blank"
+              rel="noreferrer"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.12 1.535 5.849L.057 23.571a.5.5 0 00.6.6l5.764-1.476A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.003-1.37l-.36-.214-3.716.952.97-3.634-.234-.373A9.79 9.79 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"></path>
+              </svg>
             </a>
           </div>
         </div>
@@ -213,31 +301,39 @@
           <h4 class="footer-col-title">Catalogo</h4>
           <nav>
             <a href="productos.html">Todos los productos</a>
+            <a href="combos.html">Combos</a>
+            <a href="por-mayor.html">Por mayor</a>
             <a href="productos.html?categoria=macetas">Macetas</a>
             <a href="productos.html?categoria=floreros">Floreros</a>
-            <a href="productos.html?categoria=combos">Combos</a>
-            <a href="productos.html?categoria=por-mayor">Por mayor</a>
           </nav>
         </div>
 
         <div class="footer-col">
           <h4 class="footer-col-title">Ayuda</h4>
           <nav>
-            <a href="index.html#como-comprar">Como comprar</a>
+            <a href="como-comprar.html">Como comprar</a>
             <a href="nosotros.html">Nuestra historia</a>
-            <a href="https://wa.me/5491100000000" id="footer-whatsapp-help" target="_blank" rel="noreferrer">Contacto por WhatsApp</a>
+            <a href="contacto.html">Contacto</a>
+            <a
+              href="#"
+              data-whatsapp-message="Hola Jazmin Macetas, quiero hacer una consulta sobre sus productos."
+              target="_blank"
+              rel="noreferrer"
+            >
+              Contacto por WhatsApp
+            </a>
           </nav>
         </div>
 
-        <div class="footer-col footer-col-cta">
-          <h4 class="footer-col-title">Listo para pedir?</h4>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Listo para pedir</h4>
           <p>Arma tu seleccion y coordinamos todo por WhatsApp, sin pasos complicados.</p>
           <button class="primary-button" type="button" data-open-order>Hacer pedido</button>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>© 2025 Jazmin Macetas · Hecho a mano con cuidado</p>
+        <p>&copy; 2026 Jazmin Macetas | Hecho a mano con cuidado</p>
         <div class="footer-payment-icons">
           <span>Transferencia</span>
           <span>Efectivo</span>
@@ -251,7 +347,9 @@
     <span>Pedido</span>
     <strong id="order-count">0</strong>
   </button>
+
   <div class="order-overlay hidden" id="order-overlay"></div>
+
   <aside class="order-drawer" id="order-drawer" aria-hidden="true">
     <div class="order-drawer-header">
       <div>
@@ -260,14 +358,26 @@
       </div>
       <button class="ghost-button" id="close-order" type="button">Cerrar</button>
     </div>
+
     <div class="order-items" id="order-items"></div>
+
     <div class="order-summary">
-      <div class="summary-row"><span>Total</span><strong id="order-total">$0</strong></div>
+      <div class="summary-row">
+        <span>Total</span>
+        <strong id="order-total">$0</strong>
+      </div>
       <button class="secondary-button block" id="clear-cart" type="button">Vaciar pedido</button>
     </div>
+
     <form class="customer-form" id="customer-form">
-      <label>Nombre<input type="text" id="customer-name" placeholder="Tu nombre" required></label>
-      <label>Localidad / zona<input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required></label>
+      <label>
+        Nombre
+        <input type="text" id="customer-name" placeholder="Tu nombre" required>
+      </label>
+      <label>
+        Localidad / zona
+        <input type="text" id="customer-location" placeholder="Ej. Caballito, CABA" required>
+      </label>
       <label>
         Forma de pago
         <select id="customer-payment" required>
@@ -277,7 +387,10 @@
           <option value="Mercado Pago">Mercado Pago</option>
         </select>
       </label>
-      <label>Comentarios adicionales<textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea></label>
+      <label>
+        Comentarios adicionales
+        <textarea id="customer-comments" rows="4" placeholder="Color especial, horario de contacto, etc."></textarea>
+      </label>
       <button class="primary-button block" type="submit">Finalizar pedido</button>
     </form>
   </aside>
@@ -287,24 +400,24 @@
   <script src="database.js"></script>
   <script src="script.js"></script>
   <script>
-  (function() {
-    const msgs = [
-      "Envio gratis en compras desde $15.000",
-      "Piezas artesanales de yeso ceramico hechas a mano",
-      "Pedidos personalizados por WhatsApp · Sin minimo"
-    ];
-    const el = document.querySelector(".announcement-bar span");
-    if (!el) return;
-    let i = 0;
-    setInterval(() => {
-      el.style.opacity = "0";
-      setTimeout(() => {
-        i = (i + 1) % msgs.length;
-        el.textContent = msgs[i];
-        el.style.opacity = "1";
-      }, 500);
-    }, 4000);
-  })();
+    (function () {
+      const messages = [
+        "Hecho a mano en yeso ceramico",
+        "Piezas artesanales para decorar y regalar",
+        "Pedidos personalizados coordinados por WhatsApp"
+      ];
+      const label = document.querySelector(".announcement-bar span");
+      if (!label) return;
+      let index = 0;
+      setInterval(() => {
+        label.style.opacity = "0";
+        setTimeout(() => {
+          index = (index + 1) % messages.length;
+          label.textContent = messages[index];
+          label.style.opacity = "1";
+        }, 450);
+      }, 4000);
+    })();
   </script>
 </body>
 </html>
