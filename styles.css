@@ -573,9 +573,8 @@ button {
 .product-preview-link {
   display: block;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top left, rgba(241, 225, 217, 0.74), transparent 28%),
-    linear-gradient(150deg, #fbf6f1 0%, #eee2d8 100%);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: #f5f0eb;
 }
 
 .product-preview-image {
@@ -584,7 +583,6 @@ button {
   object-fit: cover;
   object-position: center;
   padding: 0;
-  border-radius: 0;
 }
 
 .product-preview-body {
