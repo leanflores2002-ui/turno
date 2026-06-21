@@ -402,6 +402,22 @@
         }, 450);
       }, 4000);
     })();
+
+    (function () {
+      const header = document.querySelector(".hero-header");
+      if (!header) return;
+
+      const syncHeader = () => {
+        if (window.scrollY > 80) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      };
+
+      syncHeader();
+      window.addEventListener("scroll", syncHeader, { passive: true });
+    })();
   </script>
 </body>
 </html>

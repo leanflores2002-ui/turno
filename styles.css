@@ -166,14 +166,25 @@ button {
 
 .hero-header {
   position: absolute;
-  top: 18px;
-  left: 50%;
-  width: min(1240px, calc(100% - 28px));
+  top: 0;
+  left: 0;
+  width: 100%;
   margin-top: 0;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
+  transform: none;
+  padding: 28px 56px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  backdrop-filter: none;
   box-shadow: none;
+}
+
+.hero-header.scrolled {
+  position: fixed;
+  background: rgba(65, 48, 38, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .hero-brand {
@@ -212,11 +223,17 @@ button {
 }
 
 .hero-header .main-nav a {
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .hero-header .main-nav a::after {
-  background: rgba(255, 255, 255, 0.9);
+  height: 1px;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .hero-header .main-nav a:hover,
@@ -226,9 +243,15 @@ button {
 
 .hero-header .icon-button,
 .hero-header .menu-toggle {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.16);
+  background: transparent;
+  border-color: transparent;
   color: #fff;
+}
+
+.hero-header .icon-button:hover,
+.hero-header .menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .hero-header .icon-count {
@@ -1701,6 +1724,7 @@ textarea:focus {
 
   .hero-header {
     grid-template-columns: auto 1fr auto;
+    padding: 22px 26px;
   }
 
   .home-hero,
@@ -1812,8 +1836,8 @@ textarea:focus {
   }
 
   .hero-header {
-    top: 14px;
-    width: calc(100% - 20px);
+    top: 0;
+    width: 100%;
     padding: 12px 14px;
   }
 
