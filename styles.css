@@ -106,6 +106,10 @@ button {
   transition: opacity 0.45s ease;
 }
 
+.home-banner-page .site-shell {
+  padding-top: 22px;
+}
+
 .site-shell {
   width: min(1240px, calc(100% - 28px));
   margin: 0 auto;
@@ -133,6 +137,209 @@ button {
   border-radius: 26px;
   backdrop-filter: blur(18px);
   box-shadow: 0 18px 48px rgba(85, 60, 44, 0.09);
+}
+
+.hero-banner {
+  position: relative;
+  min-height: calc(100vh - 38px);
+  padding: 0 20px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background:
+    linear-gradient(rgba(50, 35, 25, 0.35), rgba(50, 35, 25, 0.48)),
+    url("img/BANNER--.JPG");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 236, 220, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(44, 30, 23, 0.16), rgba(44, 30, 23, 0.3));
+  pointer-events: none;
+}
+
+.hero-header {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: min(1240px, calc(100% - 28px));
+  margin-top: 0;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.hero-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+}
+
+.hero-brand-mark {
+  width: 52px;
+  height: 52px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.hero-brand-text {
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.hero-header .main-nav a,
+.hero-header .icon-button,
+.hero-header .menu-toggle span {
+  color: #fff;
+}
+
+.hero-header .main-nav a {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.hero-header .main-nav a::after {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.hero-header .main-nav a:hover,
+.hero-header .main-nav a[aria-current="page"] {
+  color: #fff;
+}
+
+.hero-header .icon-button,
+.hero-header .menu-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.hero-header .icon-count {
+  background: rgba(255, 255, 255, 0.92);
+  color: #4c372d;
+  box-shadow: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: min(960px, 100%);
+  min-height: calc(100vh - 38px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+}
+
+.hero-leaf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 14px;
+}
+
+.hero-eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.hero-title {
+  margin: 16px 0 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(4rem, 10vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 10px 30px rgba(31, 20, 14, 0.22);
+}
+
+.hero-subtitle-banner {
+  margin: 18px 0 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-divider {
+  width: 112px;
+  height: 1px;
+  margin: 24px 0;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.hero-description-banner {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(1.05rem, 2vw, 1.38rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.hero-button {
+  margin-top: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 236px;
+  padding: 18px 42px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: transparent;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.18s ease;
+}
+
+.hero-button:hover {
+  background: rgba(255, 255, 255, 0.94);
+  color: #5b4338;
+  transform: translateY(-1px);
+}
+
+.hero-stats-banner {
+  width: min(760px, 100%);
+  margin-top: 34px;
+}
+
+.hero-stats-banner .stat-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+.hero-stats-banner .stat-card span,
+.hero-stats-banner .stat-card strong {
+  color: #fff;
 }
 
 .brand-lockup-logo {
@@ -1492,6 +1699,10 @@ textarea:focus {
     grid-template-columns: auto 1fr auto;
   }
 
+  .hero-header {
+    grid-template-columns: auto 1fr auto;
+  }
+
   .home-hero,
   .essence-section,
   .about-teaser,
@@ -1546,6 +1757,15 @@ textarea:focus {
     transition: transform 0.18s ease, opacity 0.18s ease;
   }
 
+  .hero-header .main-nav {
+    background: rgba(49, 35, 29, 0.94);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .hero-header .main-nav a {
+    color: rgba(255, 255, 255, 0.88);
+  }
+
   body.nav-open .main-nav {
     transform: translateY(0);
     opacity: 1;
@@ -1577,8 +1797,60 @@ textarea:focus {
 }
 
 @media (max-width: 760px) {
+  .home-banner-page .site-shell {
+    padding-top: 18px;
+  }
+
   .site-shell {
     width: min(100% - 18px, 100%);
+  }
+
+  .hero-banner {
+    min-height: 88vh;
+    padding-inline: 14px;
+    background-position: center;
+  }
+
+  .hero-header {
+    top: 14px;
+    width: calc(100% - 20px);
+    padding: 12px 14px;
+  }
+
+  .hero-brand-mark {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+  }
+
+  .hero-brand-text {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+  }
+
+  .hero-content {
+    min-height: 88vh;
+    padding-top: 72px;
+    padding-bottom: 40px;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 15vw, 5rem);
+  }
+
+  .hero-subtitle-banner {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+  }
+
+  .hero-description-banner {
+    font-size: 1rem;
+  }
+
+  .hero-button {
+    min-width: 0;
+    width: min(100%, 260px);
+    padding: 16px 26px;
   }
 
   .site-header,

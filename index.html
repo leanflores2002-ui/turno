@@ -13,19 +13,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="home">
+<body data-page="home" class="home-banner-page">
   <div class="announcement-bar" role="status" aria-live="polite">
     <span>Hecho a mano en yeso ceramico</span>
   </div>
 
-  <div class="site-shell">
-    <header class="site-header" id="inicio">
-      <a class="brand-lockup-logo" href="index.html" aria-label="Jazmin Macetas">
-        <img class="brand-logo-img" src="img/LOGO.jpg" alt="Jazmin Macetas" width="160" height="54">
+  <section class="hero-banner" id="inicio" aria-label="Banner principal">
+    <div class="hero-overlay"></div>
+
+    <header class="site-header hero-header">
+      <a class="hero-brand" href="index.html" aria-label="Jazmin Macetas">
+        <span class="hero-brand-mark">JM</span>
+        <span class="hero-brand-text">JAZMIN MACETAS</span>
       </a>
 
       <nav class="main-nav" id="main-nav" aria-label="Principal">
-        <a href="index.html" aria-current="page">Inicio</a>
         <a href="index.html#destacados">Productos</a>
         <a href="productos.html">Catalogo</a>
         <a href="por-mayor.html">Por mayor</a>
@@ -49,7 +51,6 @@
           </svg>
           <span class="icon-count" data-order-count-inline>0</span>
         </button>
-        <button class="primary-button compact header-cta" type="button" data-open-order>Hacer pedido</button>
       </div>
 
       <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
@@ -59,46 +60,29 @@
       </button>
     </header>
 
+    <div class="hero-content">
+      <span class="hero-leaf" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21c0-6.5 2.4-11 8-15"></path>
+          <path d="M12 14c-2.1-1.9-4.5-2.8-8-2.8 1.3 4.2 4 7.1 8 9.8"></path>
+          <path d="M12 10c1.3-2.7 3.8-5 7.5-7-0.2 4.1-1.8 7.4-5 10"></path>
+        </svg>
+      </span>
+      <p class="hero-eyebrow">Deco artesanal en yeso</p>
+      <h1 class="hero-title">JAZMIN<br>MACETAS</h1>
+      <p class="hero-subtitle-banner">Macetas, floreros y deco artesanal de yeso</p>
+      <span class="hero-divider" aria-hidden="true"></span>
+      <p class="hero-description-banner">
+        Piezas unicas hechas a mano<br>
+        para darle esencia a cada rincon de tu hogar.
+      </p>
+      <a class="hero-button" href="productos.html">Ver catalogo &rarr;</a>
+      <div class="hero-stats hero-stats-banner" id="hero-stats"></div>
+    </div>
+  </section>
+
+  <div class="site-shell">
     <main class="page-main">
-      <section class="home-hero">
-        <div class="home-hero-copy">
-          <p class="hero-kicker">Deco artesanal en yeso</p>
-          <h1>Jazm&iacute;n<br>Macetas</h1>
-          <p class="hero-subtitle">Macetas, floreros y deco artesanal de yeso.</p>
-          <p class="hero-description">
-            Piezas unicas hechas a mano para darle esencia, calidez y personalidad a cada rincon.
-          </p>
-          <div class="hero-actions">
-            <a class="primary-button" href="productos.html">Ver catalogo</a>
-            <button class="secondary-button" type="button" data-open-order>Hacer pedido</button>
-          </div>
-          <p class="hero-note">Catalogo pensado para decorar, regalar, revender y personalizar por WhatsApp.</p>
-          <div class="hero-stats" id="hero-stats"></div>
-        </div>
-
-        <div class="home-hero-visual">
-          <div class="hero-visual-stage">
-            <img
-              class="hero-main-photo"
-              src="img/H-.jpg"
-              alt="Pieza artesanal de Jazmin Macetas"
-            >
-            <div class="hero-floating-card top">
-              <strong>Diseno que transforma</strong>
-              <p>Pequenos detalles que realzan tus espacios y sostienen una deco serena.</p>
-            </div>
-            <div class="hero-floating-card bottom">
-              <strong>Pedidos personalizados</strong>
-              <p>Arma tu seleccion y coordinamos colores, cantidades y combinaciones por WhatsApp.</p>
-            </div>
-            <div class="hero-caption">
-              <strong>Una seleccion artesanal para hogares, regalos, souvenirs y venta por mayor.</strong>
-              <p>Piezas de yeso ceramico con lenguaje minimalista y terminacion cuidada.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="benefits-strip" aria-label="Beneficios">
         <article class="benefit-card">
           <span class="benefit-icon">
