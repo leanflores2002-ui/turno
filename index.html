@@ -15,7 +15,7 @@
 </head>
 <body data-page="home">
   <div class="announcement-bar" role="status" aria-live="polite">
-    <span>Envío gratis en compras desde $15.000</span>
+    <span>Envio gratis en compras desde $15.000</span>
   </div>
   <div class="site-shell">
     <header class="site-header" id="inicio">
@@ -50,41 +50,55 @@
 
     <main class="page-main">
       <section class="hero-section">
+
         <div class="hero-copy">
-          <p class="hero-eyebrow-tag">✦ Yeso cerámico artesanal</p>
-          <h2>Jazmin Macetas</h2>
+          <p class="hero-eyebrow-tag">✦ Yeso ceramico artesanal</p>
+          <h2>Jazmin<br>Macetas</h2>
           <h3>Macetas, floreros y deco artesanal de yeso</h3>
           <p class="hero-description">
             Piezas hechas a mano para darle esencia a cada rincon.
           </p>
-
           <div class="hero-actions">
             <a class="primary-button" href="productos.html">Ver catalogo</a>
             <button class="secondary-button" type="button" data-open-order>Hacer pedido</button>
           </div>
-
           <p class="hero-note">Ponele tu esencia a cada rincon.</p>
-
           <div class="hero-stats" id="hero-stats"></div>
         </div>
 
         <div class="hero-visual">
           <div class="hero-visual-stage">
-            <figure class="hero-shot hero-shot-large">
-              <img src="img/florero-luna.svg" alt="Florero Luna">
-            </figure>
-            <figure class="hero-shot hero-shot-small hero-shot-top">
-              <img src="img/maceta-aura.svg" alt="Maceta Oval Aura">
-            </figure>
-            <figure class="hero-shot hero-shot-small hero-shot-bottom">
-              <img src="img/bandeja-lienzo.svg" alt="Bandeja Lienzo">
-            </figure>
+
+            <img
+              class="hero-main-photo"
+              src="img/H-.jpg"
+              alt="Bandeja con florero y flores secas de Jazmin Macetas"
+            >
+
+            <div class="hero-float-card hero-float-top">
+              <img src="img/B-.jpg" alt="Caramelera Nube">
+              <div>
+                <p class="eyebrow">Mas vendido</p>
+                <strong>Caramelera Nube</strong>
+              </div>
+            </div>
+
+            <div class="hero-float-card hero-float-bottom">
+              <img src="img/J-.jpg" alt="Combo Sereno">
+              <div>
+                <p class="eyebrow">Ideal regalo</p>
+                <strong>Combo Sereno</strong>
+              </div>
+            </div>
+
             <div class="hero-caption">
               <p class="eyebrow">Seleccion curada</p>
               <strong>Piezas para hogares, regalos, souvenirs y venta por mayor</strong>
             </div>
+
           </div>
         </div>
+
       </section>
 
       <section class="intro-section">
@@ -182,7 +196,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <span class="brand-mark">JM</span>
-          <p class="footer-tagline">Piezas de yeso cerámico hechas a mano para espacios con personalidad.</p>
+          <p class="footer-tagline">Piezas de yeso ceramico hechas a mano para espacios con personalidad.</p>
           <div class="footer-social">
             <a href="#" aria-label="Instagram" class="social-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
@@ -194,7 +208,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">Catálogo</h4>
+          <h4 class="footer-col-title">Catalogo</h4>
           <nav>
             <a href="productos.html">Todos los productos</a>
             <a href="productos.html?categoria=macetas">Macetas</a>
@@ -207,15 +221,15 @@
         <div class="footer-col">
           <h4 class="footer-col-title">Ayuda</h4>
           <nav>
-            <a href="index.html#como-comprar">Cómo comprar</a>
+            <a href="index.html#como-comprar">Como comprar</a>
             <a href="nosotros.html">Nuestra historia</a>
             <a href="https://wa.me/5491100000000" id="footer-whatsapp-help" target="_blank" rel="noreferrer">Contacto por WhatsApp</a>
           </nav>
         </div>
 
         <div class="footer-col footer-col-cta">
-          <h4 class="footer-col-title">¿Listo para pedir?</h4>
-          <p>Armá tu selección y coordinamos todo por WhatsApp, sin pasos complicados.</p>
+          <h4 class="footer-col-title">Listo para pedir?</h4>
+          <p>Arma tu seleccion y coordinamos todo por WhatsApp, sin pasos complicados.</p>
           <button class="primary-button" type="button" data-open-order>Hacer pedido</button>
         </div>
       </div>
@@ -273,9 +287,9 @@
   <script>
   (function() {
     const msgs = [
-      "Envío gratis en compras desde $15.000",
-      "Piezas artesanales de yeso cerámico hechas a mano",
-      "Pedidos personalizados por WhatsApp · Sin mínimo"
+      "Envio gratis en compras desde $15.000",
+      "Piezas artesanales de yeso ceramico hechas a mano",
+      "Pedidos personalizados por WhatsApp · Sin minimo"
     ];
     const el = document.querySelector(".announcement-bar span");
     if (!el) return;

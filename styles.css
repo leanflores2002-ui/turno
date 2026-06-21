@@ -572,6 +572,7 @@ button {
 
 .product-preview-link {
   display: block;
+  overflow: hidden;
   background:
     radial-gradient(circle at top left, rgba(241, 225, 217, 0.74), transparent 28%),
     linear-gradient(150deg, #fbf6f1 0%, #eee2d8 100%);
@@ -580,8 +581,10 @@ button {
 .product-preview-image {
   width: 100%;
   aspect-ratio: 4 / 4.6;
-  object-fit: contain;
-  padding: 26px;
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
+  border-radius: 0;
 }
 
 .product-preview-body {
@@ -790,12 +793,10 @@ button {
 .product-main-image {
   width: 100%;
   aspect-ratio: 1 / 1.06;
-  object-fit: contain;
-  padding: 34px;
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(circle at top left, rgba(241, 225, 217, 0.74), transparent 26%),
-    linear-gradient(160deg, #fbf6f1 0%, #eee2d8 100%);
   border: 1px solid rgba(255, 255, 255, 0.92);
 }
 
@@ -821,8 +822,9 @@ button {
 .thumbnail-button img {
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: contain;
-  padding: 14px;
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
 }
 
 .product-detail-copy h2 {
@@ -1739,4 +1741,110 @@ body.admin-body {
 .hero-shot,
 .hero-caption {
   z-index: 1;
+}
+
+/* -- HERO CON FOTO REAL -- */
+
+.hero-main-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: calc(var(--radius-xl) - 8px);
+  z-index: 0;
+}
+
+.hero-visual-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius-xl) - 8px);
+  background: linear-gradient(
+    160deg,
+    rgba(247, 241, 234, 0.18) 0%,
+    rgba(94, 70, 53, 0.22) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-float-card {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 20px;
+  background: rgba(255, 252, 248, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 32px rgba(94, 70, 53, 0.14);
+  backdrop-filter: blur(10px);
+  max-width: 200px;
+}
+
+.hero-float-card img {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.hero-float-card .eyebrow {
+  margin-bottom: 2px;
+  font-size: 0.65rem;
+}
+
+.hero-float-card strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.hero-float-top {
+  top: 32px;
+  right: 24px;
+}
+
+.hero-float-bottom {
+  bottom: 90px;
+  left: 24px;
+}
+
+.hero-caption {
+  z-index: 2;
+}
+
+.hero-eyebrow-tag {
+  display: inline-block;
+  background: rgba(196, 139, 136, 0.12);
+  color: var(--accent-deep);
+  border: 1px solid rgba(154, 96, 95, 0.2);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+}
+
+.hero-copy h2 {
+  background: linear-gradient(135deg, var(--text) 50%, var(--accent-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@media (max-width: 760px) {
+  .hero-float-card {
+    display: none;
+  }
+
+  .hero-main-photo {
+    object-position: center top;
+  }
 }
