@@ -38,6 +38,7 @@
     hydratePageState();
     cacheRefs();
     bindCommonEvents();
+    syncHeaderNavState();
     setStaticLinks();
     syncCartWithStore();
     renderCurrentPage();
@@ -150,6 +151,29 @@
     });
   }
 
+  function syncHeaderNavState() {
+    const catalogLink = refs.mainNav?.querySelector('[data-nav="catalog"]');
+    const wholesaleLink = refs.mainNav?.querySelector('[data-nav="wholesale"]');
+
+    if (!catalogLink && !wholesaleLink) {
+      return;
+    }
+
+    catalogLink?.removeAttribute("aria-current");
+    wholesaleLink?.removeAttribute("aria-current");
+
+    if (state.page !== "catalog") {
+      return;
+    }
+
+    if (state.catalog.category === "por-mayor") {
+      wholesaleLink?.setAttribute("aria-current", "page");
+      return;
+    }
+
+    catalogLink?.setAttribute("aria-current", "page");
+  }
+
   function setStaticLinks() {
     document.querySelectorAll("[data-whatsapp-message]").forEach((link) => {
       const message = link.getAttribute("data-whatsapp-message") || "";
@@ -184,6 +208,7 @@
   }
 
   function renderCatalogPage() {
+    syncHeaderNavState();
     renderCatalogControls();
     renderCatalogFilters();
 
